@@ -1,4 +1,3 @@
-
 import express, {
 	Application,
 	Request,
@@ -6,15 +5,11 @@ import express, {
 	Response,
 } from "express";
 
-
 import rootRouter from "./routers/index.router";
 
-
 require("./db/mongooseConnect.ts");
-
-
-
-
+require("./models/categories.model");
+require("./models/nguoiDung.model");
 
 const port = process.env.PORT || 3000;
 

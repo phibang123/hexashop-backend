@@ -1,19 +1,43 @@
+import { Model, Schema, model } from "mongoose";
 
-import { Model, Schema, model } from 'mongoose';
+import { DEFATUL_CATEROGIES } from "./../configs/index";
 
-interface IUser {
-  name: string;
+interface ICategori {
+	name: string;
+	parent: string;
+	category: string;
+	slug: string;
 }
 
-interface UserModel extends Model<IUser> {
-  myStaticMethod(): number;
-}
+interface CategoriModel extends Model<ICategori> {}
 
-const schema = new Schema<IUser, UserModel>({ name: String });
-schema.static('myStaticMethod', function myStaticMethod() {
-  return 42;
+const categoriSchema = new Schema<ICategori, CategoriModel>(
+	{
+		name: {
+			type: String,
+		},
+		slug: {
+			type: String,
+		},
+		parent: {
+			type: String,
+		},
+		category: {
+			type: String,
+		},
+	},
+	{
+		timestamps: false,
+	}
+);
+
+const CategoriesModel = model<ICategori, CategoriModel>(
+	"Categories",
+	categoriSchema
+);
+
+DEFATUL_CATEROGIES.forEach(async (n) => {
+	await CategoriesModel.findOneAndUpdate(n, n, { new: true, upsert: true });
 });
 
-const User = model<IUser, UserModel>('User', schema);
-
-const answer: number = User.myStaticMethod(); // 42
+export default CategoriesModel;

@@ -15,15 +15,19 @@ const categoriSchema = new Schema<ICategori, CategoriModel>(
 	{
 		name: {
 			type: String,
+			trim: true,
 		},
 		slug: {
 			type: String,
+			trim: true,
 		},
 		parent: {
 			type: String,
+			trim: true,
 		},
 		category: {
 			type: String,
+			trim: true,
 		},
 	},
 	{
@@ -31,8 +35,15 @@ const categoriSchema = new Schema<ICategori, CategoriModel>(
 	}
 );
 
+//relation
+categoriSchema.virtual("sanphamschmas", {
+	ref: "SanPhamsModel",
+	localField: "category",
+	foreignField: "categories",
+});
+
 const CategoriesModel = model<ICategori, CategoriModel>(
-	"Categories",
+	"categoriSchema",
 	categoriSchema
 );
 

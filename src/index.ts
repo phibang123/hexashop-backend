@@ -10,6 +10,7 @@ import rootRouter from "./routers/index.router";
 require("./db/mongooseConnect.ts");
 require("./models/categories.model");
 require("./models/nguoiDung.model");
+require("./models/sanPham.model");
 
 const port = process.env.PORT || 3000;
 

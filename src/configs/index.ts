@@ -2,7 +2,68 @@ require("dotenv").config();
 
 import aws from "aws-sdk";
 
-export const DEFATUL_ADMIN: Object = {
+interface IIdNguoiDung {
+	idNduoiDung: string;
+	tenNguoiDung: string;
+	soSaoNguoiDung: number;
+}
+interface IComment {
+	idNguoiDung: string;
+	tenNguoiDung: string;
+	ngoiDungComment: string;
+}
+
+interface ISao {
+	saoTrungBinh: number;
+	idNguoiDung: IIdNguoiDung[];
+}
+
+interface ISize {
+	tenSize: string;
+	soLuong: number;
+}
+
+interface IMauSac {
+	tenMauSac: string;
+	size: ISize[];
+}
+
+interface IHinhAnh {
+	hinhAnh: string;
+}
+
+interface ISanPham {
+	tenSanPham: string;
+	giaTien: number;
+	listHinhAnh: IHinhAnh[];
+	sale: boolean;
+	phanTranTramSale?: number;
+	categories: string;
+
+	sao?: ISao;
+	comment?: IComment[];
+	mauSac: IMauSac[];
+}
+
+interface ICategori {
+	name: string;
+	parent: string;
+	category: string;
+	slug: string;
+}
+
+interface INguoiDungInput {
+	taiKhoan: string;
+	matKhau: string;
+	email: string;
+	diaChi?: string;
+	hoTen: string;
+	soDt: string;
+	sex: "Nam" | "Nữ";
+	adminInWeb: boolean;
+}
+
+export const DEFATUL_ADMIN: INguoiDungInput = {
 	taiKhoan: "bangphi",
 	matKhau: "1234597s1Ba",
 	email: "phibang79s@gmail.com",
@@ -12,13 +73,6 @@ export const DEFATUL_ADMIN: Object = {
 	sex: "Nam",
 	diaChi: "alalalalal",
 };
-
-interface ICategori {
-	name: string;
-	parent: string;
-	category: string;
-	slug: string;
-}
 
 export const DEFATUL_CATEROGIES: ICategori[] = [
 	{
@@ -155,6 +209,32 @@ export const DEFATUL_CATEROGIES: ICategori[] = [
 		category: "/nam_gioi/tat/tat_tan_hinh",
 	},
 ];
+
+export const DEFATUL_SANPHAM: ISanPham = {
+	tenSanPham: "Áo Thun Chống UV Dài Tay Xẻ Tà",
+	giaTien: 400000,
+	categories: "/nu_gioi/ao/ao_thun",
+	listHinhAnh: [
+		{
+			hinhAnh:
+				"https://image.uniqlo.com/UQ/ST3/vn/imagesgoods/446709/item/vngoods_21_446709.jpg?width=1600&impolicy=quality_75",
+		},
+	],
+
+	sale: false,
+	phanTranTramSale: 0,
+	mauSac: [
+		{
+			tenMauSac: "#FFFFFF",
+			size: [
+				{
+					soLuong: 12,
+					tenSize: "43",
+				},
+			],
+		},
+	],
+};
 
 export const secret_key = process.env.SECRET_KEY || "";
 

@@ -1,0 +1,32 @@
+POST http://localhost:3000/api/QuanLyNguoiDung/DangKy
+
+
+//------------------Quan Ly Nguoi Dung------------------
+###
+//Đăng kí
+POST http://localhost:3000/api/QuanLyNguoiDung/DangKy
+Content-Type: application/json
+
+{
+  "taiKhoan": "tanlon",
+  "matKhau": "1234567",
+  "email": "loi@gmail.com",
+  "soDt": "512522222",
+  "hoTen": "string",
+  "diaChi": "alalalalal"
+}
+
+###
+//đăng nhập
+POST http://localhost:3000/api/QuanLyNguoiDung/DangNhap
+Content-Type: application/json
+
+{
+  "taiKhoan": "tanlon",
+  "matKhau": "1234567"
+}
+
+###
+//lấy profile
+GET http://localhost:3000/api/QuanLyNguoiDung/NguoiDung/ThongTin
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjM4OGE2YzY5MTZhM2M2Y2NlYmZiOTMiLCJpYXQiOjE2NDc4NzI2Mjd9.SooXf8JGdYR8kr4fkICPMOSY7NZ4Cg7coQoQHsE9q54

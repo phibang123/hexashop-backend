@@ -37,3 +37,16 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjM4OGE2Y
 ###
 //lấy tất cả categori
 GET http://localhost:3000/api/QuanLyCategoreis/LayToanBo
+
+
+//------------------Quan Ly Sản Phẩm------------------
+###
+//lấy tất cả categori
+// ?limit=1?skip=1?sor
+GET http://localhost:3000/api/QuanLySanPham/LayTatCaSanPham
+
+
+###
+//lấy sản phẩm theo tên
+// ?tenSanPham
+GET http://localhost:3000/api/QuanLySanPham/TimSAnPhamTheoTen?tenSanPham=Quần Tay

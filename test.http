@@ -30,3 +30,10 @@ Content-Type: application/json
 //lấy profile
 GET http://localhost:3000/api/QuanLyNguoiDung/NguoiDung/ThongTin
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjM4OGE2YzY5MTZhM2M2Y2NlYmZiOTMiLCJpYXQiOjE2NDc4NzI2Mjd9.SooXf8JGdYR8kr4fkICPMOSY7NZ4Cg7coQoQHsE9q54
+
+
+
+//------------------Quan Ly Nguoi Dung------------------
+###
+//lấy tất cả categori
+GET http://localhost:3000/api/QuanLyCategoreis/LayToanBo

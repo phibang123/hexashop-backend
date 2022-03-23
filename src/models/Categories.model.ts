@@ -3,9 +3,12 @@ import { Model, Schema, model } from "mongoose";
 import { DEFATUL_CATEROGIES } from "./../configs/index";
 
 interface ICategori {
+	ids: number;
 	name: string;
 	parent: string;
 	category: string;
+	level: number;
+	parentId: number;
 	slug: string;
 }
 
@@ -13,6 +16,9 @@ interface CategoriModel extends Model<ICategori> {}
 
 const categoriSchema = new Schema<ICategori, CategoriModel>(
 	{
+		ids: {
+			type: Number,
+		},
 		name: {
 			type: String,
 			trim: true,
@@ -25,9 +31,15 @@ const categoriSchema = new Schema<ICategori, CategoriModel>(
 			type: String,
 			trim: true,
 		},
+		level: {
+			type: Number,
+		},
 		category: {
 			type: String,
 			trim: true,
+		},
+		parentId: {
+			type: Number,
 		},
 	},
 	{

@@ -1,42 +1,26 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Request, Response, Router } from 'express';
 
-import { Router } from "express";
-import { auth } from "./../../middleware/auth";
-import multer from "multer";
+import { auth } from './../../middleware/auth';
+import multer from 'multer';
 
 const storage = multer.memoryStorage();
 export const upload = multer({ storage });
 
-import quanLyNguoiDungController = require("../../controllers/quanLyNguoiDung.controller");
+import quanLyNguoiDungController = require('../../controllers/quanLyNguoiDung.controller');
 
-export const quanLuongNguoiDung = Router();
+export const quanLyNguoiDung = Router();
 
-quanLuongNguoiDung.post("/DangKy", quanLyNguoiDungController.DangKyController);
+quanLyNguoiDung.post('/DangKy', quanLyNguoiDungController.DangKyController);
 
-quanLuongNguoiDung.post(
-	"/DangNhap",
-	quanLyNguoiDungController.DangNhapController
+quanLyNguoiDung.post('/DangNhap', quanLyNguoiDungController.DangNhapController);
+
+quanLyNguoiDung.get('/NguoiDung/ThongTin', auth, quanLyNguoiDungController.LayThongTinProfileController);
+
+quanLyNguoiDung.patch(
+  '/NguoiDung/avatar',
+  auth,
+  upload.single('avatar'),
+  quanLyNguoiDungController.UpLoadAvatarController
 );
 
-quanLuongNguoiDung.get(
-	"/NguoiDung/ThongTin",
-	auth,
-	quanLyNguoiDungController.LayThongTinProfile
-);
-
-quanLuongNguoiDung.patch(
-	"/NguoiDung/avatar",
-	auth,
-	upload.single("avatar"),
-	quanLyNguoiDungController.UpLoadAvatar
-);
-
-quanLuongNguoiDung.patch(
-	"/NguoiDung/ChinhSua",
-	auth,
-	quanLyNguoiDungController.ChinhSuaNguoiDung
-);
-
-module.exports = {
-	quanLuongNguoiDung,
-};
+quanLyNguoiDung.patch('/NguoiDung/ChinhSua', auth, quanLyNguoiDungController.ChinhSuaNguoiDungController);

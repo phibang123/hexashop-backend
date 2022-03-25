@@ -5,17 +5,17 @@ import aws from 'aws-sdk';
 interface IIdNguoiDung {
   idNduoiDung: string;
   tenNguoiDung: string;
-  soSaoNguoiDung: number;
 }
+
+interface ILuotThich {
+  tongLuotThich: number;
+  idNguoiDung: IIdNguoiDung[];
+}
+
 interface IComment {
   idNguoiDung: string;
   tenNguoiDung: string;
   ngoiDungComment: string;
-}
-
-interface ISao {
-  saoTrungBinh: number;
-  idNguoiDung: IIdNguoiDung[];
 }
 
 interface ISize {
@@ -37,10 +37,10 @@ interface ISanPham {
   giaTien: number;
   listHinhAnh: IHinhAnh[];
   sale: boolean;
-  phanTranTramSale?: number;
+  phanTramSale?: number;
   categories: string;
+  luotThich?: ILuotThich;
 
-  sao?: ISao;
   comment?: IComment[];
   mauSac: IMauSac[];
 }
@@ -292,7 +292,7 @@ export const DEFATUL_SANPHAM: ISanPham[] = [
     ],
 
     sale: false,
-    phanTranTramSale: 0,
+    phanTramSale: 0,
     mauSac: [
       // {
       //   tenMauSac: '#FFFFFF',
@@ -317,7 +317,7 @@ export const DEFATUL_SANPHAM: ISanPham[] = [
     ],
 
     sale: false,
-    phanTranTramSale: 0,
+    phanTramSale: 0,
     mauSac: [
       // {
       //   tenMauSac: '#FFFFFF',

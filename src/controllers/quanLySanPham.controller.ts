@@ -25,8 +25,8 @@ export const LayTatCaSanPhamController = async (req: Request, res: Response) => 
   const match: IMath = {};
   const sort: ISorf = {};
 
-  if ((req as any).params.categories) {
-    match.categories = req.params.categories;
+  if (req.query.categories) {
+    match.categories = (req as any).query.categories;
   }
 
   if (req.query.sortBy) {
@@ -35,19 +35,10 @@ export const LayTatCaSanPhamController = async (req: Request, res: Response) => 
   }
 
   try {
-    const allSanPham = await SanPhamsModel.find()
+    const allSanPham = await SanPhamsModel.find({ categories: match.categories })
       .sort(sort)
       .skip((req as any).query.skip)
       .limit((req as any).query.limit);
-    //   .populate({
-    //   path: 'sanphamschemas',
-    //   match,
-    //   options: {
-    //     limit: parseInt((req as any).query.limit),
-    //     skip: parseInt((req as any).query.skip),
-    //     sort,
-    //   },
-    // });
     res.status(200).json(ReS(200, allSanPham));
   } catch (error: any) {
     if (error.errors) {
@@ -66,6 +57,40 @@ export const TimSanPhamTheoTenController = async (req: Request, res: Response) =
     let tenSanPham = (req as any).query.tenSanPham;
     const allSanPham = await SanPhamsModel.find({ tenSanPham: { $regex: '.*' + tenSanPham + '.*' } });
     res.status(200).json(ReS(200, allSanPham));
+  } catch (error: any) {
+    if (error.errors) {
+      let ObecjError: any;
+      Object.keys(error.errors).forEach((e: string) => {
+        ObecjError[`${e}`] = error.errors[`${e}`].message;
+      });
+      return res.status(400).json(ReE(400, { ...ObecjError }));
+    }
+    return res.status(400).json(ReE(400, error.message));
+  }
+};
+
+export const TimSanPhamTheoIdController = async (req: Request, res: Response) => {
+  try {
+    let idSanPham = req.params.id;
+    const oneSanPham = await SanPhamsModel.findOne({ _id: idSanPham });
+    res.status(200).json(ReS(200, oneSanPham));
+  } catch (error: any) {
+    if (error.errors) {
+      let ObecjError: any;
+      Object.keys(error.errors).forEach((e: string) => {
+        ObecjError[`${e}`] = error.errors[`${e}`].message;
+      });
+      return res.status(400).json(ReE(400, { ...ObecjError }));
+    }
+    return res.status(400).json(ReE(400, error.message));
+  }
+};
+
+export const ThemSanPhamController = async (req: Request, res: Response) => {
+  try {
+    const sanPham = new SanPhamsModel(req.body);
+    await sanPham.save();
+    res.status(201).json(ReS(201, sanPham));
   } catch (error: any) {
     if (error.errors) {
       let ObecjError: any;

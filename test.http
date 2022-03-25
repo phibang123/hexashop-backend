@@ -22,18 +22,24 @@ POST http://localhost:3000/api/QuanLyNguoiDung/DangNhap
 Content-Type: application/json
 
 {
-  "taiKhoan": "tanlon",
-  "matKhau": "1234567"
+  "taiKhoan": "bangphi",
+  "matKhau": "1234597s1Ba"
 }
 
 ###
 //lấy profile
 GET http://localhost:3000/api/QuanLyNguoiDung/NguoiDung/ThongTin
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjM4OGE2YzY5MTZhM2M2Y2NlYmZiOTMiLCJpYXQiOjE2NDc4NzI2Mjd9.SooXf8JGdYR8kr4fkICPMOSY7NZ4Cg7coQoQHsE9q54
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjNjOTBjZmEwNTJjNmJhZGQwM2ZkZjMiLCJpYXQiOjE2NDgxNDA4ODF9.BHwFZbRUeluCC99OANjr9hQgv_eR__rTX2KK3tagX4g
+
+###
+//Người dùng thích sản phẩm
+POST http://localhost:3000/api/QuanLyNguoiDung/NguoiDung/like/623d4052a052c6badd0457ad
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjNkNDA1MmEwNTJjNmJhZGQwNDU3YTgiLCJpYXQiOjE2NDgxODEzNTN9.TAlwfIvEmigPI85agadGNVPHxWFBo736rbelCrF6L9M
 
 
 
-//------------------Quan Ly Nguoi Dung------------------
+
+//------------------Quan Ly Categories------------------
 ###
 //lấy tất cả categori
 GET http://localhost:3000/api/QuanLyCategoreis/LayToanBo
@@ -43,10 +49,39 @@ GET http://localhost:3000/api/QuanLyCategoreis/LayToanBo
 ###
 //lấy tất cả categori
 // ?limit=1?skip=1?sor
-GET http://localhost:3000/api/QuanLySanPham/LayTatCaSanPham
+GET http://localhost:3000/api/QuanLySanPham/LayTatCaSanPham?categories=/nu_gioi/ao/ao_thun&limit=1
 
 
 ###
 //lấy sản phẩm theo tên
 // ?tenSanPham
-GET http://localhost:3000/api/QuanLySanPham/TimSAnPhamTheoTen?tenSanPham=Quần Tay
+GET http://localhost:3000/api/QuanLySanPham/TimSanPhamTheoTen?tenSanPham=
+
+
+###
+//lấy sản phẩm theo tên
+// ?tenSanPham
+GET http://localhost:3000/api/QuanLySanPham/TimChiTietSanPham/623b64daff48d774918cd745
+
+
+
+###
+//lấy sản phẩm theo tên
+// ?tenSanPham
+POST http://localhost:3000/api/QuanLySanPham/ThemSanPham
+Content-Type: application/json
+
+{
+  "categories": "/nu_gioi/ao/ao_thun",
+  "giaTien": 20000000,
+  "phanTranTramSale": 20,
+  "sale": true,
+  "tenSanPham": "Áo Dio",
+  "mauSac": [{
+    "tenMauSac": "#ffffff",
+    "size": [{
+      "tenSize": 43,
+      "soLuong": 50
+    }]
+  }]
+}

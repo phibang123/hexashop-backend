@@ -24,3 +24,5 @@ quanLyNguoiDung.patch(
 );
 
 quanLyNguoiDung.patch('/NguoiDung/ChinhSua', auth, quanLyNguoiDungController.ChinhSuaNguoiDungController);
+
+quanLyNguoiDung.post('/NguoiDung/like/:id', auth, quanLyNguoiDungController.ThichSanPhamController);

@@ -2,6 +2,7 @@ import { ReE, ReS } from '../utils/reponse';
 import { Request, Response } from 'express';
 
 import NguoiDungModel from '../models/nguoiDung.model';
+import SanPhamsModel from '../models/sanPham.model';
 import { deleteImagAvatar } from '../utils/deleteObjectS3Avatar';
 import jwt from 'jsonwebtoken';
 import { putImagAvatar } from '../utils/putObjectS3Avatar';
@@ -22,7 +23,10 @@ export const DangKyController = async (req: Request, res: Response) => {
       });
       return res.status(400).json(ReE(400, { ...ObecjError }));
     }
-    return res.status(400).json(ReE(400, error.message));
+    if (error.mesaage) {
+      return res.status(400).json(ReE(400, error.message));
+    }
+    return res.status(500).json(ReE(500, error));
   }
 };
 
@@ -37,10 +41,13 @@ export const DangNhapController = async (req: Request, res: Response) => {
       Object.keys(error.errors).forEach((e: string) => {
         ObecjError[`${e}`] = error.errors[`${e}`].message;
       });
+
       return res.status(400).json(ReE(400, { ...ObecjError }));
     }
-
-    return res.status(400).json(ReE(400, error.message));
+    if (error.mesaage) {
+      return res.status(400).json(ReE(400, error.message));
+    }
+    return res.status(500).json(ReE(500, error));
   }
 };
 
@@ -56,7 +63,10 @@ export const LayThongTinProfileController = async (req: Request, res: Response) 
       return res.status(400).json(ReE(400, { ...ObecjError }));
     }
 
-    return res.status(400).json(ReE(400, error.message));
+    if (error.mesaage) {
+      return res.status(400).json(ReE(400, error.message));
+    }
+    return res.status(500).json(ReE(500, error));
   }
 };
 
@@ -74,7 +84,10 @@ export const UpLoadAvatarController = async (req: Request, res: Response) => {
       return res.status(400).json(ReE(400, { ...ObecjError }));
     }
 
-    return res.status(400).json(ReE(400, error.message));
+    if (error.mesaage) {
+      return res.status(400).json(ReE(400, error.message));
+    }
+    return res.status(500).json(ReE(500, error));
   }
 };
 
@@ -99,6 +112,37 @@ export const ChinhSuaNguoiDungController = async (req: Request, res: Response) =
       });
       return res.status(400).json(ReE(400, { ...ObecjError }));
     }
-    return res.status(400).json(ReE(400, error.message));
+    if (error.mesaage) {
+      return res.status(400).json(ReE(400, error.message));
+    }
+    return res.status(500).json(ReE(500, error));
+  }
+};
+
+export const ThichSanPhamController = async (req: Request, res: Response) => {
+  try {
+    let _id = req.params.id;
+    const oneSanPham = await SanPhamsModel.findOne({ _id });
+
+    if (oneSanPham === null) {
+      console.log(123);
+      return res.status(400).json(ReE(400, { error: 'Không tìm thấy sản phẩm' }));
+    }
+
+    const user = await NguoiDungModel.findBeforeLike((req as any).user._id, oneSanPham);
+
+    return res.status(200).json(ReS(200, user));
+  } catch (error: any) {
+    if (error.errors) {
+      let ObecjError: any;
+      Object.keys(error.errors).forEach((e: string) => {
+        ObecjError[`${e}`] = error.errors[`${e}`].message;
+      });
+      return res.status(400).json(ReE(400, { ...ObecjError }));
+    }
+    if (error.mesaage) {
+      return res.status(400).json(ReE(400, error.message));
+    }
+    return res.status(500).json(ReE(500, error));
   }
 };

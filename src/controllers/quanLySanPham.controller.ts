@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 
 import SanPhamsModel from '../models/sanPham.model';
 import { putImagAvatar } from './../utils/putObjectS3Avatar';
+import { putImagPicture } from './../utils/putObjectS3Picture';
 
 interface IMath {
   categories?: string;
@@ -91,7 +92,7 @@ export const ThemSanPhamController = async (req: Request, res: Response) => {
     const { picture, ...fromSanPham } = req.body;
     const sanPham = new SanPhamsModel(fromSanPham);
     if ((req as any).file) {
-      const urlSanPham = await putImagAvatar((req as any).file, req.body.tenSanPham);
+      const urlSanPham = await putImagPicture((req as any).file, req.body.tenSanPham);
       sanPham.hinhAnh = urlSanPham;
     }
     await sanPham.save();

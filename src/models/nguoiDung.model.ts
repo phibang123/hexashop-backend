@@ -1,24 +1,25 @@
 import { Model, Schema, model } from 'mongoose';
+import SanPhamsModel, { ISanPham, ISanPhamModel } from './sanPham.model';
 
 import { DEFATUL_ADMIN } from '../configs/index';
-import SanPhamsModel from './sanPham.model';
 import bcrypt from 'bcrypt';
 import mongoose from 'mongoose';
 import validator from 'validator';
 
-export interface IGioiHang {
+export type IGioiHang = {
   _idSanPham: string;
   tenSanPham: string;
   soLuong: number;
   sale: boolean;
   phanTramSale: number;
-  giaSale: number;
-  giaDonVi: number;
-  mauSac: string;
-  size: number;
+
+  giaTien: number;
+  thanhTien: number;
+  // mauSac: string;
+  // size: number;
   hinhAnh: string;
   ngayThem: string;
-}
+};
 
 export interface IThich {
   _idSanPham: string;
@@ -51,14 +52,14 @@ interface INguoiDung extends INguoiDungInput {
   adminInWeb: boolean;
   gioHang: IGioiHang[];
   thich: IThich[];
-  comment: IComment[];
 }
 
-interface INguoiDungModel extends Model<INguoiDung> {
+export interface INguoiDungModel extends Model<INguoiDung> {
   myStaticMethod(): number;
   findByCredentials(taiKhoan: string, matKhau: string): INguoiDung;
   findBeforeCreate(body: INguoiDungInput): INguoiDung;
   findBeforeLike(_id: string, sanPham: any): INguoiDung;
+  findByUserAddDelivery(_id: string, idSanPham: string): INguoiDung;
 }
 
 const nguoiDungSchema = new Schema<INguoiDung, INguoiDungModel>(
@@ -167,16 +168,7 @@ const nguoiDungSchema = new Schema<INguoiDung, INguoiDungModel>(
           require: false,
           trim: true,
         },
-        mauSac: {
-          type: String,
-          require: false,
-          trim: true,
-        },
-        size: {
-          type: Number,
-          require: false,
-          trim: true,
-        },
+
         hinhAnh: {
           type: String,
           require: false,
@@ -209,34 +201,6 @@ const nguoiDungSchema = new Schema<INguoiDung, INguoiDungModel>(
           type: Number,
           require: true,
           trim: true,
-        },
-      },
-    ],
-    comment: [
-      {
-        _idSanPham: {
-          type: String,
-          require: true,
-          trim: true,
-        },
-        tenSanPham: {
-          type: String,
-          require: true,
-          trim: true,
-        },
-        giaTien: {
-          type: Number,
-          require: false,
-          trim: true,
-        },
-        hinhAnh: {
-          type: String,
-          require: false,
-          trim: true,
-        },
-        noiDungComment: {
-          type: String,
-          require: false,
         },
       },
     ],
@@ -334,6 +298,61 @@ nguoiDungSchema.static('findBeforeLike', async function (_id, sanPham: any) {
   }
 });
 
+nguoiDungSchema.static('findByUserAddDelivery', async function (_id: string, idSanPham: string) {
+  const user = await NguoiDungModel.findOne({ _id });
+  const sanPhamTrongGioHang = await NguoiDungModel.findOne({ _id, 'gioHang._idSanPham': idSanPham });
+  const sanPham = await SanPhamsModel.findOne({ _id: idSanPham });
+  if (user && sanPham) {
+    if (sanPhamTrongGioHang === null) {
+      //let pushGioiHang: Omit<IGioiHang, keyof ISanPhamModel> = sanPham;
+      if (sanPham.soLuong === 0) {
+        throw new Error('Sản phẩm đã hết');
+      }
+      sanPham.soLuong--;
+      user.gioHang.push({
+        _idSanPham: idSanPham,
+        giaTien: sanPham.giaTien,
+        thanhTien: sanPham.thanhTien,
+        hinhAnh: sanPham.hinhAnh,
+        ngayThem: new Date().toString(),
+        phanTramSale: sanPham.phanTramSale,
+        sale: sanPham.sale,
+        soLuong: 1,
+        tenSanPham: sanPham.tenSanPham,
+      });
+      await sanPham.save();
+      await user.save();
+    } else {
+      if (sanPham.soLuong === 0) {
+        throw new Error('Sản phẩm đã hết');
+      }
+      sanPham.soLuong--;
+
+      await NguoiDungModel.findOneAndUpdate(
+        { _id },
+        {
+          $inc: {
+            'gioHang.$[el].soLuong': +1,
+            'gioHang.$[el].giaTien': +sanPham.giaTien,
+            'gioHang.$[el].thanhTien': +sanPham.thanhTien,
+          },
+        },
+        {
+          arrayFilters: [{ 'el._idSanPham': idSanPham }],
+          new: true,
+        }
+      );
+
+      // sanPhamTrongGioHang.gioHang[0].giaTien + sanPham.giaTien;
+      // sanPhamTrongGioHang.gioHang[0].soLuong++;
+      // sanPhamTrongGioHang.gioHang[0].thanhTien + sanPham.thanhTien;
+      await sanPham.save();
+    }
+  } else {
+    throw new Error('Lỗi');
+  }
+});
+
 nguoiDungSchema.methods.toJSON = function () {
   const nguoiDung = this;
 
@@ -343,7 +362,9 @@ nguoiDungSchema.methods.toJSON = function () {
   return nguoiDungObject;
 };
 
-const NguoiDungModel = model<INguoiDung, INguoiDungModel>('nguoiDungSchema', nguoiDungSchema);
+//const NguoiDungModel = model<INguoiDung, INguoiDungModel>('nguoiDungSchema', nguoiDungSchema);
+
+export const NguoiDungModel = model<INguoiDung>('nguoiDungSchema', nguoiDungSchema) as INguoiDungModel;
 
 NguoiDungModel.findOneAndUpdate(DEFATUL_ADMIN, DEFATUL_ADMIN, { new: true, upsert: true }, function () {});
 

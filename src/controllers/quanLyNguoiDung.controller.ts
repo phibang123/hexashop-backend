@@ -168,7 +168,43 @@ export const CommemtSanPhamController = async (req: Request, res: Response) => {
 
     await sanPham.save();
 
-    return res.status(200).json(ReS(200, sanPham));
+    return res.status(200).json(ReS(200, sanPham, 'Comment thành công'));
+  } catch (error: any) {
+    if (error.errors) {
+      let ObecjError: any;
+      Object.keys(error.errors).forEach((e: string) => {
+        ObecjError[`${e}`] = error.errors[`${e}`].message;
+      });
+      return res.status(400).json(ReE(400, { ...ObecjError }));
+    }
+    if (error.mesaage) {
+      return res.status(400).json(ReE(400, error.message));
+    }
+
+    return res.status(500).json(ReE(500, error));
+  }
+};
+
+// export const DeleteCommentSanPhamController = async (req: Request, res: Response) => {
+//   try
+//   {
+//     let _id = req.params.id;
+//     const sanPham = await SanPhamsModel.findOne({ _id });
+
+//     await SanPhamsModel.updateOne(
+//       { _id },
+//       { comment: { $pull: { idNguoiDungs: { _idSanPham: idSanPham } } } },
+//       { safe: true, multi: true }
+//     );
+//   } catch (error) {}
+// };
+
+export const ThemSanPhamVaoGioHang = async (req: Request, res: Response) => {
+  try {
+    let _id = req.params.id;
+    await NguoiDungModel.findByUserAddDelivery((req as any).user._id.toString(), _id);
+    const user = await NguoiDungModel.findOne({ _id: (req as any).user._id.toString() });
+    return res.status(200).json(ReS(200, user));
   } catch (error: any) {
     if (error.errors) {
       let ObecjError: any;

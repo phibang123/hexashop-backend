@@ -33,13 +33,14 @@ interface IHinhAnh {
   hinhAnh: string;
 }
 
-interface ISanPham {
+export interface ISanPham {
+  _id: object;
   tenSanPham: string;
   giaTien: number;
   listHinhAnh: IHinhAnh[];
   sale: boolean;
-  phanTramSale?: number;
-  thanhTien?: number;
+  phanTramSale: number;
+  thanhTien: number;
   categories: string;
   hinhAnh: string;
   luotThich: ILuotThich;
@@ -48,12 +49,12 @@ interface ISanPham {
   soLuong: number;
 }
 
-interface SanPhamModel extends Model<ISanPham>, Document {
+export interface ISanPhamModel extends Model<ISanPham>, Document {
   findBeforeSetLike(objtec: object, idSanPham: string): void;
   findBeforeSetUnLike(objtec: object, idSanPham: string): void;
 }
 
-const sanPhamSchema = new Schema<ISanPham, SanPhamModel>(
+const sanPhamSchema = new Schema<ISanPham, ISanPhamModel>(
   {
     tenSanPham: {
       type: String,
@@ -114,13 +115,11 @@ const sanPhamSchema = new Schema<ISanPham, SanPhamModel>(
         {
           idNguoiDung: {
             type: String,
-            unique: true,
-            sparse: true,
           },
           tenNguoiDung: {
             type: String,
-            unique: true,
-            sparse: true,
+            // unique: true,
+            // sparse: true,
           },
         },
       ],
@@ -170,7 +169,12 @@ sanPhamSchema.pre('save', async function (this, next) {
     this.sale = true;
     return next();
   } else if (!this.isModified('phanTramSale') && this.isModified('sale') && this.isModified('giaTien')) {
+    this.thanhTien = this.giaTien;
     this.sale = false;
+    return next();
+  } else if (this.isModified('phanTramSale') && !this.isModified('sale') && this.isModified('giaTien')) {
+    this.thanhTien = this.giaTien - (this.giaTien / 100) * this.phanTramSale;
+    this.sale = true;
     return next();
   } else if (this.isModified('giaTien')) {
     this.thanhTien = this.giaTien;
@@ -183,13 +187,13 @@ sanPhamSchema.pre('save', async function (this, next) {
 sanPhamSchema.static('findBeforeSetLike', async function ({ idNguoiDung, tenNguoiDung }, idSanPham: string) {
   try {
     const sanPham = await SanPhamsModel.findOne({ _id: idSanPham });
-
+    console.log(sanPham);
     const idNguoiDungStr = await idNguoiDung.toString();
 
     if (sanPham !== null) {
       const sanPhamLike: ILuotThich | null = await SanPhamsModel.findOne({
         _id: idSanPham,
-        'luotThich.idNguoiDungs.idNguoiDung': idNguoiDungStr,
+        'luotThich.idNguoiDungs': { $elemMatch: { idNguoiDung: idNguoiDungStr } },
       });
 
       if (sanPhamLike === null) {
@@ -203,6 +207,7 @@ sanPhamSchema.static('findBeforeSetLike', async function ({ idNguoiDung, tenNguo
       throw new Error('ERROR');
     }
   } catch (error) {
+    console.log(error);
     throw new Error('ERROR');
   }
 });
@@ -214,7 +219,7 @@ sanPhamSchema.static('findBeforeSetUnLike', async function ({ idNguoiDung, tenNg
     if (sanPham !== null) {
       const sanPhamLike: ILuotThich | null = await SanPhamsModel.findOne({
         _id: idSanPham,
-        'luotThich.idNguoiDungs.idNguoiDung': idNguoiDungStr,
+        'luotThich.idNguoiDungs': { $elemMatch: { idNguoiDung: idNguoiDungStr } },
       });
 
       if (sanPhamLike === null) {
@@ -223,7 +228,7 @@ sanPhamSchema.static('findBeforeSetUnLike', async function ({ idNguoiDung, tenNg
         sanPham.luotThich.tongLuotThich--;
         await SanPhamsModel.updateOne(
           { idSanPham },
-          { luotThich: { $pull: { idNguoiDungs: { _idSanPham: idSanPham } } } },
+          { luotThich: { $pull: { idNguoiDungs: { idNguoiDung: idNguoiDungStr } } } },
           { safe: true, multi: true }
         );
 
@@ -238,7 +243,9 @@ sanPhamSchema.static('findBeforeSetUnLike', async function ({ idNguoiDung, tenNg
   }
 });
 
-const SanPhamsModel = model<ISanPham, SanPhamModel>('sanPhamSchema', sanPhamSchema);
+const SanPhamsModel = model<ISanPham, ISanPhamModel>('sanPhamSchema', sanPhamSchema);
+
+//export const SanPhamsModel = model<ISanPham>('sanPhamSchema', sanPhamSchema) as ISanPhamModel;
 
 DEFATUL_SANPHAM.forEach(async (n) => {
   await SanPhamsModel.findOneAndUpdate(n, n, { new: true, upsert: true });

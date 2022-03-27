@@ -14,7 +14,7 @@ quanLyNguoiDung.post('/DangKy', quanLyNguoiDungController.DangKyController);
 
 quanLyNguoiDung.post('/DangNhap', quanLyNguoiDungController.DangNhapController);
 
-quanLyNguoiDung.get('/NguoiDung/ThongTin', auth, quanLyNguoiDungController.LayThongTinProfileController);
+quanLyNguoiDung.get('/ThongTin', auth, quanLyNguoiDungController.LayThongTinProfileController);
 
 quanLyNguoiDung.patch(
   '/NguoiDung/avatar',
@@ -23,8 +23,14 @@ quanLyNguoiDung.patch(
   quanLyNguoiDungController.UpLoadAvatarController
 );
 
-quanLyNguoiDung.patch('/NguoiDung/ChinhSua', auth, quanLyNguoiDungController.ChinhSuaNguoiDungController);
+quanLyNguoiDung.patch('/ChinhSua', auth, quanLyNguoiDungController.ChinhSuaNguoiDungController);
 
-quanLyNguoiDung.post('/NguoiDung/Like/:id', auth, quanLyNguoiDungController.ThichSanPhamController);
+quanLyNguoiDung.post('/Like/:id', auth, quanLyNguoiDungController.ThichSanPhamController);
 
-quanLyNguoiDung.post('/NguoiDung/Comment/:id', auth, quanLyNguoiDungController.CommemtSanPhamController);
+quanLyNguoiDung.post('/Comment/:id', auth, quanLyNguoiDungController.CommemtSanPhamController);
+
+//Them và tăng số lượng
+quanLyNguoiDung.post('/ThemVaoGio/:id', auth, quanLyNguoiDungController.ThemSanPhamVaoGioHang);
+
+//xoa và số lượng
+quanLyNguoiDung.post('/XoaKhoiGio/:id', auth, quanLyNguoiDungController.ThemSanPhamVaoGioHang);

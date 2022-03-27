@@ -298,6 +298,7 @@ export const DEFATUL_SANPHAM: ISanPham[] = [
   {
     tenSanPham: 'Áo Thun Chống UV Dài Tay Xẻ Tà',
     giaTien: 400000,
+    thanhTien: 400000,
     categories: '/nu_gioi/ao/ao_thun',
     listHinhAnh: [
       // {
@@ -308,11 +309,12 @@ export const DEFATUL_SANPHAM: ISanPham[] = [
 
     sale: false,
     phanTramSale: 0,
-    soLuong: 0,
+    soLuong: 10,
   },
   {
     tenSanPham: 'Disney Memories UT Áo Thun Ngắn Tay',
     giaTien: 300000,
+    thanhTien: 400000,
     categories: '/nu_gioi/ao/ao_thun',
     listHinhAnh: [
       // {

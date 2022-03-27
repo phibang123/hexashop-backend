@@ -40,7 +40,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjNkYzY3M
 
 ###
 //Người dùng comment sản phẩm
-POST http://localhost:3000/api/QuanLyNguoiDung/NguoiDung/Comment/623dc6723919427cfa85d22e
+POST http://localhost:3000/api/QuanLyNguoiDung/Comment/623dc6723919427cfa85d22e
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjNkYzY3MTM5MTk0MjdjZmE4NWQyMjUiLCJpYXQiOjE2NDgyMTU3MDZ9.GBfbVP4HLBe-jB1L54h-wU5EA1Q46l87VpwTigAKLC8
 
 {

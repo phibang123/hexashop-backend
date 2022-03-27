@@ -1,5 +1,5 @@
+import { NextFunction, Request, Response } from 'express';
 import { ReE, ReS } from '../utils/reponse';
-import { Request, Response } from 'express';
 
 import NguoiDungModel from '../models/nguoiDung.model';
 import SanPhamsModel from '../models/sanPham.model';
@@ -7,7 +7,7 @@ import jwt from 'jsonwebtoken';
 import { putImagAvatar } from '../utils/putObjectS3Avatar';
 import { secret_key } from '../configs/index';
 
-export const DangKyController = async (req: Request, res: Response) => {
+export const DangKyController = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userCheck = await NguoiDungModel.findBeforeCreate((req as any).body);
     const userCreate = new NguoiDungModel(userCheck);
@@ -15,82 +15,50 @@ export const DangKyController = async (req: Request, res: Response) => {
 
     res.status(201).json(ReS(201, userCreate));
   } catch (error: any) {
-    if (error.errors) {
-      let ObecjError: any;
-      Object.keys(error.errors).forEach((e: string) => {
-        ObecjError[`${e}`] = error.errors[`${e}`].message;
-      });
-      return res.status(400).json(ReE(400, { ...ObecjError }));
-    }
-    if (error.mesaage) {
-      return res.status(400).json(ReE(400, error.message));
-    }
-    return res.status(500).json(ReE(500, error));
+    next(error);
+    // if (error.errors) {
+    //   let ObecjError: any;
+    //   Object.keys(error.errors).forEach((e: string) => {
+    //     ObecjError[`${e}`] = error.errors[`${e}`].message;
+    //   });
+    //   return res.status(400).json(ReE(400, { ...ObecjError }));
+    // }
+    // if (error.mesaage) {
+    //   return res.status(400).json(ReE(400, error.message));
+    // }
+    // return res.status(500).json(ReE(500, error));
   }
 };
 
-export const DangNhapController = async (req: Request, res: Response) => {
+export const DangNhapController = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const user = await NguoiDungModel.findByCredentials((req as any).body.taiKhoan, (req as any).body.matKhau);
     const token = await jwt.sign({ _id: user._id.toString() }, secret_key);
     return res.status(200).json(ReS(200, { token, user }));
   } catch (error: any) {
-    if (error.errors) {
-      let ObecjError: any;
-      Object.keys(error.errors).forEach((e: string) => {
-        ObecjError[`${e}`] = error.errors[`${e}`].message;
-      });
-
-      return res.status(400).json(ReE(400, { ...ObecjError }));
-    }
-    if (error.mesaage) {
-      return res.status(400).json(ReE(400, error.message));
-    }
-    return res.status(500).json(ReE(500, error));
+    next(error);
   }
 };
 
-export const LayThongTinProfileController = async (req: Request, res: Response) => {
+export const LayThongTinProfileController = async (req: Request, res: Response, next: NextFunction) => {
   try {
     return res.status(200).json(ReS(200, (req as any).user));
   } catch (error: any) {
-    if (error.errors) {
-      let ObecjError: any;
-      Object.keys(error.errors).forEach((e: string) => {
-        ObecjError[`${e}`] = error.errors[`${e}`].message;
-      });
-      return res.status(400).json(ReE(400, { ...ObecjError }));
-    }
-
-    if (error.mesaage) {
-      return res.status(400).json(ReE(400, error.message));
-    }
-    return res.status(500).json(ReE(500, error));
+    next(error);
   }
 };
 
-export const UpLoadAvatarController = async (req: Request, res: Response) => {
+export const UpLoadAvatarController = async (req: Request, res: Response, next: NextFunction) => {
   try {
     (req as any).user.avatar = await putImagAvatar((req as any).file, (req as any).user._id);
     await (req as any).user.save();
     return res.status(200).json(ReS(200, (req as any).user));
   } catch (error: any) {
-    if (error.errors) {
-      let ObecjError: any;
-      Object.keys(error.errors).forEach((e: string) => {
-        ObecjError[`${e}`] = error.errors[`${e}`].message;
-      });
-      return res.status(400).json(ReE(400, { ...ObecjError }));
-    }
-
-    if (error.mesaage) {
-      return res.status(400).json(ReE(400, error.message));
-    }
-    return res.status(500).json(ReE(500, error));
+    next(error);
   }
 };
 
-export const ChinhSuaNguoiDungController = async (req: Request, res: Response) => {
+export const ChinhSuaNguoiDungController = async (req: Request, res: Response, next: NextFunction) => {
   const updates = Object.keys(req.body);
   const allowedUpdates = ['diaChi', 'email', 'password', 'hoTen', 'matKhau', 'sex', 'soDt'];
   const isValiOperetion = updates.every((update) => {
@@ -104,21 +72,11 @@ export const ChinhSuaNguoiDungController = async (req: Request, res: Response) =
     await (req as any).user.save();
     return res.status(200).json(ReS(200, (req as any).user));
   } catch (error: any) {
-    if (error.errors) {
-      let ObecjError: any;
-      Object.keys(error.errors).forEach((e: string) => {
-        ObecjError[`${e}`] = error.errors[`${e}`].message;
-      });
-      return res.status(400).json(ReE(400, { ...ObecjError }));
-    }
-    if (error.mesaage) {
-      return res.status(400).json(ReE(400, error.message));
-    }
-    return res.status(500).json(ReE(500, error));
+    next(error);
   }
 };
 
-export const ThichSanPhamController = async (req: Request, res: Response) => {
+export const ThichSanPhamController = async (req: Request, res: Response, next: NextFunction) => {
   try {
     let _id = req.params.id;
     const oneSanPham = await SanPhamsModel.findOne({ _id });
@@ -131,21 +89,11 @@ export const ThichSanPhamController = async (req: Request, res: Response) => {
 
     return res.status(200).json(ReS(200, user));
   } catch (error: any) {
-    if (error.errors) {
-      let ObecjError: any;
-      Object.keys(error.errors).forEach((e: string) => {
-        ObecjError[`${e}`] = error.errors[`${e}`].message;
-      });
-      return res.status(400).json(ReE(400, { ...ObecjError }));
-    }
-    if (error.mesaage) {
-      return res.status(400).json(ReE(400, error.message));
-    }
-    return res.status(500).json(ReE(500, error));
+    next(error);
   }
 };
 
-export const CommemtSanPhamController = async (req: Request, res: Response) => {
+export const CommemtSanPhamController = async (req: Request, res: Response, next: NextFunction) => {
   try {
     let _id = req.params.id;
 
@@ -170,18 +118,7 @@ export const CommemtSanPhamController = async (req: Request, res: Response) => {
 
     return res.status(200).json(ReS(200, sanPham, 'Comment thành công'));
   } catch (error: any) {
-    if (error.errors) {
-      let ObecjError: any;
-      Object.keys(error.errors).forEach((e: string) => {
-        ObecjError[`${e}`] = error.errors[`${e}`].message;
-      });
-      return res.status(400).json(ReE(400, { ...ObecjError }));
-    }
-    if (error.mesaage) {
-      return res.status(400).json(ReE(400, error.message));
-    }
-
-    return res.status(500).json(ReE(500, error));
+    next(error);
   }
 };
 
@@ -199,24 +136,24 @@ export const CommemtSanPhamController = async (req: Request, res: Response) => {
 //   } catch (error) {}
 // };
 
-export const ThemSanPhamVaoGioHang = async (req: Request, res: Response) => {
+export const ThemSanPhamVaoGioHang = async (req: Request, res: Response, next: NextFunction) => {
   try {
     let _id = req.params.id;
     await NguoiDungModel.findByUserAddDelivery((req as any).user._id.toString(), _id);
     const user = await NguoiDungModel.findOne({ _id: (req as any).user._id.toString() });
     return res.status(200).json(ReS(200, user));
   } catch (error: any) {
-    if (error.errors) {
-      let ObecjError: any;
-      Object.keys(error.errors).forEach((e: string) => {
-        ObecjError[`${e}`] = error.errors[`${e}`].message;
-      });
-      return res.status(400).json(ReE(400, { ...ObecjError }));
-    }
-    if (error.mesaage) {
-      return res.status(400).json(ReE(400, error.message));
-    }
+    next(error);
+  }
+};
 
-    return res.status(500).json(ReE(500, error));
+export const GiamSoLuongSanPhamTrongGioHangController = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    let _id = req.params.id;
+    await NguoiDungModel.findByUserAddDelivery((req as any).user._id.toString(), _id);
+    const user = await NguoiDungModel.findOne({ _id: (req as any).user._id.toString() });
+    return res.status(200).json(ReS(200, user));
+  } catch (error: any) {
+    next(error);
   }
 };

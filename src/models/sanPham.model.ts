@@ -2,6 +2,7 @@ import { Model, Schema, model } from 'mongoose';
 
 import { DEFATUL_SANPHAM } from './../configs/index';
 import { NextFunction } from 'express';
+import mongoose from 'mongoose';
 
 interface IIdNguoiDung {
   idNguoiDung: string;
@@ -187,18 +188,17 @@ sanPhamSchema.pre('save', async function (this, next) {
 sanPhamSchema.static('findBeforeSetLike', async function ({ idNguoiDung, tenNguoiDung }, idSanPham: string) {
   try {
     const sanPham = await SanPhamsModel.findOne({ _id: idSanPham });
-    console.log(sanPham);
     const idNguoiDungStr = await idNguoiDung.toString();
 
     if (sanPham !== null) {
-      const sanPhamLike: ILuotThich | null = await SanPhamsModel.findOne({
+      const sanPhamLike = await SanPhamsModel.findOne({
         _id: idSanPham,
         'luotThich.idNguoiDungs': { $elemMatch: { idNguoiDung: idNguoiDungStr } },
       });
 
       if (sanPhamLike === null) {
-        sanPham.luotThich.tongLuotThich++;
         sanPham.luotThich.idNguoiDungs.push({ idNguoiDung, tenNguoiDung });
+        sanPham.luotThich.tongLuotThich = sanPham.luotThich.idNguoiDungs.length;
         await sanPham.save();
       } else {
         return;
@@ -217,7 +217,7 @@ sanPhamSchema.static('findBeforeSetUnLike', async function ({ idNguoiDung, tenNg
     const sanPham = await SanPhamsModel.findOne({ _id: idSanPham });
     const idNguoiDungStr = await idNguoiDung.toString();
     if (sanPham !== null) {
-      const sanPhamLike: ILuotThich | null = await SanPhamsModel.findOne({
+      const sanPhamLike = await SanPhamsModel.findOne({
         _id: idSanPham,
         'luotThich.idNguoiDungs': { $elemMatch: { idNguoiDung: idNguoiDungStr } },
       });
@@ -225,13 +225,13 @@ sanPhamSchema.static('findBeforeSetUnLike', async function ({ idNguoiDung, tenNg
       if (sanPhamLike === null) {
         return;
       } else {
-        sanPham.luotThich.tongLuotThich--;
-        await SanPhamsModel.updateOne(
-          { idSanPham },
-          { luotThich: { $pull: { idNguoiDungs: { idNguoiDung: idNguoiDungStr } } } },
-          { safe: true, multi: true }
-        );
-
+        sanPham.luotThich.idNguoiDungs.filter((v) => {
+          {
+            v.idNguoiDung !== idNguoiDungStr;
+          }
+        });
+        sanPham.luotThich.tongLuotThich = sanPham.luotThich.idNguoiDungs.length;
+        //sanPham.luotThich.tongLuotThich--;
         await sanPham.save();
       }
     } else {

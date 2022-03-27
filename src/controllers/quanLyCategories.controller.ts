@@ -1,5 +1,5 @@
+import { NextFunction, Request, Response } from 'express';
 import { ReE, ReS } from '../utils/reponse';
-import { Request, Response } from 'express';
 
 import CategoriesModel from '../models/categories.model';
 
@@ -21,7 +21,7 @@ interface ICategoryResponse {
   chilrens: ICategoryResponse[];
 }
 
-export const LayToanBoThuocTinhController = async (req: Request, res: Response) => {
+export const LayToanBoThuocTinhController = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const categories: ICategoryResponse[] = [];
 
@@ -70,6 +70,6 @@ export const LayToanBoThuocTinhController = async (req: Request, res: Response) 
 
     res.status(201).json(ReS(201, categories));
   } catch (error) {
-    res.status(500).json(ReS(500, { error: 'NULL' }));
+    next({ error: 'NULL' });
   }
 };

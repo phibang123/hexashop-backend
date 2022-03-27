@@ -2,8 +2,8 @@ import { Model, Schema, model } from 'mongoose';
 import SanPhamsModel, { ISanPham, ISanPhamModel } from './sanPham.model';
 
 import { DEFATUL_ADMIN } from '../configs/index';
+import { NextFunction } from 'express';
 import bcrypt from 'bcrypt';
-import mongoose from 'mongoose';
 import validator from 'validator';
 
 export type IGioiHang = {
@@ -265,7 +265,12 @@ nguoiDungSchema.static('findBeforeCreate', async function (body: INguoiDungInput
 nguoiDungSchema.static('findBeforeLike', async function (_id, sanPham: any) {
   const idSanPham = await sanPham._id.toString();
   const user = await NguoiDungModel.findOne({ _id });
-  const sanPhamLike: IThich | null = await NguoiDungModel.findOne({ _id, 'thich._idSanPham': idSanPham });
+  const sanPhamLike = await NguoiDungModel.findOne({
+    _id,
+    thich: { $elemMatch: { _idSanPham: idSanPham } },
+  });
+
+  //const sanPhamLike: IThich | null = await NguoiDungModel.findOne({ _id, 'thich._idSanPham': idSanPham });
   if (user !== null) {
     if (sanPhamLike === null) {
       user.thich.push({
@@ -353,6 +358,42 @@ nguoiDungSchema.static('findByUserAddDelivery', async function (_id: string, idS
   }
 });
 
+nguoiDungSchema.static('findByUserreductionDelivery', async function (_id: string, idSanPham: string) {
+  const user = await NguoiDungModel.findOne({ _id });
+  const sanPhamTrongGioHang = await SanPhamsModel.findOne({
+    _id,
+    gioHang: { $elemMatch: { _idSanPham: idSanPham } },
+  });
+
+  const sanPham = await SanPhamsModel.findOne({ _id: idSanPham });
+  if (user && sanPham) {
+    if (sanPhamTrongGioHang !== null) {
+      //let pushGioiHang: Omit<IGioiHang, keyof ISanPhamModel> = sanPham;
+      if (sanPham.soLuong === 0) {
+        throw new Error('Sản phẩm đã hết');
+      }
+      sanPham.soLuong--;
+      user.gioHang.push({
+        _idSanPham: idSanPham,
+        giaTien: sanPham.giaTien,
+        thanhTien: sanPham.thanhTien,
+        hinhAnh: sanPham.hinhAnh,
+        ngayThem: new Date().toString(),
+        phanTramSale: sanPham.phanTramSale,
+        sale: sanPham.sale,
+        soLuong: 1,
+        tenSanPham: sanPham.tenSanPham,
+      });
+      await sanPham.save();
+      await user.save();
+    } else {
+      throw new Error('Không tìm thấy sãn phẩm trong giỏ hàng');
+    }
+  } else {
+    throw new Error('Lỗi');
+  }
+});
+
 nguoiDungSchema.methods.toJSON = function () {
   const nguoiDung = this;
 
@@ -362,9 +403,9 @@ nguoiDungSchema.methods.toJSON = function () {
   return nguoiDungObject;
 };
 
-//const NguoiDungModel = model<INguoiDung, INguoiDungModel>('nguoiDungSchema', nguoiDungSchema);
+const NguoiDungModel = model<INguoiDung, INguoiDungModel>('nguoiDungSchema', nguoiDungSchema);
 
-export const NguoiDungModel = model<INguoiDung>('nguoiDungSchema', nguoiDungSchema) as INguoiDungModel;
+//export const NguoiDungModel = model<INguoiDung>('nguoiDungSchema', nguoiDungSchema) as INguoiDungModel;
 
 NguoiDungModel.findOneAndUpdate(DEFATUL_ADMIN, DEFATUL_ADMIN, { new: true, upsert: true }, function () {});
 

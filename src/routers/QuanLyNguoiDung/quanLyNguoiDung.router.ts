@@ -29,8 +29,11 @@ quanLyNguoiDung.post('/Like/:id', auth, quanLyNguoiDungController.ThichSanPhamCo
 
 quanLyNguoiDung.post('/Comment/:id', auth, quanLyNguoiDungController.CommemtSanPhamController);
 
-//Them và tăng số lượng
-quanLyNguoiDung.post('/ThemVaoGio/:id', auth, quanLyNguoiDungController.ThemSanPhamVaoGioHang);
+//Thêm và tăng số lượng
+quanLyNguoiDung.post('/ThemVaoGioTangSoLuong/:id', auth, quanLyNguoiDungController.ThemSanPhamVaoGioHang);
 
-//xoa và số lượng
+//Giảm số lượng
+quanLyNguoiDung.post('/XoaKhoiGioGiamSoLuong/:id', auth, quanLyNguoiDungController.ThemSanPhamVaoGioHang);
+
+//xoa sản phẩm ra khỏi giỏ
 quanLyNguoiDung.post('/XoaKhoiGio/:id', auth, quanLyNguoiDungController.ThemSanPhamVaoGioHang);

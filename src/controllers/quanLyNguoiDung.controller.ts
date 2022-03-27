@@ -3,7 +3,6 @@ import { Request, Response } from 'express';
 
 import NguoiDungModel from '../models/nguoiDung.model';
 import SanPhamsModel from '../models/sanPham.model';
-import { deleteImagAvatar } from '../utils/deleteObjectS3Avatar';
 import jwt from 'jsonwebtoken';
 import { putImagAvatar } from '../utils/putObjectS3Avatar';
 import { secret_key } from '../configs/index';
@@ -125,7 +124,6 @@ export const ThichSanPhamController = async (req: Request, res: Response) => {
     const oneSanPham = await SanPhamsModel.findOne({ _id });
 
     if (oneSanPham === null) {
-      console.log(123);
       return res.status(400).json(ReE(400, { error: 'Không tìm thấy sản phẩm' }));
     }
 
@@ -143,6 +141,46 @@ export const ThichSanPhamController = async (req: Request, res: Response) => {
     if (error.mesaage) {
       return res.status(400).json(ReE(400, error.message));
     }
+    return res.status(500).json(ReE(500, error));
+  }
+};
+
+export const CommemtSanPhamController = async (req: Request, res: Response) => {
+  try {
+    let _id = req.params.id;
+
+    if (req.body.comment === null) {
+      return res.status(400).json(ReE(400, 'Comment rỗng'));
+    }
+    const userComment: string = req.body.comment;
+
+    const sanPham = await SanPhamsModel.findOne({ _id });
+
+    if (sanPham === null) {
+      return res.status(400).json(ReE(400, 'Không tìm thấy sản phẩm'));
+    }
+    sanPham.comment.push({
+      idNguoiDung: (req as any).user._id.toString(),
+      tenNguoiDung: (req as any).user.hoTen,
+      avatar: (req as any).user.avatar,
+      ngoiDungComment: userComment,
+    });
+
+    await sanPham.save();
+
+    return res.status(200).json(ReS(200, sanPham));
+  } catch (error: any) {
+    if (error.errors) {
+      let ObecjError: any;
+      Object.keys(error.errors).forEach((e: string) => {
+        ObecjError[`${e}`] = error.errors[`${e}`].message;
+      });
+      return res.status(400).json(ReE(400, { ...ObecjError }));
+    }
+    if (error.mesaage) {
+      return res.status(400).json(ReE(400, error.message));
+    }
+
     return res.status(500).json(ReE(500, error));
   }
 };

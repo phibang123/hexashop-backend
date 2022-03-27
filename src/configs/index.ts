@@ -3,13 +3,13 @@ require('dotenv').config();
 import aws from 'aws-sdk';
 
 interface IIdNguoiDung {
-  idNduoiDung: string;
+  idNguoiDung: string;
   tenNguoiDung: string;
 }
 
 interface ILuotThich {
   tongLuotThich: number;
-  idNguoiDung: IIdNguoiDung[];
+  idNguoiDungs: IIdNguoiDung[];
 }
 
 interface IComment {
@@ -32,17 +32,32 @@ interface IHinhAnh {
   hinhAnh: string;
 }
 
+// interface ISanPham {
+//   tenSanPham: string;
+//   giaTien: number;
+//   listHinhAnh: IHinhAnh[];
+//   sale: boolean;
+//   phanTramSale?: number;
+//   categories: string;
+//   luotThich?: ILuotThich;
+
+//   comment?: IComment[];
+//   mauSac: IMauSac[];
+// }
+
 interface ISanPham {
   tenSanPham: string;
   giaTien: number;
   listHinhAnh: IHinhAnh[];
   sale: boolean;
   phanTramSale?: number;
+  thanhTien?: number;
   categories: string;
+  hinhAnh?: string;
   luotThich?: ILuotThich;
 
   comment?: IComment[];
-  mauSac: IMauSac[];
+  soLuong: number;
 }
 
 interface ICategori {
@@ -293,17 +308,7 @@ export const DEFATUL_SANPHAM: ISanPham[] = [
 
     sale: false,
     phanTramSale: 0,
-    mauSac: [
-      // {
-      //   tenMauSac: '#FFFFFF',
-      //   size: [
-      //     {
-      //       soLuong: 12,
-      //       tenSize: '43',
-      //     },
-      //   ],
-      // },
-    ],
+    soLuong: 0,
   },
   {
     tenSanPham: 'Disney Memories UT Áo Thun Ngắn Tay',
@@ -318,17 +323,7 @@ export const DEFATUL_SANPHAM: ISanPham[] = [
 
     sale: false,
     phanTramSale: 0,
-    mauSac: [
-      // {
-      //   tenMauSac: '#FFFFFF',
-      //   size: [
-      //     {
-      //       soLuong: 12,
-      //       tenSize: '43',
-      //     },
-      //   ],
-      // },
-    ],
+    soLuong: 10,
   },
 ];
 

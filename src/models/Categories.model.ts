@@ -47,7 +47,7 @@ const categoriSchema = new Schema<ICategori, CategoriModel>(
   }
 );
 
-//relation
+//relati/. mmmmon
 categoriSchema.virtual('sanphamschmas', {
   ref: 'SanPhamsModel',
   localField: 'category',

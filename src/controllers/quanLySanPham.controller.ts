@@ -2,6 +2,7 @@ import { ReE, ReS } from '../utils/reponse';
 import { Request, Response } from 'express';
 
 import SanPhamsModel from '../models/sanPham.model';
+import { putImagAvatar } from './../utils/putObjectS3Avatar';
 
 interface IMath {
   categories?: string;
@@ -12,7 +13,6 @@ type ISortBy = 'desc' | 'asc';
 
 interface ISorf {
   giaTien?: number;
-
   createdAt?: number;
 }
 
@@ -88,7 +88,12 @@ export const TimSanPhamTheoIdController = async (req: Request, res: Response) =>
 
 export const ThemSanPhamController = async (req: Request, res: Response) => {
   try {
-    const sanPham = new SanPhamsModel(req.body);
+    const { picture, ...fromSanPham } = req.body;
+    const sanPham = new SanPhamsModel(fromSanPham);
+    if ((req as any).file) {
+      const urlSanPham = await putImagAvatar((req as any).file, req.body.tenSanPham);
+      sanPham.hinhAnh = urlSanPham;
+    }
     await sanPham.save();
     res.status(201).json(ReS(201, sanPham));
   } catch (error: any) {

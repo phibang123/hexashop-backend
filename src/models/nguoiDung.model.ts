@@ -194,13 +194,11 @@ const nguoiDungSchema = new Schema<INguoiDung, INguoiDungModel>(
           type: String,
           require: true,
           trim: true,
-          unique: true,
         },
         tenSanPham: {
           type: String,
           require: true,
           trim: true,
-          unique: true,
         },
         hinhAnh: {
           type: String,
@@ -303,16 +301,8 @@ nguoiDungSchema.static('findBeforeCreate', async function (body: INguoiDungInput
 nguoiDungSchema.static('findBeforeLike', async function (_id, sanPham: any) {
   const idSanPham = await sanPham._id.toString();
   const user = await NguoiDungModel.findOne({ _id });
-  const sanPhamLike: IThich | null = await NguoiDungModel.findOne({ 'thich._idSanPham': idSanPham });
+  const sanPhamLike: IThich | null = await NguoiDungModel.findOne({ _id, 'thich._idSanPham': idSanPham });
   if (user !== null) {
-    // let index = user.thich.findIndex(
-    //   async (v) => {
-    //     console.log(v?._idSanPham, '623d4697a052c6badd0463d1');
-    //     v?._idSanPham.toString() === idSanPham;
-    //   },
-    //   function () {}
-    // );
-
     if (sanPhamLike === null) {
       user.thich.push({
         _idSanPham: sanPham._id.toString(),
@@ -327,13 +317,10 @@ nguoiDungSchema.static('findBeforeLike', async function (_id, sanPham: any) {
       await user.save();
       return user;
     } else {
-      NguoiDungModel.updateOne(
+      await NguoiDungModel.updateOne(
         { _id },
         { $pull: { thich: { _idSanPham: idSanPham } } },
-        { safe: true, multi: true },
-        function (err, obj) {
-          //do something smart
-        }
+        { safe: true, multi: true }
       );
       await SanPhamsModel.findBeforeSetUnLike(
         { idNguoiDung: user._id, tenNguoiDung: user.hoTen },

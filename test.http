@@ -22,8 +22,10 @@ POST http://localhost:3000/api/QuanLyNguoiDung/DangNhap
 Content-Type: application/json
 
 {
-  "taiKhoan": "bangphi",
+  "taiKhoan": "bangphi", 
   "matKhau": "1234597s1Ba"
+  //"taiKhoan": "tanlon", 
+  //"matKhau": "1234567"
 }
 
 ###
@@ -33,10 +35,17 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjNjOTBjZ
 
 ###
 //Người dùng thích sản phẩm
-POST http://localhost:3000/api/QuanLyNguoiDung/NguoiDung/like/623d4052a052c6badd0457ad
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjNkNDA1MmEwNTJjNmJhZGQwNDU3YTgiLCJpYXQiOjE2NDgxODEzNTN9.TAlwfIvEmigPI85agadGNVPHxWFBo736rbelCrF6L9M
+POST http://localhost:3000/api/QuanLyNguoiDung/NguoiDung/Like/623dc6723919427cfa85d22e
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjNkYzY3MTM5MTk0MjdjZmE4NWQyMjUiLCJpYXQiOjE2NDgyMTU3MDZ9.GBfbVP4HLBe-jB1L54h-wU5EA1Q46l87VpwTigAKLC8
 
+###
+//Người dùng comment sản phẩm
+POST http://localhost:3000/api/QuanLyNguoiDung/NguoiDung/Comment/623dc6723919427cfa85d22e
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjNkYzY3MTM5MTk0MjdjZmE4NWQyMjUiLCJpYXQiOjE2NDgyMTU3MDZ9.GBfbVP4HLBe-jB1L54h-wU5EA1Q46l87VpwTigAKLC8
 
+{
+  
+}
 
 
 //------------------Quan Ly Categories------------------

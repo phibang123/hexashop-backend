@@ -45,7 +45,7 @@ interface ISanPham {
   luotThich: ILuotThich;
 
   comment: IComment[];
-  mauSac: IMauSac[];
+  soLuong: number;
 }
 
 interface SanPhamModel extends Model<ISanPham>, Document {
@@ -154,31 +154,10 @@ const sanPhamSchema = new Schema<ISanPham, SanPhamModel>(
      * !: màu sắc là một mãng chứa size và size chứa số lượng
      * TODO: thêm màu sắc bắt buộc tenMauSac là mã màu, thêm nhiều size và số lượng của tường size
      */
-    mauSac: [
-      {
-        tenMauSac: {
-          type: String,
-          required: true,
-          unique: true,
-          sparse: true,
-        },
-        size: [
-          {
-            tenSize: {
-              required: true,
-              type: String,
-              unique: true,
-              sparse: true,
-            },
-            soLuong: {
-              required: true,
-              type: Number,
-              default: 0,
-            },
-          },
-        ],
-      },
-    ],
+    soLuong: {
+      type: Number,
+      default: 0,
+    },
   },
   {
     timestamps: true,
@@ -186,8 +165,12 @@ const sanPhamSchema = new Schema<ISanPham, SanPhamModel>(
 );
 
 sanPhamSchema.pre('save', async function (this, next) {
-  if (this.isModified('sale') && this.isModified('phanTramSale') && this.isModified('giaTien')) {
+  if (this.isModified('phanTramSale') && this.isModified('giaTien')) {
     this.thanhTien = this.giaTien - (this.giaTien / 100) * this.phanTramSale;
+    this.sale = true;
+    return next();
+  } else if (!this.isModified('phanTramSale') && this.isModified('sale') && this.isModified('giaTien')) {
+    this.sale = false;
     return next();
   } else if (this.isModified('giaTien')) {
     this.thanhTien = this.giaTien;
@@ -199,13 +182,17 @@ sanPhamSchema.pre('save', async function (this, next) {
 
 sanPhamSchema.static('findBeforeSetLike', async function ({ idNguoiDung, tenNguoiDung }, idSanPham: string) {
   try {
-    const sanPham = await SanPhamsModel.findOne({ idSanPham });
+    const sanPham = await SanPhamsModel.findOne({ _id: idSanPham });
+
+    const idNguoiDungStr = await idNguoiDung.toString();
+
     if (sanPham !== null) {
-      let idNguoiDungStr = await idNguoiDung.toString();
-      const index: number = sanPham.luotThich.idNguoiDungs.findIndex(async (v) => {
-        v.idNguoiDung === idNguoiDungStr;
+      const sanPhamLike: ILuotThich | null = await SanPhamsModel.findOne({
+        _id: idSanPham,
+        'luotThich.idNguoiDungs.idNguoiDung': idNguoiDungStr,
       });
-      if (index === -1) {
+
+      if (sanPhamLike === null) {
         sanPham.luotThich.tongLuotThich++;
         sanPham.luotThich.idNguoiDungs.push({ idNguoiDung, tenNguoiDung });
         await sanPham.save();
@@ -222,25 +209,31 @@ sanPhamSchema.static('findBeforeSetLike', async function ({ idNguoiDung, tenNguo
 
 sanPhamSchema.static('findBeforeSetUnLike', async function ({ idNguoiDung, tenNguoiDung }, idSanPham: string) {
   try {
-    const sanPham = await SanPhamsModel.findOne({ idSanPham });
-
+    const sanPham = await SanPhamsModel.findOne({ _id: idSanPham });
+    const idNguoiDungStr = await idNguoiDung.toString();
     if (sanPham !== null) {
-      let idNguoiDungStr = await idNguoiDung.toString();
-      const index: number = sanPham.luotThich.idNguoiDungs.findIndex(async (v) => {
-        v.idNguoiDung === idNguoiDungStr;
+      const sanPhamLike: ILuotThich | null = await SanPhamsModel.findOne({
+        _id: idSanPham,
+        'luotThich.idNguoiDungs.idNguoiDung': idNguoiDungStr,
       });
 
-      if (index === -1) {
+      if (sanPhamLike === null) {
         return;
       } else {
         sanPham.luotThich.tongLuotThich--;
-        sanPham.luotThich.idNguoiDungs.splice(index, 1);
+        await SanPhamsModel.updateOne(
+          { idSanPham },
+          { luotThich: { $pull: { idNguoiDungs: { _idSanPham: idSanPham } } } },
+          { safe: true, multi: true }
+        );
+
         await sanPham.save();
       }
     } else {
       throw new Error('ERROR');
     }
   } catch (error) {
+    console.log(error);
     throw new Error('ERROR');
   }
 });

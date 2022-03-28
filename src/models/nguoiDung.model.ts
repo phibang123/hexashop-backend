@@ -60,6 +60,7 @@ export interface INguoiDungModel extends Model<INguoiDung> {
   findBeforeCreate(body: INguoiDungInput): INguoiDung;
   findBeforeLike(_id: string, sanPham: any): INguoiDung;
   findByUserAddDelivery(_id: string, idSanPham: string): INguoiDung;
+  findByUserreductionDelivery(_id: string, idSanPham: string): INguoiDung;
 }
 
 const nguoiDungSchema = new Schema<INguoiDung, INguoiDungModel>(
@@ -235,6 +236,7 @@ nguoiDungSchema.static('findByCredentials', async function (taiKhoan: string, ma
     }
     const isMatch = await bcrypt.compare(matKhau, user.matKhau);
     if (!isMatch) {
+      console.log(2);
       throw new Error('tài khoản và mật khẩu không chính sác');
     }
 
@@ -261,7 +263,6 @@ nguoiDungSchema.static('findBeforeCreate', async function (body: INguoiDungInput
     );
   }
 });
-
 nguoiDungSchema.static('findBeforeLike', async function (_id, sanPham: any) {
   const idSanPham = await sanPham._id.toString();
   const user = await NguoiDungModel.findOne({ _id });
@@ -310,89 +311,103 @@ nguoiDungSchema.static('findByUserAddDelivery', async function (_id: string, idS
   if (user && sanPham) {
     if (sanPhamTrongGioHang === null) {
       //let pushGioiHang: Omit<IGioiHang, keyof ISanPhamModel> = sanPham;
-      if (sanPham.soLuong === 0) {
-        throw new Error('Sản phẩm đã hết');
-      }
-      sanPham.soLuong--;
-      user.gioHang.push({
-        _idSanPham: idSanPham,
-        giaTien: sanPham.giaTien,
-        thanhTien: sanPham.thanhTien,
-        hinhAnh: sanPham.hinhAnh,
-        ngayThem: new Date().toString(),
-        phanTramSale: sanPham.phanTramSale,
-        sale: sanPham.sale,
-        soLuong: 1,
-        tenSanPham: sanPham.tenSanPham,
-      });
-      await sanPham.save();
-      await user.save();
-    } else {
-      if (sanPham.soLuong === 0) {
-        throw new Error('Sản phẩm đã hết');
-      }
-      sanPham.soLuong--;
 
-      await NguoiDungModel.findOneAndUpdate(
-        { _id },
-        {
-          $inc: {
-            'gioHang.$[el].soLuong': +1,
-            'gioHang.$[el].giaTien': +sanPham.giaTien,
-            'gioHang.$[el].thanhTien': +sanPham.thanhTien,
+      if (sanPham.soLuong <= 0) {
+        throw new Error('Sản phẩm đã hết');
+      } else {
+        console.log(1);
+        sanPham.soLuong--;
+
+        user.gioHang.push({
+          _idSanPham: idSanPham,
+          giaTien: sanPham.giaTien,
+          thanhTien: sanPham.thanhTien,
+          hinhAnh: sanPham.hinhAnh,
+          ngayThem: new Date().toString(),
+          phanTramSale: sanPham.phanTramSale,
+          sale: sanPham.sale,
+          soLuong: 1,
+          tenSanPham: sanPham.tenSanPham,
+        });
+
+        await sanPham.save();
+        await user.save();
+        return user;
+      }
+    } else {
+      if (sanPham.soLuong <= 0) {
+        throw new Error('Sản phẩm đã hết');
+      } else {
+        sanPham.soLuong--;
+        const userUpdate = await NguoiDungModel.findOneAndUpdate(
+          { _id },
+          {
+            $inc: {
+              'gioHang.$[el].soLuong': +1,
+              'gioHang.$[el].giaTien': +sanPham.giaTien,
+              'gioHang.$[el].thanhTien': +sanPham.thanhTien,
+            },
           },
-        },
-        {
-          arrayFilters: [{ 'el._idSanPham': idSanPham }],
-          new: true,
-        }
-      );
+          {
+            arrayFilters: [{ 'el._idSanPham': idSanPham }],
+            new: true,
+          }
+        );
+        console.log(userUpdate);
 
-      // sanPhamTrongGioHang.gioHang[0].giaTien + sanPham.giaTien;
-      // sanPhamTrongGioHang.gioHang[0].soLuong++;
-      // sanPhamTrongGioHang.gioHang[0].thanhTien + sanPham.thanhTien;
-      await sanPham.save();
-    }
-  } else {
-    throw new Error('Lỗi');
-  }
-});
-
-nguoiDungSchema.static('findByUserreductionDelivery', async function (_id: string, idSanPham: string) {
-  const user = await NguoiDungModel.findOne({ _id });
-  const sanPhamTrongGioHang = await SanPhamsModel.findOne({
-    _id,
-    gioHang: { $elemMatch: { _idSanPham: idSanPham } },
-  });
-
-  const sanPham = await SanPhamsModel.findOne({ _id: idSanPham });
-  if (user && sanPham) {
-    if (sanPhamTrongGioHang !== null) {
-      //let pushGioiHang: Omit<IGioiHang, keyof ISanPhamModel> = sanPham;
-      if (sanPham.soLuong === 0) {
-        throw new Error('Sản phẩm đã hết');
+        await sanPham.save();
+        return userUpdate;
       }
-      sanPham.soLuong--;
-      user.gioHang.push({
-        _idSanPham: idSanPham,
-        giaTien: sanPham.giaTien,
-        thanhTien: sanPham.thanhTien,
-        hinhAnh: sanPham.hinhAnh,
-        ngayThem: new Date().toString(),
-        phanTramSale: sanPham.phanTramSale,
-        sale: sanPham.sale,
-        soLuong: 1,
-        tenSanPham: sanPham.tenSanPham,
-      });
-      await sanPham.save();
-      await user.save();
-    } else {
-      throw new Error('Không tìm thấy sãn phẩm trong giỏ hàng');
     }
   } else {
-    throw new Error('Lỗi');
+    throw new Error('Lỗi không thể tìm thấy Sản Phẩm');
   }
 });
+
+nguoiDungSchema.static(
+  'findByUserreductionDelivery',
+  async function (_id: string, idSanPham: string, next: NextFunction) {
+    const sanPhamTrongGioHang = await NguoiDungModel.findOne({ _id, 'gioHang._idSanPham': idSanPham });
+    const userTest = await NguoiDungModel.findOne({ _id }).select({
+      gioHang: { $elemMatch: { _idSanPham: idSanPham } },
+    });
+    const sanPham = await SanPhamsModel.findOne({ _id: idSanPham });
+
+    if (sanPham && sanPhamTrongGioHang) {
+      if (userTest?.gioHang[0].soLuong === 1) {
+        await NguoiDungModel.findByIdAndUpdate(
+          _id,
+          { $pull: { gioHang: { _idSanPham: idSanPham } } },
+          { safe: true, upsert: true }
+          // { luotThich: { $pull: { idNguoiDungs: { idNguoiDung: idNguoiDungStr } } } },
+          // { safe: true, multi: true }
+        );
+        const user = await NguoiDungModel.findOne({ _id });
+        return user;
+      } else {
+        const userUpdate = await NguoiDungModel.findOneAndUpdate(
+          { _id },
+          {
+            $inc: {
+              'gioHang.$[el].soLuong': -1,
+              'gioHang.$[el].giaTien': -sanPham.giaTien,
+              'gioHang.$[el].thanhTien': -sanPham.thanhTien,
+            },
+          },
+          {
+            arrayFilters: [{ 'el._idSanPham': idSanPham }],
+            new: true,
+          }
+        );
+        sanPham.soLuong++;
+        await sanPham.save();
+        return userUpdate;
+      }
+    } else {
+      throw new Error('Lỗi không thể tìm thấy Sản Phẩm');
+    }
+  }
+);
 
 nguoiDungSchema.methods.toJSON = function () {
   const nguoiDung = this;

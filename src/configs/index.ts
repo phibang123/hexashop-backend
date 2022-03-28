@@ -313,7 +313,7 @@ export const DEFATUL_SANPHAM: ISanPham[] = [
   },
   {
     tenSanPham: 'Disney Memories UT Áo Thun Ngắn Tay',
-    giaTien: 300000,
+    giaTien: 400000,
     thanhTien: 400000,
     categories: '/nu_gioi/ao/ao_thun',
     listHinhAnh: [

@@ -186,59 +186,50 @@ sanPhamSchema.pre('save', async function (this, next) {
 });
 
 sanPhamSchema.static('findBeforeSetLike', async function ({ idNguoiDung, tenNguoiDung }, idSanPham: string) {
-  try {
-    const sanPham = await SanPhamsModel.findOne({ _id: idSanPham });
-    const idNguoiDungStr = await idNguoiDung.toString();
+  const sanPham = await SanPhamsModel.findOne({ _id: idSanPham });
+  const idNguoiDungStr = await idNguoiDung.toString();
 
-    if (sanPham !== null) {
-      const sanPhamLike = await SanPhamsModel.findOne({
-        _id: idSanPham,
-        'luotThich.idNguoiDungs': { $elemMatch: { idNguoiDung: idNguoiDungStr } },
-      });
+  if (sanPham !== null) {
+    const sanPhamLike = await SanPhamsModel.findOne({
+      _id: idSanPham,
+      'luotThich.idNguoiDungs': { $elemMatch: { idNguoiDung: idNguoiDungStr } },
+    });
 
-      if (sanPhamLike === null) {
-        sanPham.luotThich.idNguoiDungs.push({ idNguoiDung, tenNguoiDung });
-        sanPham.luotThich.tongLuotThich = sanPham.luotThich.idNguoiDungs.length;
-        await sanPham.save();
-      } else {
-        return;
-      }
+    if (sanPhamLike === null) {
+      sanPham.luotThich.idNguoiDungs.push({ idNguoiDung, tenNguoiDung });
+      sanPham.luotThich.tongLuotThich = sanPham.luotThich.idNguoiDungs.length;
+      await sanPham.save();
     } else {
-      throw new Error('ERROR');
+      return;
     }
-  } catch (error) {
-    console.log(error);
+  } else {
     throw new Error('ERROR');
   }
 });
 
 sanPhamSchema.static('findBeforeSetUnLike', async function ({ idNguoiDung, tenNguoiDung }, idSanPham: string) {
-  try {
-    const sanPham = await SanPhamsModel.findOne({ _id: idSanPham });
-    const idNguoiDungStr = await idNguoiDung.toString();
-    if (sanPham !== null) {
-      const sanPhamLike = await SanPhamsModel.findOne({
-        _id: idSanPham,
-        'luotThich.idNguoiDungs': { $elemMatch: { idNguoiDung: idNguoiDungStr } },
-      });
+  const sanPham = await SanPhamsModel.findOne({ _id: idSanPham });
+  const idNguoiDungStr = await idNguoiDung.toString();
+  if (sanPham !== null) {
+    const sanPhamLike = await SanPhamsModel.findOne({
+      _id: idSanPham,
+      'luotThich.idNguoiDungs': { $elemMatch: { idNguoiDung: idNguoiDungStr } },
+    });
 
-      if (sanPhamLike === null) {
-        return;
-      } else {
-        sanPham.luotThich.idNguoiDungs.filter((v) => {
-          {
-            v.idNguoiDung !== idNguoiDungStr;
-          }
-        });
-        sanPham.luotThich.tongLuotThich = sanPham.luotThich.idNguoiDungs.length;
-        //sanPham.luotThich.tongLuotThich--;
-        await sanPham.save();
-      }
+    if (sanPhamLike === null) {
+      return;
     } else {
-      throw new Error('ERROR');
+      await SanPhamsModel.findByIdAndUpdate(
+        idSanPham,
+        { $pull: { 'luotThich.idNguoiDungs': { idNguoiDung: idNguoiDungStr } } },
+        { safe: true, upsert: true }
+        // { luotThich: { $pull: { idNguoiDungs: { idNguoiDung: idNguoiDungStr } } } },
+        // { safe: true, multi: true }
+      );
+      sanPham.luotThich.tongLuotThich--;
+      await sanPham.save();
     }
-  } catch (error) {
-    console.log(error);
+  } else {
     throw new Error('ERROR');
   }
 });

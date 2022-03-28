@@ -15,6 +15,7 @@ app.use(express.json());
 app.use('/api', rootRouter);
 
 app.use((error: any, req: Request, res: Response, next: NextFunction) => {
+  console.log(5);
   if (error.errors) {
     let ObecjError: any;
     Object.keys(error.errors).forEach((e: string) => {

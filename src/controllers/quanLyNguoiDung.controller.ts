@@ -136,13 +136,14 @@ export const CommemtSanPhamController = async (req: Request, res: Response, next
 //   } catch (error) {}
 // };
 
-export const ThemSanPhamVaoGioHang = async (req: Request, res: Response, next: NextFunction) => {
+export const ThemSanPhamVaoGioHangController = async (req: Request, res: Response, next: NextFunction) => {
   try {
     let _id = req.params.id;
-    await NguoiDungModel.findByUserAddDelivery((req as any).user._id.toString(), _id);
-    const user = await NguoiDungModel.findOne({ _id: (req as any).user._id.toString() });
+    const user = await NguoiDungModel.findByUserAddDelivery((req as any).user._id.toString(), _id);
+
     return res.status(200).json(ReS(200, user));
   } catch (error: any) {
+    console.log(error, 'error');
     next(error);
   }
 };
@@ -150,10 +151,11 @@ export const ThemSanPhamVaoGioHang = async (req: Request, res: Response, next: N
 export const GiamSoLuongSanPhamTrongGioHangController = async (req: Request, res: Response, next: NextFunction) => {
   try {
     let _id = req.params.id;
-    await NguoiDungModel.findByUserAddDelivery((req as any).user._id.toString(), _id);
-    const user = await NguoiDungModel.findOne({ _id: (req as any).user._id.toString() });
+    const user = await NguoiDungModel.findByUserreductionDelivery((req as any).user._id.toString(), _id);
+    //const user = await NguoiDungModel.findOne({ _id: (req as any).user._id.toString() });
     return res.status(200).json(ReS(200, user));
   } catch (error: any) {
+    console.log(error);
     next(error);
   }
 };

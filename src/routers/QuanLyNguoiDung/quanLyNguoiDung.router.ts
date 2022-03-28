@@ -30,10 +30,14 @@ quanLyNguoiDung.post('/Like/:id', auth, quanLyNguoiDungController.ThichSanPhamCo
 quanLyNguoiDung.post('/Comment/:id', auth, quanLyNguoiDungController.CommemtSanPhamController);
 
 //Thêm và tăng số lượng
-quanLyNguoiDung.post('/ThemVaoGioTangSoLuong/:id', auth, quanLyNguoiDungController.ThemSanPhamVaoGioHang);
+quanLyNguoiDung.post('/ThemVaoGioTangSoLuong/:id', auth, quanLyNguoiDungController.ThemSanPhamVaoGioHangController);
 
 //Giảm số lượng
-quanLyNguoiDung.post('/XoaKhoiGioGiamSoLuong/:id', auth, quanLyNguoiDungController.ThemSanPhamVaoGioHang);
+quanLyNguoiDung.post(
+  '/XoaKhoiGioGiamSoLuong/:id',
+  auth,
+  quanLyNguoiDungController.GiamSoLuongSanPhamTrongGioHangController
+);
 
 //xoa sản phẩm ra khỏi giỏ
-quanLyNguoiDung.post('/XoaKhoiGio/:id', auth, quanLyNguoiDungController.ThemSanPhamVaoGioHang);
+quanLyNguoiDung.post('/XoaKhoiGio/:id', auth, quanLyNguoiDungController.ThemSanPhamVaoGioHangController);

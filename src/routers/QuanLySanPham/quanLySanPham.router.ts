@@ -18,4 +18,8 @@ quanLySanPham.get('/TimChiTietSanPham/:id', quanLySanPhamController.TimSanPhamTh
 
 quanLySanPham.post('/ThemSanPham', upload.single('picture'), quanLySanPhamController.ThemSanPhamController);
 
-quanLySanPham.post('/ThemSizeMauSacSoLuong', auth, admin, quanLySanPhamController.ThemSanPhamController);
+quanLySanPham.post('/ThemSoLuong/:id', auth, admin, quanLySanPhamController.ThemSoLuongSanPhamController);
+
+quanLySanPham.post('/GiamSoLuong/:id', auth, admin, quanLySanPhamController.GiamSoLuongSanPhamController);
+
+quanLySanPham.patch('/ChinhSuaSanPham/:id', auth, admin, quanLySanPhamController.ChinhSuaSanPhamController);

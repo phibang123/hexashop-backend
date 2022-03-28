@@ -40,4 +40,4 @@ quanLyNguoiDung.post(
 );
 
 //xoa sản phẩm ra khỏi giỏ
-quanLyNguoiDung.post('/XoaKhoiGio/:id', auth, quanLyNguoiDungController.ThemSanPhamVaoGioHangController);
+quanLyNguoiDung.post('/XoaKhoiGioHang/:id', auth, quanLyNguoiDungController.XoaSanPhamTrongGioHangController);

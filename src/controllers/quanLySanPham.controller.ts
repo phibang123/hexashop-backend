@@ -80,3 +80,67 @@ export const ThemSanPhamController = async (req: Request, res: Response, next: N
     next(error);
   }
 };
+
+export const ThemSoLuongSanPhamController = async (req: Request, res: Response, next: NextFunction) => {
+  const _id = req.params.id;
+  if (!req.body.soLuong) {
+    return res.status(400).json(ReE(400, 'Bạn chưa thêm số lượng'));
+  }
+  try {
+    const sanPham = await SanPhamsModel.findById(_id);
+    if (sanPham === null) {
+      return res.status(400).json(ReE(400, 'Không tìm thấy sản phẩm'));
+    }
+    sanPham.soLuong = sanPham.soLuong + req.body.soLuong;
+    await sanPham.save();
+    return res.status(200).json(ReS(200, sanPham));
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const GiamSoLuongSanPhamController = async (req: Request, res: Response, next: NextFunction) => {
+  const _id = req.params.id;
+  if (!req.body.soLuong) {
+    return res.status(400).json(ReE(400, 'Bạn chưa thêm số lượng'));
+  }
+  try {
+    const sanPham = await SanPhamsModel.findById(_id);
+    if (sanPham === null) {
+      return res.status(400).json(ReE(400, 'Không tìm thấy sản phẩm'));
+    }
+    sanPham.soLuong = sanPham.soLuong - req.body.soLuong;
+    if (sanPham.soLuong < 0) {
+      sanPham.soLuong = 0;
+    }
+    await sanPham.save();
+    return res.status(200).json(ReS(200, sanPham));
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const ChinhSuaSanPhamController = async (req: Request, res: Response, next: NextFunction) => {
+  const _id = req.params.id;
+
+  const updates = Object.keys(req.body);
+  const allowedUpdates = ['categories', 'giaTien', 'phanTramSale', 'sale', 'soLuong', 'tenSanPham', 'thanhTien'];
+  const isValiOperetion = updates.every((update) => {
+    return allowedUpdates.includes(update);
+  });
+  if (!isValiOperetion) {
+    return res.status(400).json(ReE(400, 'hãy sửa những dử liệu yêu cầu'));
+  }
+  try {
+    const sanPham: any = await SanPhamsModel.findById({ _id });
+    if (sanPham === null) {
+      return res.status(400).json(ReE(400, 'không tìm thấy sản phẩm'));
+    }
+    updates.forEach((update) => (sanPham[update] = req.body[update]));
+    await sanPham.save();
+
+    return res.status(200).json(ReS(200, sanPham));
+  } catch (error) {
+    next(error);
+  }
+};

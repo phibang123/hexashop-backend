@@ -1,8 +1,7 @@
 import { Model, Schema, model } from 'mongoose';
 
 import { DEFATUL_SANPHAM } from './../configs/index';
-import { NextFunction } from 'express';
-import mongoose from 'mongoose';
+
 
 interface IIdNguoiDung {
   idNguoiDung: string;
@@ -20,25 +19,14 @@ interface ILuotThich {
   idNguoiDungs: IIdNguoiDung[];
 }
 
-interface ISize {
-  tenSize: string;
-  soLuong: number;
-}
 
-interface IMauSac {
-  tenMauSac: string;
-  size: ISize[];
-}
 
-interface IHinhAnh {
-  hinhAnh: string;
-}
 
 export interface ISanPham {
   _id: object;
   tenSanPham: string;
   giaTien: number;
-  listHinhAnh: IHinhAnh[];
+ 
   sale: boolean;
   phanTramSale: number;
   thanhTien: number;
@@ -66,15 +54,7 @@ const sanPhamSchema = new Schema<ISanPham, ISanPhamModel>(
       type: Number,
       required: [true, 'giá tiền bị trống'],
     },
-    listHinhAnh: [
-      {
-        hinhAnh: {
-          type: String,
-          default:
-            'https://img-cdn.2game.vn/2021/02/28/Hutao-va-nhung-dieu-can-biet-khi-co-nang-ra-mat-game-thu-Genshin-Impact-1.jpg',
-        },
-      },
-    ],
+   
     sale: {
       type: Boolean,
       default: false,

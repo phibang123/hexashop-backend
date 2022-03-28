@@ -18,37 +18,10 @@ interface IComment {
   ngoiDungComment: string;
 }
 
-interface ISize {
-  tenSize: string;
-  soLuong: number;
-}
-
-interface IMauSac {
-  tenMauSac: string;
-  size: ISize[];
-}
-
-interface IHinhAnh {
-  hinhAnh: string;
-}
-
-// interface ISanPham {
-//   tenSanPham: string;
-//   giaTien: number;
-//   listHinhAnh: IHinhAnh[];
-//   sale: boolean;
-//   phanTramSale?: number;
-//   categories: string;
-//   luotThich?: ILuotThich;
-
-//   comment?: IComment[];
-//   mauSac: IMauSac[];
-// }
-
 interface ISanPham {
   tenSanPham: string;
   giaTien: number;
-  listHinhAnh: IHinhAnh[];
+
   sale: boolean;
   phanTramSale?: number;
   thanhTien?: number;
@@ -300,13 +273,6 @@ export const DEFATUL_SANPHAM: ISanPham[] = [
     giaTien: 400000,
     thanhTien: 400000,
     categories: '/nu_gioi/ao/ao_thun',
-    listHinhAnh: [
-      // {
-      //   hinhAnh:
-      //     'https://image.uniqlo.com/UQ/ST3/vn/imagesgoods/446709/item/vngoods_21_446709.jpg?width=1600&impolicy=quality_75',
-      // },
-    ],
-
     sale: false,
     phanTramSale: 0,
     soLuong: 10,
@@ -316,13 +282,6 @@ export const DEFATUL_SANPHAM: ISanPham[] = [
     giaTien: 400000,
     thanhTien: 400000,
     categories: '/nu_gioi/ao/ao_thun',
-    listHinhAnh: [
-      // {
-      //   hinhAnh:
-      //     'https://image.uniqlo.com/UQ/ST3/vn/imagesgoods/446709/item/vngoods_21_446709.jpg?width=1600&impolicy=quality_75',
-      // },
-    ],
-
     sale: false,
     phanTramSale: 0,
     soLuong: 10,

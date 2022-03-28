@@ -7,15 +7,18 @@ require('./db/mongooseConnect.ts');
 require('./models/categories.model');
 require('./models/nguoiDung.model');
 require('./models/sanPham.model');
+require('./models/lichSuMuaHang.model');
 
 const port = process.env.PORT || 3000;
 
 const app: Application = express();
 app.use(express.json());
 app.use('/api', rootRouter);
+app.use('*', (req, res, next: NextFunction) => {
+  next('404');
+});
 
 app.use((error: any, req: Request, res: Response, next: NextFunction) => {
-  console.log(5);
   if (error.errors) {
     let ObecjError: any;
     Object.keys(error.errors).forEach((e: string) => {
@@ -23,7 +26,13 @@ app.use((error: any, req: Request, res: Response, next: NextFunction) => {
     });
     return res.status(400).json(ReE(400, { ...ObecjError }));
   }
-  return res.status(400).json(ReE(400, error.message));
+  if (error.message) {
+    return res.status(400).json(ReE(400, error.message));
+  }
+  if (typeof error === 'string') {
+    res.status(400).json(ReE(400, error));
+  }
+  res.status(400).json(ReE(500, 'ERROR'));
 });
 
 app.listen(port, function () {

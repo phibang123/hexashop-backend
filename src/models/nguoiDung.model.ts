@@ -18,7 +18,7 @@ export type IGioiHang = {
   // mauSac: string;
   // size: number;
   hinhAnh: string;
-  ngayThem: string;
+  ngayThem?: string;
 };
 
 export interface IThich {
@@ -61,6 +61,7 @@ export interface INguoiDungModel extends Model<INguoiDung> {
   findBeforeLike(_id: string, sanPham: any): INguoiDung;
   findByUserAddDelivery(_id: string, idSanPham: string): INguoiDung;
   findByUserreductionDelivery(_id: string, idSanPham: string): INguoiDung;
+  findByUserDeleteProductDelivery(_id: string, idSanPham: string): INguoiDung;
 }
 
 const nguoiDungSchema = new Schema<INguoiDung, INguoiDungModel>(
@@ -79,6 +80,7 @@ const nguoiDungSchema = new Schema<INguoiDung, INguoiDungModel>(
     sex: {
       type: String,
       trim: true,
+      required: [true, 'không tìm thấy giới tính'],
     },
     matKhau: {
       type: String,
@@ -236,7 +238,6 @@ nguoiDungSchema.static('findByCredentials', async function (taiKhoan: string, ma
     }
     const isMatch = await bcrypt.compare(matKhau, user.matKhau);
     if (!isMatch) {
-      console.log(2);
       throw new Error('tài khoản và mật khẩu không chính sác');
     }
 
@@ -270,7 +271,6 @@ nguoiDungSchema.static('findBeforeLike', async function (_id, sanPham: any) {
     _id,
     thich: { $elemMatch: { _idSanPham: idSanPham } },
   });
-
   //const sanPhamLike: IThich | null = await NguoiDungModel.findOne({ _id, 'thich._idSanPham': idSanPham });
   if (user !== null) {
     if (sanPhamLike === null) {
@@ -315,9 +315,6 @@ nguoiDungSchema.static('findByUserAddDelivery', async function (_id: string, idS
       if (sanPham.soLuong <= 0) {
         throw new Error('Sản phẩm đã hết');
       } else {
-        console.log(1);
-        sanPham.soLuong--;
-
         user.gioHang.push({
           _idSanPham: idSanPham,
           giaTien: sanPham.giaTien,
@@ -329,7 +326,7 @@ nguoiDungSchema.static('findByUserAddDelivery', async function (_id: string, idS
           soLuong: 1,
           tenSanPham: sanPham.tenSanPham,
         });
-
+        sanPham.soLuong--;
         await sanPham.save();
         await user.save();
         return user;
@@ -338,7 +335,6 @@ nguoiDungSchema.static('findByUserAddDelivery', async function (_id: string, idS
       if (sanPham.soLuong <= 0) {
         throw new Error('Sản phẩm đã hết');
       } else {
-        sanPham.soLuong--;
         const userUpdate = await NguoiDungModel.findOneAndUpdate(
           { _id },
           {
@@ -353,7 +349,7 @@ nguoiDungSchema.static('findByUserAddDelivery', async function (_id: string, idS
             new: true,
           }
         );
-        console.log(userUpdate);
+        sanPham.soLuong--;
 
         await sanPham.save();
         return userUpdate;
@@ -364,50 +360,78 @@ nguoiDungSchema.static('findByUserAddDelivery', async function (_id: string, idS
   }
 });
 
-nguoiDungSchema.static(
-  'findByUserreductionDelivery',
-  async function (_id: string, idSanPham: string, next: NextFunction) {
-    const sanPhamTrongGioHang = await NguoiDungModel.findOne({ _id, 'gioHang._idSanPham': idSanPham });
-    const userTest = await NguoiDungModel.findOne({ _id }).select({
-      gioHang: { $elemMatch: { _idSanPham: idSanPham } },
-    });
-    const sanPham = await SanPhamsModel.findOne({ _id: idSanPham });
+nguoiDungSchema.static('findByUserreductionDelivery', async function (_id: string, idSanPham: string) {
+  const sanPhamTrongGioHang = await NguoiDungModel.findOne({ _id, 'gioHang._idSanPham': idSanPham });
+  const userTest = await NguoiDungModel.findOne({ _id }).select({
+    gioHang: { $elemMatch: { _idSanPham: idSanPham } },
+  });
+  const sanPham = await SanPhamsModel.findOne({ _id: idSanPham });
 
-    if (sanPham && sanPhamTrongGioHang) {
-      if (userTest?.gioHang[0].soLuong === 1) {
-        await NguoiDungModel.findByIdAndUpdate(
-          _id,
-          { $pull: { gioHang: { _idSanPham: idSanPham } } },
-          { safe: true, upsert: true }
-          // { luotThich: { $pull: { idNguoiDungs: { idNguoiDung: idNguoiDungStr } } } },
-          // { safe: true, multi: true }
-        );
-        const user = await NguoiDungModel.findOne({ _id });
-        return user;
-      } else {
-        const userUpdate = await NguoiDungModel.findOneAndUpdate(
-          { _id },
-          {
-            $inc: {
-              'gioHang.$[el].soLuong': -1,
-              'gioHang.$[el].giaTien': -sanPham.giaTien,
-              'gioHang.$[el].thanhTien': -sanPham.thanhTien,
-            },
+  if (sanPham && sanPhamTrongGioHang) {
+    if (userTest?.gioHang[0].soLuong === 1) {
+      await NguoiDungModel.findByIdAndUpdate(
+        _id,
+        { $pull: { gioHang: { _idSanPham: idSanPham } } },
+        { safe: true, upsert: true }
+        // { luotThich: { $pull: { idNguoiDungs: { idNguoiDung: idNguoiDungStr } } } },
+        // { safe: true, multi: true }
+      );
+      sanPham.soLuong++;
+      await sanPham.save();
+      const user = await NguoiDungModel.findOne({ _id });
+      return user;
+    } else {
+      const userUpdate = await NguoiDungModel.findOneAndUpdate(
+        { _id },
+        {
+          $inc: {
+            'gioHang.$[el].soLuong': -1,
+            'gioHang.$[el].giaTien': -sanPham.giaTien,
+            'gioHang.$[el].thanhTien': -sanPham.thanhTien,
           },
-          {
-            arrayFilters: [{ 'el._idSanPham': idSanPham }],
-            new: true,
-          }
-        );
-        sanPham.soLuong++;
-        await sanPham.save();
-        return userUpdate;
-      }
+        },
+        {
+          arrayFilters: [{ 'el._idSanPham': idSanPham }],
+          new: true,
+        }
+      );
+
+      sanPham.soLuong++;
+      await sanPham.save();
+      return userUpdate;
+    }
+  } else {
+    throw new Error('Lỗi không thể tìm thấy Sản Phẩm');
+  }
+});
+
+nguoiDungSchema.static('findByUserDeleteProductDelivery', async function (_id: string, idSanPham: string) {
+  const sanPhamTrongGioHang = await NguoiDungModel.findOne({ _id, 'gioHang._idSanPham': idSanPham });
+  const userTest = await NguoiDungModel.findOne({ _id }).select({
+    gioHang: { $elemMatch: { _idSanPham: idSanPham } },
+  });
+  const sanPham = await SanPhamsModel.findOne({ _id: idSanPham });
+
+  if (sanPham && sanPhamTrongGioHang) {
+    if (userTest?.gioHang[0]) {
+      const soLuong = userTest?.gioHang[0].soLuong;
+      await NguoiDungModel.findByIdAndUpdate(
+        _id,
+        { $pull: { gioHang: { _idSanPham: idSanPham } } },
+        { safe: true, upsert: true }
+      );
+      sanPham.soLuong = sanPham.soLuong + soLuong;
+      console.log(sanPham.soLuong);
+      await sanPham.save();
+      const user = await NguoiDungModel.findOne({ _id });
+      return user;
     } else {
       throw new Error('Lỗi không thể tìm thấy Sản Phẩm');
     }
+  } else {
+    throw new Error('Lỗi không thể tìm thấy Sản Phẩm');
   }
-);
+});
 
 nguoiDungSchema.methods.toJSON = function () {
   const nguoiDung = this;

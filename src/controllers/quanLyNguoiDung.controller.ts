@@ -4,6 +4,7 @@ import { ReE, ReS } from '../utils/reponse';
 import NguoiDungModel from '../models/nguoiDung.model';
 import SanPhamsModel from '../models/sanPham.model';
 import jwt from 'jsonwebtoken';
+import lichSuMuaHangModel from '../models/lichSuMuaHang.model';
 import { putImagAvatar } from '../utils/putObjectS3Avatar';
 import { secret_key } from '../configs/index';
 
@@ -16,17 +17,6 @@ export const DangKyController = async (req: Request, res: Response, next: NextFu
     res.status(201).json(ReS(201, userCreate));
   } catch (error: any) {
     next(error);
-    // if (error.errors) {
-    //   let ObecjError: any;
-    //   Object.keys(error.errors).forEach((e: string) => {
-    //     ObecjError[`${e}`] = error.errors[`${e}`].message;
-    //   });
-    //   return res.status(400).json(ReE(400, { ...ObecjError }));
-    // }
-    // if (error.mesaage) {
-    //   return res.status(400).json(ReE(400, error.message));
-    // }
-    // return res.status(500).json(ReE(500, error));
   }
 };
 
@@ -78,8 +68,9 @@ export const ChinhSuaNguoiDungController = async (req: Request, res: Response, n
 
 export const ThichSanPhamController = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    let _id = req.params.id;
-    const oneSanPham = await SanPhamsModel.findOne({ _id });
+    const _id = req.params.id;
+
+    const oneSanPham = await SanPhamsModel.findById(_id);
 
     if (oneSanPham === null) {
       return res.status(400).json(ReE(400, { error: 'Không tìm thấy sản phẩm' }));
@@ -122,25 +113,10 @@ export const CommemtSanPhamController = async (req: Request, res: Response, next
   }
 };
 
-// export const DeleteCommentSanPhamController = async (req: Request, res: Response) => {
-//   try
-//   {
-//     let _id = req.params.id;
-//     const sanPham = await SanPhamsModel.findOne({ _id });
-
-//     await SanPhamsModel.updateOne(
-//       { _id },
-//       { comment: { $pull: { idNguoiDungs: { _idSanPham: idSanPham } } } },
-//       { safe: true, multi: true }
-//     );
-//   } catch (error) {}
-// };
-
 export const ThemSanPhamVaoGioHangController = async (req: Request, res: Response, next: NextFunction) => {
   try {
     let _id = req.params.id;
     const user = await NguoiDungModel.findByUserAddDelivery((req as any).user._id.toString(), _id);
-
     return res.status(200).json(ReS(200, user));
   } catch (error: any) {
     console.log(error, 'error');
@@ -152,6 +128,18 @@ export const GiamSoLuongSanPhamTrongGioHangController = async (req: Request, res
   try {
     let _id = req.params.id;
     const user = await NguoiDungModel.findByUserreductionDelivery((req as any).user._id.toString(), _id);
+    //const user = await NguoiDungModel.findOne({ _id: (req as any).user._id.toString() });
+    return res.status(200).json(ReS(200, user));
+  } catch (error: any) {
+    console.log(error);
+    next(error);
+  }
+};
+
+export const XoaSanPhamTrongGioHangController = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    let _id = req.params.id;
+    const user = await NguoiDungModel.findByUserDeleteProductDelivery((req as any).user._id.toString(), _id);
     //const user = await NguoiDungModel.findOne({ _id: (req as any).user._id.toString() });
     return res.status(200).json(ReS(200, user));
   } catch (error: any) {

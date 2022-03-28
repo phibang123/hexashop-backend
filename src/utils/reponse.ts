@@ -25,13 +25,14 @@ export const ReS = (code: number, data: any, message?: string): object => {
 
 // hàm format kết quả trả về của API khi thất bại cho client
 export const ReE = (code: number, err: any, message?: string): object => {
+  console.log(err);
   const resp: IResp = {
     success: false,
     dateTime: moment().format(),
     messageConstants: null,
     statusCode: code,
     message: message ? message : 'Có gì đó đang lỗi!',
-    content: Array.isArray(err) ? err.map((e) => e.message) : typeof err === 'object' ? err.message : err,
+    content: Array.isArray(err) ? err.map((e) => e.message) : typeof err === 'object' ? err : err,
   };
 
   return { ...resp };

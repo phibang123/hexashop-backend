@@ -137,9 +137,47 @@ export const ChinhSuaSanPhamController = async (req: Request, res: Response, nex
       return res.status(400).json(ReE(400, 'không tìm thấy sản phẩm'));
     }
     updates.forEach((update) => (sanPham[update] = req.body[update]));
+    if ((req as any).file) {
+      const urlSanPham = await putImagPicture((req as any).file, req.body.tenSanPham);
+      sanPham.hinhAnh = urlSanPham;
+    }
+
     await sanPham.save();
 
     return res.status(200).json(ReS(200, sanPham));
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const ChinhSuaHinhAnhSanPhamController = async (req: Request, res: Response, next: NextFunction) => {
+  const _id = req.params.id;
+
+  try {
+    const sanPham: any = await SanPhamsModel.findById({ _id });
+    if (sanPham === null) {
+      return res.status(400).json(ReE(400, 'không tìm thấy sản phẩm'));
+    }
+    if (!(req as any).file) {
+      return res.status(400).json(ReE(400, 'không tìm Picture'));
+    }
+    const urlSanPham = await putImagPicture((req as any).file, req.body.tenSanPham);
+    sanPham.hinhAnh = urlSanPham;
+    await sanPham.save();
+
+    return res.status(200).json(ReS(200, sanPham));
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const XoaSanPhamController = async (req: Request, res: Response, next: NextFunction) => {
+  const _id = req.params.id;
+
+  try {
+    await SanPhamsModel.findByIdAndDelete({ _id });
+
+    return res.status(200).json(ReS(200, 'xóa sản phẩm thành công'));
   } catch (error) {
     next(error);
   }

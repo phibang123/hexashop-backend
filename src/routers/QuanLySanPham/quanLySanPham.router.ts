@@ -22,4 +22,6 @@ quanLySanPham.post('/ThemSoLuong/:id', auth, admin, quanLySanPhamController.Them
 
 quanLySanPham.post('/GiamSoLuong/:id', auth, admin, quanLySanPhamController.GiamSoLuongSanPhamController);
 
-quanLySanPham.patch('/ChinhSuaSanPham/:id', auth, admin, quanLySanPhamController.ChinhSuaSanPhamController);
+quanLySanPham.patch('/ChinhSuaSanPham/:id', upload.single('picture'), auth, admin, quanLySanPhamController.ChinhSuaSanPhamController);
+
+quanLySanPham.patch('/ChinhSuaHinhAnh/:id', upload.single('picture'), auth, admin, quanLySanPhamController.ChinhSuaSanPhamController);

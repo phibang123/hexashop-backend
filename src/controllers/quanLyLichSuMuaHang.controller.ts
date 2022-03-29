@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { ReE, ReS } from './../utils/reponse';
 
-const lichSuMuaHangModel = require('../models/lichSuMuaHang.model');
+import lichSuMuaHangModel from '../models/lichSuMuaHang';
 
 export const DatHangController = async (req: Request, res: Response, next: NextFunction) => {
   try {

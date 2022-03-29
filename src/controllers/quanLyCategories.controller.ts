@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { ReE, ReS } from '../utils/reponse';
 
-const categoriesModel = require('../models/categories.model');
+import categoriesModel from '../models/categories';
 
 interface ICategori {
   ids: number;

@@ -4,10 +4,10 @@ import { ReE } from './utils/reponse';
 import rootRouter from './routers/index.router';
 
 require('./db/mongooseConnect');
-require('./models/categories.model');
-require('./models/nguoiDung.model');
-require('./models/sanPham.model');
-require('./models/lichSuMuaHang.model');
+require('./models/categories');
+require('./models/nguoiDung');
+require('./models/sanPham');
+require('./models/lichSuMuaHang');
 
 const port = process.env.PORT || 3000;
 

@@ -42,14 +42,15 @@ var admin = function (req, res, next) { return __awaiter(void 0, void 0, void 0,
     return __generator(this, function (_a) {
         try {
             if (req.user.adminInWeb) {
-                return [2 /*return*/, next()];
+                return [2, next()];
             }
-            return [2 /*return*/, res.status(401).send((0, reponse_1.ReE)(401, { error: 'Forbidden' }))];
+            return [2, res.status(401).send((0, reponse_1.ReE)(401, { error: 'Forbidden' }))];
         }
         catch (error) {
-            return [2 /*return*/, res.status(401).send((0, reponse_1.ReE)(401, { error: 'Please authenticate!' }))];
+            return [2, res.status(401).send((0, reponse_1.ReE)(401, { error: 'Please authenticate!' }))];
         }
-        return [2 /*return*/];
+        return [2];
     });
 }); };
 exports.admin = admin;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiYWRtaW4uanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi9zcmMvbWlkZGxld2FyZS9hZG1pbi50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7QUFDQSw0Q0FBNEM7QUFFckMsSUFBTSxLQUFLLEdBQUcsVUFBTyxHQUFZLEVBQUUsR0FBYSxFQUFFLElBQWtCOztRQUN6RSxJQUFJO1lBQ0YsSUFBSyxHQUFXLENBQUMsSUFBSSxDQUFDLFVBQVUsRUFBRTtnQkFDaEMsV0FBTyxJQUFJLEVBQUUsRUFBQzthQUNmO1lBQ0QsV0FBTyxHQUFHLENBQUMsTUFBTSxDQUFDLEdBQUcsQ0FBQyxDQUFDLElBQUksQ0FBQyxJQUFBLGFBQUcsRUFBQyxHQUFHLEVBQUUsRUFBRSxLQUFLLEVBQUUsV0FBVyxFQUFFLENBQUMsQ0FBQyxFQUFDO1NBQy9EO1FBQUMsT0FBTyxLQUFLLEVBQUU7WUFDZCxXQUFPLEdBQUcsQ0FBQyxNQUFNLENBQUMsR0FBRyxDQUFDLENBQUMsSUFBSSxDQUFDLElBQUEsYUFBRyxFQUFDLEdBQUcsRUFBRSxFQUFFLEtBQUssRUFBRSxzQkFBc0IsRUFBRSxDQUFDLENBQUMsRUFBQztTQUMxRTs7O0tBQ0YsQ0FBQztBQVRXLFFBQUEsS0FBSyxTQVNoQiJ9

@@ -35,13 +35,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LayToanBoThuocTinhController = void 0;
 var reponse_1 = require("../utils/reponse");
-var categories_model_1 = __importDefault(require("../models/categories.model"));
+var CategoriesModel = require('../models/categories.model');
 var LayToanBoThuocTinhController = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var categories_1, category_1, error_1;
     return __generator(this, function (_a) {
@@ -49,7 +46,7 @@ var LayToanBoThuocTinhController = function (req, res, next) { return __awaiter(
             case 0:
                 _a.trys.push([0, 2, , 3]);
                 categories_1 = [];
-                return [4 /*yield*/, categories_model_1.default.find()];
+                return [4, CategoriesModel.find()];
             case 1:
                 category_1 = _a.sent();
                 category_1 === null || category_1 === void 0 ? void 0 : category_1.map(function (cate) {
@@ -91,13 +88,14 @@ var LayToanBoThuocTinhController = function (req, res, next) { return __awaiter(
                     });
                 });
                 res.status(201).json((0, reponse_1.ReS)(201, categories_1));
-                return [3 /*break*/, 3];
+                return [3, 3];
             case 2:
                 error_1 = _a.sent();
                 next({ error: 'NULL' });
-                return [3 /*break*/, 3];
-            case 3: return [2 /*return*/];
+                return [3, 3];
+            case 3: return [2];
         }
     });
 }); };
 exports.LayToanBoThuocTinhController = LayToanBoThuocTinhController;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicXVhbkx5Q2F0ZWdvcmllcy5jb250cm9sbGVyLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vc3JjL2NvbnRyb2xsZXJzL3F1YW5MeUNhdGVnb3JpZXMuY29udHJvbGxlci50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7QUFDQSw0Q0FBNEM7QUFFNUMsSUFBTSxlQUFlLEdBQUcsT0FBTyxDQUFDLDRCQUE0QixDQUFDLENBQUM7QUFvQnZELElBQU0sNEJBQTRCLEdBQUcsVUFBTyxHQUFZLEVBQUUsR0FBYSxFQUFFLElBQWtCOzs7Ozs7Z0JBRXhGLGVBQWtDLEVBQUUsQ0FBQztnQkFFYixXQUFNLGVBQWUsQ0FBQyxJQUFJLEVBQUUsRUFBQTs7Z0JBQXBELGFBQXdCLFNBQTRCO2dCQUUxRCxVQUFRLGFBQVIsVUFBUSx1QkFBUixVQUFRLENBQUUsR0FBRyxDQUFDLFVBQUMsSUFBSTtvQkFDakIsSUFBSSxJQUFJLENBQUMsS0FBSyxLQUFLLENBQUMsSUFBSSxDQUFDLElBQUksQ0FBQyxRQUFRLEVBQUU7d0JBQ3RDLElBQU0sSUFBSSxHQUFzQjs0QkFDOUIsRUFBRSxFQUFFLElBQUksQ0FBQyxHQUFHOzRCQUNaLElBQUksRUFBRSxJQUFJLENBQUMsSUFBSTs0QkFDZixRQUFRLEVBQUUsSUFBSSxDQUFDLFFBQVE7NEJBQ3ZCLElBQUksRUFBRSxJQUFJLENBQUMsSUFBSTs0QkFDZixRQUFRLEVBQUUsRUFBRTt5QkFDYixDQUFDO3dCQUNGLFlBQVUsQ0FBQyxJQUFJLENBQUMsSUFBSSxDQUFDLENBQUM7cUJBQ3ZCO2dCQUNILENBQUMsQ0FBQyxDQUFDO2dCQUVILFlBQVUsYUFBVixZQUFVLHVCQUFWLFlBQVUsQ0FBRSxHQUFHLENBQUMsVUFBQyxJQUFJO29CQUNuQixVQUFRLGFBQVIsVUFBUSx1QkFBUixVQUFRLENBQUUsR0FBRyxDQUFDLFVBQUMsT0FBTzt3QkFDcEIsSUFBSSxPQUFPLENBQUMsUUFBUSxLQUFLLElBQUksQ0FBQyxFQUFFLEVBQUU7NEJBQ2hDLElBQU0sTUFBSSxHQUFzQjtnQ0FDOUIsRUFBRSxFQUFFLE9BQU8sQ0FBQyxHQUFHO2dDQUNmLElBQUksRUFBRSxPQUFPLENBQUMsSUFBSTtnQ0FDbEIsUUFBUSxFQUFFLE9BQU8sQ0FBQyxRQUFRO2dDQUMxQixJQUFJLEVBQUUsT0FBTyxDQUFDLElBQUk7Z0NBQ2xCLFFBQVEsRUFBRSxFQUFFOzZCQUNiLENBQUM7NEJBRUYsVUFBUSxhQUFSLFVBQVEsdUJBQVIsVUFBUSxDQUFFLEdBQUcsQ0FBQyxVQUFDLFFBQVE7Z0NBQ3JCLElBQUksUUFBUSxDQUFDLFFBQVEsS0FBSyxNQUFJLENBQUMsRUFBRSxFQUFFO29DQUNqQyxJQUFNLEtBQUssR0FBc0I7d0NBQy9CLEVBQUUsRUFBRSxRQUFRLENBQUMsR0FBRzt3Q0FDaEIsSUFBSSxFQUFFLFFBQVEsQ0FBQyxJQUFJO3dDQUNuQixRQUFRLEVBQUUsUUFBUSxDQUFDLFFBQVE7d0NBQzNCLElBQUksRUFBRSxRQUFRLENBQUMsSUFBSTt3Q0FDbkIsUUFBUSxFQUFFLEVBQUU7cUNBQ2IsQ0FBQztvQ0FDRixNQUFJLENBQUMsUUFBUSxDQUFDLElBQUksQ0FBQyxLQUFLLENBQUMsQ0FBQztpQ0FDM0I7NEJBQ0gsQ0FBQyxDQUFDLENBQUM7NEJBQ0gsSUFBSSxDQUFDLFFBQVEsQ0FBQyxJQUFJLENBQUMsTUFBSSxDQUFDLENBQUM7eUJBQzFCO29CQUNILENBQUMsQ0FBQyxDQUFDO2dCQUNMLENBQUMsQ0FBQyxDQUFDO2dCQUVILEdBQUcsQ0FBQyxNQUFNLENBQUMsR0FBRyxDQUFDLENBQUMsSUFBSSxDQUFDLElBQUEsYUFBRyxFQUFDLEdBQUcsRUFBRSxZQUFVLENBQUMsQ0FBQyxDQUFDOzs7O2dCQUUzQyxJQUFJLENBQUMsRUFBRSxLQUFLLEVBQUUsTUFBTSxFQUFFLENBQUMsQ0FBQzs7Ozs7S0FFM0IsQ0FBQztBQW5EVyxRQUFBLDRCQUE0QixnQ0FtRHZDIn0=

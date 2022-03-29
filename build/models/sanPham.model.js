@@ -75,10 +75,6 @@ var sanPhamSchema = new mongoose_1.Schema({
         trim: true,
         ref: 'CategoriModel',
     },
-    /**
-     * !: sao là object chứa nhiều người dùng
-     * TODO: khi thêm 1 sao thì sẽ tính phần trăm dựa theo người dùng
-     */
     luotThich: {
         tongLuotThich: {
             type: Number,
@@ -91,8 +87,6 @@ var sanPhamSchema = new mongoose_1.Schema({
                 },
                 tenNguoiDung: {
                     type: String,
-                    // unique: true,
-                    // sparse: true,
                 },
             },
         ],
@@ -121,10 +115,6 @@ var sanPhamSchema = new mongoose_1.Schema({
             },
         },
     ],
-    /**
-     * !: màu sắc là một mãng chứa size và size chứa số lượng
-     * TODO: thêm màu sắc bắt buộc tenMauSac là mã màu, thêm nhiều size và số lượng của tường size
-     */
     soLuong: {
         type: Number,
         default: 0,
@@ -138,26 +128,26 @@ sanPhamSchema.pre('save', function (next) {
             if (this.isModified('phanTramSale') && this.isModified('giaTien')) {
                 this.thanhTien = this.giaTien - (this.giaTien / 100) * this.phanTramSale;
                 this.sale = true;
-                return [2 /*return*/, next()];
+                return [2, next()];
             }
             else if (!this.isModified('phanTramSale') && this.isModified('sale') && this.isModified('giaTien')) {
                 this.thanhTien = this.giaTien;
                 this.sale = false;
-                return [2 /*return*/, next()];
+                return [2, next()];
             }
             else if (this.isModified('phanTramSale') && !this.isModified('sale') && this.isModified('giaTien')) {
                 this.thanhTien = this.giaTien - (this.giaTien / 100) * this.phanTramSale;
                 this.sale = true;
-                return [2 /*return*/, next()];
+                return [2, next()];
             }
             else if (this.isModified('giaTien')) {
                 this.thanhTien = this.giaTien;
-                return [2 /*return*/, next()];
+                return [2, next()];
             }
             else {
-                return [2 /*return*/, next()];
+                return [2, next()];
             }
-            return [2 /*return*/];
+            return [2];
         });
     });
 });
@@ -167,30 +157,30 @@ sanPhamSchema.static('findBeforeSetLike', function (_a, idSanPham) {
         var sanPham, idNguoiDungStr, sanPhamLike;
         return __generator(this, function (_b) {
             switch (_b.label) {
-                case 0: return [4 /*yield*/, SanPhamsModel.findOne({ _id: idSanPham })];
+                case 0: return [4, SanPhamsModel.findOne({ _id: idSanPham })];
                 case 1:
                     sanPham = _b.sent();
-                    return [4 /*yield*/, idNguoiDung.toString()];
+                    return [4, idNguoiDung.toString()];
                 case 2:
                     idNguoiDungStr = _b.sent();
-                    if (!(sanPham !== null)) return [3 /*break*/, 7];
-                    return [4 /*yield*/, SanPhamsModel.findOne({
+                    if (!(sanPham !== null)) return [3, 7];
+                    return [4, SanPhamsModel.findOne({
                             _id: idSanPham,
                             'luotThich.idNguoiDungs': { $elemMatch: { idNguoiDung: idNguoiDungStr } },
                         })];
                 case 3:
                     sanPhamLike = _b.sent();
-                    if (!(sanPhamLike === null)) return [3 /*break*/, 5];
+                    if (!(sanPhamLike === null)) return [3, 5];
                     sanPham.luotThich.idNguoiDungs.push({ idNguoiDung: idNguoiDung, tenNguoiDung: tenNguoiDung });
                     sanPham.luotThich.tongLuotThich = sanPham.luotThich.idNguoiDungs.length;
-                    return [4 /*yield*/, sanPham.save()];
+                    return [4, sanPham.save()];
                 case 4:
                     _b.sent();
-                    return [3 /*break*/, 6];
-                case 5: return [2 /*return*/];
-                case 6: return [3 /*break*/, 8];
+                    return [3, 6];
+                case 5: return [2];
+                case 6: return [3, 8];
                 case 7: throw new Error('ERROR');
-                case 8: return [2 /*return*/];
+                case 8: return [2];
             }
         });
     });
@@ -201,49 +191,46 @@ sanPhamSchema.static('findBeforeSetUnLike', function (_a, idSanPham) {
         var sanPham, idNguoiDungStr, sanPhamLike;
         return __generator(this, function (_b) {
             switch (_b.label) {
-                case 0: return [4 /*yield*/, SanPhamsModel.findOne({ _id: idSanPham })];
+                case 0: return [4, SanPhamsModel.findOne({ _id: idSanPham })];
                 case 1:
                     sanPham = _b.sent();
-                    return [4 /*yield*/, idNguoiDung.toString()];
+                    return [4, idNguoiDung.toString()];
                 case 2:
                     idNguoiDungStr = _b.sent();
-                    if (!(sanPham !== null)) return [3 /*break*/, 8];
-                    return [4 /*yield*/, SanPhamsModel.findOne({
+                    if (!(sanPham !== null)) return [3, 8];
+                    return [4, SanPhamsModel.findOne({
                             _id: idSanPham,
                             'luotThich.idNguoiDungs': { $elemMatch: { idNguoiDung: idNguoiDungStr } },
                         })];
                 case 3:
                     sanPhamLike = _b.sent();
-                    if (!(sanPhamLike === null)) return [3 /*break*/, 4];
-                    return [2 /*return*/];
-                case 4: return [4 /*yield*/, SanPhamsModel.findByIdAndUpdate(idSanPham, { $pull: { 'luotThich.idNguoiDungs': { idNguoiDung: idNguoiDungStr } } }, { safe: true, upsert: true }
-                    // { luotThich: { $pull: { idNguoiDungs: { idNguoiDung: idNguoiDungStr } } } },
-                    // { safe: true, multi: true }
-                    )];
+                    if (!(sanPhamLike === null)) return [3, 4];
+                    return [2];
+                case 4: return [4, SanPhamsModel.findByIdAndUpdate(idSanPham, { $pull: { 'luotThich.idNguoiDungs': { idNguoiDung: idNguoiDungStr } } }, { safe: true, upsert: true })];
                 case 5:
                     _b.sent();
                     sanPham.luotThich.tongLuotThich--;
-                    return [4 /*yield*/, sanPham.save()];
+                    return [4, sanPham.save()];
                 case 6:
                     _b.sent();
                     _b.label = 7;
-                case 7: return [3 /*break*/, 9];
+                case 7: return [3, 9];
                 case 8: throw new Error('ERROR');
-                case 9: return [2 /*return*/];
+                case 9: return [2];
             }
         });
     });
 });
 var SanPhamsModel = (0, mongoose_1.model)('sanPhamSchema', sanPhamSchema);
-//export const SanPhamsModel = model<ISanPham>('sanPhamSchema', sanPhamSchema) as ISanPhamModel;
 index_1.DEFATUL_SANPHAM.forEach(function (n) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, SanPhamsModel.findOneAndUpdate(n, n, { new: true, upsert: true })];
+            case 0: return [4, SanPhamsModel.findOneAndUpdate(n, n, { new: true, upsert: true })];
             case 1:
                 _a.sent();
-                return [2 /*return*/];
+                return [2];
         }
     });
 }); });
 exports.default = SanPhamsModel;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoic2FuUGhhbS5tb2RlbC5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uL3NyYy9tb2RlbHMvc2FuUGhhbS5tb2RlbC50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztBQUFBLHFDQUFnRDtBQUVoRCw0Q0FBcUQ7QUEyQ3JELElBQU0sYUFBYSxHQUFHLElBQUksaUJBQU0sQ0FDOUI7SUFDRSxVQUFVLEVBQUU7UUFDVixJQUFJLEVBQUUsTUFBTTtRQUNaLFFBQVEsRUFBRSxDQUFDLElBQUksRUFBRSx1QkFBdUIsQ0FBQztRQUN6QyxJQUFJLEVBQUUsSUFBSTtLQUNYO0lBQ0QsT0FBTyxFQUFFO1FBQ1AsSUFBSSxFQUFFLE1BQU07UUFDWixRQUFRLEVBQUUsQ0FBQyxJQUFJLEVBQUUsbUJBQW1CLENBQUM7S0FDdEM7SUFFRCxJQUFJLEVBQUU7UUFDSixJQUFJLEVBQUUsT0FBTztRQUNiLE9BQU8sRUFBRSxLQUFLO0tBQ2Y7SUFDRCxZQUFZLEVBQUU7UUFDWixJQUFJLEVBQUUsTUFBTTtRQUNaLE9BQU8sRUFBRSxDQUFDO1FBQ1YsUUFBUSxFQUFSLFVBQVMsS0FBYTtZQUNwQixJQUFJLEtBQUssR0FBRyxDQUFDLElBQUksS0FBSyxHQUFHLEdBQUcsRUFBRTtnQkFDNUIsTUFBTSxJQUFJLEtBQUssQ0FBQyw4QkFBOEIsQ0FBQyxDQUFDO2FBQ2pEO1FBQ0gsQ0FBQztLQUNGO0lBQ0QsU0FBUyxFQUFFO1FBQ1QsSUFBSSxFQUFFLE1BQU07UUFDWixPQUFPLEVBQUUsQ0FBQztLQUNYO0lBQ0QsT0FBTyxFQUFFO1FBQ1AsSUFBSSxFQUFFLE1BQU07UUFDWixPQUFPLEVBQ0wsbUhBQW1IO0tBQ3RIO0lBQ0QsVUFBVSxFQUFFO1FBQ1YsSUFBSSxFQUFFLE1BQU07UUFDWixRQUFRLEVBQUUsQ0FBQyxJQUFJLEVBQUUsd0JBQXdCLENBQUM7UUFDMUMsSUFBSSxFQUFFLElBQUk7UUFDVixHQUFH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

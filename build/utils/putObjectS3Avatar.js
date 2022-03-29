@@ -55,7 +55,7 @@ var putImagAvatar = function (data, id) { return __awaiter(void 0, void 0, void 
                     throw new Error("Please upload a Images");
                 }
                 dst = "avatar/".concat(id, "/").concat(Date.now(), "_").concat(originalname);
-                return [4 /*yield*/, (0, sharp_1.default)(buffer)
+                return [4, (0, sharp_1.default)(buffer)
                         .resize({ width: 250, height: 250 })
                         .png()
                         .toBuffer()];
@@ -70,16 +70,17 @@ var putImagAvatar = function (data, id) { return __awaiter(void 0, void 0, void 
                 _a.label = 2;
             case 2:
                 _a.trys.push([2, 4, , 5]);
-                return [4 /*yield*/, s3.putObject(params).promise()];
+                return [4, s3.putObject(params).promise()];
             case 3:
                 _a.sent();
                 url = "".concat(s3_domain_name, "/").concat(dst);
-                return [2 /*return*/, url];
+                return [2, url];
             case 4:
                 error_1 = _a.sent();
                 throw error_1;
-            case 5: return [2 /*return*/];
+            case 5: return [2];
         }
     });
 }); };
 exports.putImagAvatar = putImagAvatar;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicHV0T2JqZWN0UzNBdmF0YXIuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi9zcmMvdXRpbHMvcHV0T2JqZWN0UzNBdmF0YXIudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O0FBQU0sSUFBQSxLQUF5QyxPQUFPLENBQUMsa0JBQWtCLENBQUMsRUFBbEUsY0FBYyxvQkFBQSxFQUFFLEVBQUUsUUFBQSxFQUFFLGNBQWMsb0JBQWdDLENBQUM7QUFFM0UsZ0RBQTBCO0FBRW5CLElBQU0sYUFBYSxHQUFHLFVBQU8sSUFBUyxFQUFFLEVBQVU7Ozs7O2dCQUNoRCxNQUFNLEdBQW1DLElBQUksT0FBdkMsRUFBRSxZQUFZLEdBQXFCLElBQUksYUFBekIsRUFBRSxRQUFRLEdBQVcsSUFBSSxTQUFmLEVBQUUsSUFBSSxHQUFLLElBQUksS0FBVCxDQUFVO2dCQUV0RCxJQUFJLElBQUksSUFBSSxPQUFPLEVBQUU7b0JBQ3BCLE1BQU0sSUFBSSxLQUFLLENBQUMsc0JBQXNCLENBQUMsQ0FBQztpQkFDeEM7Z0JBRUQsSUFBSSxDQUFDLFlBQVksQ0FBQyxLQUFLLENBQUMsbUJBQW1CLENBQUMsRUFBRTtvQkFDN0MsTUFBTSxJQUFJLEtBQUssQ0FBQyx3QkFBd0IsQ0FBQyxDQUFDO2lCQUMxQztnQkFFSyxHQUFHLEdBQUcsaUJBQVUsRUFBRSxjQUFJLElBQUksQ0FBQyxHQUFHLEVBQUUsY0FBSSxZQUFZLENBQUUsQ0FBQztnQkFFckMsV0FBTSxJQUFBLGVBQUssRUFBQyxNQUFNLENBQUM7eUJBQ3JDLE1BQU0sQ0FBQyxFQUFFLEtBQUssRUFBRSxHQUFHLEVBQUUsTUFBTSxFQUFFLEdBQUcsRUFBRSxDQUFDO3lCQUNuQyxHQUFHLEVBQUU7eUJBQ0wsUUFBUSxFQUFFLEVBQUE7O2dCQUhOLFdBQVcsR0FBRyxTQUdSO2dCQUVOLE1BQU0sR0FBRztvQkFDZCxNQUFNLEVBQUUsY0FBYztvQkFDdEIsR0FBRyxFQUFFLEdBQUc7b0JBQ1IsSUFBSSxFQUFFLFdBQVc7b0JBQ2pCLFdBQVcsRUFBRSxRQUFRO2lCQUNyQixDQUFDOzs7O2dCQUdELFdBQU0sRUFBRSxDQUFDLFNBQVMsQ0FBQyxNQUFNLENBQUMsQ0FBQyxPQUFPLEVBQUUsRUFBQTs7Z0JBQXBDLFNBQW9DLENBQUM7Z0JBQy9CLEdBQUcsR0FBVyxVQUFHLGNBQWMsY0FBSSxHQUFHLENBQUUsQ0FBQztnQkFFL0MsV0FBTyxHQUFHLEVBQUM7OztnQkFFWCxNQUFNLE9BQUssQ0FBQzs7OztLQUViLENBQUM7QUFqQ1csUUFBQSxhQUFhLGlCQWlDeEIifQ==

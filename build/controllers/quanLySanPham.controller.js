@@ -54,11 +54,6 @@ exports.XoaSanPhamController = exports.ChinhSuaHinhAnhSanPhamController = export
 var reponse_1 = require("../utils/reponse");
 var sanPham_model_1 = __importDefault(require("../models/sanPham.model"));
 var putObjectS3Picture_1 = require("./../utils/putObjectS3Picture");
-//Get /tasks lấy tất cả task của user
-//Get /tasks?completed=true lấy task completed true
-//Get /tasks?limit=1 lấy task giới hạn 1 task
-//Get /tasks?limit=1&skip=1 lấy task giới hạn 1 task ở trang 1, phân trang
-//Get /tasks?sortBy=createdAt:desc lấy task sort tăng dần theo ngày hoàn thành
 var LayTatCaSanPhamController = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var match, sort, parts, allSanPham_1, allSanPham, error_1;
     return __generator(this, function (_a) {
@@ -76,26 +71,26 @@ var LayTatCaSanPhamController = function (req, res, next) { return __awaiter(voi
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 5, , 6]);
-                if (!match.categories) return [3 /*break*/, 3];
-                return [4 /*yield*/, sanPham_model_1.default.find({ categories: match.categories })
+                if (!match.categories) return [3, 3];
+                return [4, sanPham_model_1.default.find({ categories: match.categories })
                         .sort(sort)
                         .skip(req.query.skip)
                         .limit(req.query.limit)];
             case 2:
                 allSanPham_1 = _a.sent();
-                return [2 /*return*/, res.status(200).json((0, reponse_1.ReS)(200, allSanPham_1))];
-            case 3: return [4 /*yield*/, sanPham_model_1.default.find()
+                return [2, res.status(200).json((0, reponse_1.ReS)(200, allSanPham_1))];
+            case 3: return [4, sanPham_model_1.default.find()
                     .sort(sort)
                     .skip(req.query.skip)
                     .limit(req.query.limit)];
             case 4:
                 allSanPham = _a.sent();
-                return [2 /*return*/, res.status(200).json((0, reponse_1.ReS)(200, allSanPham))];
+                return [2, res.status(200).json((0, reponse_1.ReS)(200, allSanPham))];
             case 5:
                 error_1 = _a.sent();
                 next(error_1);
-                return [3 /*break*/, 6];
-            case 6: return [2 /*return*/];
+                return [3, 6];
+            case 6: return [2];
         }
     });
 }); };
@@ -107,16 +102,16 @@ var TimSanPhamTheoTenController = function (req, res, next) { return __awaiter(v
             case 0:
                 _a.trys.push([0, 2, , 3]);
                 tenSanPham = req.query.tenSanPham;
-                return [4 /*yield*/, sanPham_model_1.default.find({ tenSanPham: { $regex: '.*' + tenSanPham + '.*' } })];
+                return [4, sanPham_model_1.default.find({ tenSanPham: { $regex: '.*' + tenSanPham + '.*' } })];
             case 1:
                 allSanPham = _a.sent();
                 res.status(200).json((0, reponse_1.ReS)(200, allSanPham));
-                return [3 /*break*/, 3];
+                return [3, 3];
             case 2:
                 error_2 = _a.sent();
                 next(error_2);
-                return [3 /*break*/, 3];
-            case 3: return [2 /*return*/];
+                return [3, 3];
+            case 3: return [2];
         }
     });
 }); };
@@ -128,16 +123,16 @@ var TimSanPhamTheoIdController = function (req, res, next) { return __awaiter(vo
             case 0:
                 _a.trys.push([0, 2, , 3]);
                 idSanPham = req.params.id;
-                return [4 /*yield*/, sanPham_model_1.default.findOne({ _id: idSanPham })];
+                return [4, sanPham_model_1.default.findOne({ _id: idSanPham })];
             case 1:
                 oneSanPham = _a.sent();
                 res.status(200).json((0, reponse_1.ReS)(200, oneSanPham));
-                return [3 /*break*/, 3];
+                return [3, 3];
             case 2:
                 error_3 = _a.sent();
                 next(error_3);
-                return [3 /*break*/, 3];
-            case 3: return [2 /*return*/];
+                return [3, 3];
+            case 3: return [2];
         }
     });
 }); };
@@ -150,22 +145,22 @@ var ThemSanPhamController = function (req, res, next) { return __awaiter(void 0,
                 _b.trys.push([0, 4, , 5]);
                 _a = req.body, picture = _a.picture, fromSanPham = __rest(_a, ["picture"]);
                 sanPham = new sanPham_model_1.default(fromSanPham);
-                if (!req.file) return [3 /*break*/, 2];
-                return [4 /*yield*/, (0, putObjectS3Picture_1.putImagPicture)(req.file, req.body.tenSanPham)];
+                if (!req.file) return [3, 2];
+                return [4, (0, putObjectS3Picture_1.putImagPicture)(req.file, req.body.tenSanPham)];
             case 1:
                 urlSanPham = _b.sent();
                 sanPham.hinhAnh = urlSanPham;
                 _b.label = 2;
-            case 2: return [4 /*yield*/, sanPham.save()];
+            case 2: return [4, sanPham.save()];
             case 3:
                 _b.sent();
                 res.status(201).json((0, reponse_1.ReS)(201, sanPham));
-                return [3 /*break*/, 5];
+                return [3, 5];
             case 4:
                 error_4 = _b.sent();
                 next(error_4);
-                return [3 /*break*/, 5];
-            case 5: return [2 /*return*/];
+                return [3, 5];
+            case 5: return [2];
         }
     });
 }); };
@@ -177,27 +172,27 @@ var ThemSoLuongSanPhamController = function (req, res, next) { return __awaiter(
             case 0:
                 _id = req.params.id;
                 if (!req.body.soLuong) {
-                    return [2 /*return*/, res.status(400).json((0, reponse_1.ReE)(400, 'Bạn chưa thêm số lượng'))];
+                    return [2, res.status(400).json((0, reponse_1.ReE)(400, 'Bạn chưa thêm số lượng'))];
                 }
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 4, , 5]);
-                return [4 /*yield*/, sanPham_model_1.default.findById(_id)];
+                return [4, sanPham_model_1.default.findById(_id)];
             case 2:
                 sanPham = _a.sent();
                 if (sanPham === null) {
-                    return [2 /*return*/, res.status(400).json((0, reponse_1.ReE)(400, 'Không tìm thấy sản phẩm'))];
+                    return [2, res.status(400).json((0, reponse_1.ReE)(400, 'Không tìm thấy sản phẩm'))];
                 }
                 sanPham.soLuong = sanPham.soLuong + req.body.soLuong;
-                return [4 /*yield*/, sanPham.save()];
+                return [4, sanPham.save()];
             case 3:
                 _a.sent();
-                return [2 /*return*/, res.status(200).json((0, reponse_1.ReS)(200, sanPham))];
+                return [2, res.status(200).json((0, reponse_1.ReS)(200, sanPham))];
             case 4:
                 error_5 = _a.sent();
                 next(error_5);
-                return [3 /*break*/, 5];
-            case 5: return [2 /*return*/];
+                return [3, 5];
+            case 5: return [2];
         }
     });
 }); };
@@ -209,30 +204,30 @@ var GiamSoLuongSanPhamController = function (req, res, next) { return __awaiter(
             case 0:
                 _id = req.params.id;
                 if (!req.body.soLuong) {
-                    return [2 /*return*/, res.status(400).json((0, reponse_1.ReE)(400, 'Bạn chưa thêm số lượng'))];
+                    return [2, res.status(400).json((0, reponse_1.ReE)(400, 'Bạn chưa thêm số lượng'))];
                 }
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 4, , 5]);
-                return [4 /*yield*/, sanPham_model_1.default.findById(_id)];
+                return [4, sanPham_model_1.default.findById(_id)];
             case 2:
                 sanPham = _a.sent();
                 if (sanPham === null) {
-                    return [2 /*return*/, res.status(400).json((0, reponse_1.ReE)(400, 'Không tìm thấy sản phẩm'))];
+                    return [2, res.status(400).json((0, reponse_1.ReE)(400, 'Không tìm thấy sản phẩm'))];
                 }
                 sanPham.soLuong = sanPham.soLuong - req.body.soLuong;
                 if (sanPham.soLuong < 0) {
                     sanPham.soLuong = 0;
                 }
-                return [4 /*yield*/, sanPham.save()];
+                return [4, sanPham.save()];
             case 3:
                 _a.sent();
-                return [2 /*return*/, res.status(200).json((0, reponse_1.ReS)(200, sanPham))];
+                return [2, res.status(200).json((0, reponse_1.ReS)(200, sanPham))];
             case 4:
                 error_6 = _a.sent();
                 next(error_6);
-                return [3 /*break*/, 5];
-            case 5: return [2 /*return*/];
+                return [3, 5];
+            case 5: return [2];
         }
     });
 }); };
@@ -249,33 +244,33 @@ var ChinhSuaSanPhamController = function (req, res, next) { return __awaiter(voi
                     return allowedUpdates.includes(update);
                 });
                 if (!isValiOperetion) {
-                    return [2 /*return*/, res.status(400).json((0, reponse_1.ReE)(400, 'hãy sửa những dử liệu yêu cầu'))];
+                    return [2, res.status(400).json((0, reponse_1.ReE)(400, 'hãy sửa những dử liệu yêu cầu'))];
                 }
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 6, , 7]);
-                return [4 /*yield*/, sanPham_model_1.default.findById({ _id: _id })];
+                return [4, sanPham_model_1.default.findById({ _id: _id })];
             case 2:
                 sanPham_1 = _a.sent();
                 if (sanPham_1 === null) {
-                    return [2 /*return*/, res.status(400).json((0, reponse_1.ReE)(400, 'không tìm thấy sản phẩm'))];
+                    return [2, res.status(400).json((0, reponse_1.ReE)(400, 'không tìm thấy sản phẩm'))];
                 }
                 updates.forEach(function (update) { return (sanPham_1[update] = req.body[update]); });
-                if (!req.file) return [3 /*break*/, 4];
-                return [4 /*yield*/, (0, putObjectS3Picture_1.putImagPicture)(req.file, req.body.tenSanPham)];
+                if (!req.file) return [3, 4];
+                return [4, (0, putObjectS3Picture_1.putImagPicture)(req.file, req.body.tenSanPham)];
             case 3:
                 urlSanPham = _a.sent();
                 sanPham_1.hinhAnh = urlSanPham;
                 _a.label = 4;
-            case 4: return [4 /*yield*/, sanPham_1.save()];
+            case 4: return [4, sanPham_1.save()];
             case 5:
                 _a.sent();
-                return [2 /*return*/, res.status(200).json((0, reponse_1.ReS)(200, sanPham_1))];
+                return [2, res.status(200).json((0, reponse_1.ReS)(200, sanPham_1))];
             case 6:
                 error_7 = _a.sent();
                 next(error_7);
-                return [3 /*break*/, 7];
-            case 7: return [2 /*return*/];
+                return [3, 7];
+            case 7: return [2];
         }
     });
 }); };
@@ -289,28 +284,28 @@ var ChinhSuaHinhAnhSanPhamController = function (req, res, next) { return __awai
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 5, , 6]);
-                return [4 /*yield*/, sanPham_model_1.default.findById({ _id: _id })];
+                return [4, sanPham_model_1.default.findById({ _id: _id })];
             case 2:
                 sanPham = _a.sent();
                 if (sanPham === null) {
-                    return [2 /*return*/, res.status(400).json((0, reponse_1.ReE)(400, 'không tìm thấy sản phẩm'))];
+                    return [2, res.status(400).json((0, reponse_1.ReE)(400, 'không tìm thấy sản phẩm'))];
                 }
                 if (!req.file) {
-                    return [2 /*return*/, res.status(400).json((0, reponse_1.ReE)(400, 'không tìm Picture'))];
+                    return [2, res.status(400).json((0, reponse_1.ReE)(400, 'không tìm Picture'))];
                 }
-                return [4 /*yield*/, (0, putObjectS3Picture_1.putImagPicture)(req.file, req.body.tenSanPham)];
+                return [4, (0, putObjectS3Picture_1.putImagPicture)(req.file, req.body.tenSanPham)];
             case 3:
                 urlSanPham = _a.sent();
                 sanPham.hinhAnh = urlSanPham;
-                return [4 /*yield*/, sanPham.save()];
+                return [4, sanPham.save()];
             case 4:
                 _a.sent();
-                return [2 /*return*/, res.status(200).json((0, reponse_1.ReS)(200, sanPham))];
+                return [2, res.status(200).json((0, reponse_1.ReS)(200, sanPham))];
             case 5:
                 error_8 = _a.sent();
                 next(error_8);
-                return [3 /*break*/, 6];
-            case 6: return [2 /*return*/];
+                return [3, 6];
+            case 6: return [2];
         }
     });
 }); };
@@ -324,16 +319,17 @@ var XoaSanPhamController = function (req, res, next) { return __awaiter(void 0, 
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, sanPham_model_1.default.findByIdAndDelete({ _id: _id })];
+                return [4, sanPham_model_1.default.findByIdAndDelete({ _id: _id })];
             case 2:
                 _a.sent();
-                return [2 /*return*/, res.status(200).json((0, reponse_1.ReS)(200, 'xóa sản phẩm thành công'))];
+                return [2, res.status(200).json((0, reponse_1.ReS)(200, 'xóa sản phẩm thành công'))];
             case 3:
                 error_9 = _a.sent();
                 next(error_9);
-                return [3 /*break*/, 4];
-            case 4: return [2 /*return*/];
+                return [3, 4];
+            case 4: return [2];
         }
     });
 }); };
 exports.XoaSanPhamController = XoaSanPhamController;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicXVhbkx5U2FuUGhhbS5jb250cm9sbGVyLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vc3JjL2NvbnRyb2xsZXJzL3F1YW5MeVNhblBoYW0uY29udHJvbGxlci50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztBQUNBLDRDQUE0QztBQUU1QywwRUFBb0Q7QUFFcEQsb0VBQStEO0FBbUJ4RCxJQUFNLHlCQUF5QixHQUFHLFVBQU8sR0FBWSxFQUFFLEdBQWEsRUFBRSxJQUFrQjs7Ozs7Z0JBQ3ZGLEtBQUssR0FBVSxFQUFFLENBQUM7Z0JBQ2xCLElBQUksR0FBVSxFQUFFLENBQUM7Z0JBRXZCLElBQUksR0FBRyxDQUFDLEtBQUssQ0FBQyxVQUFVLEVBQUU7b0JBQ3hCLEtBQUssQ0FBQyxVQUFVLEdBQUksR0FBVyxDQUFDLEtBQUssQ0FBQyxVQUFVLENBQUM7aUJBQ2xEO2dCQUVELElBQUksR0FBRyxDQUFDLEtBQUssQ0FBQyxNQUFNLEVBQUU7b0JBQ2QsS0FBSyxHQUF3QixHQUFXLENBQUMsS0FBSyxDQUFDLE1BQU0sQ0FBQyxLQUFLLENBQUMsR0FBRyxDQUFDLENBQUM7b0JBQ3ZFLElBQUksQ0FBQyxLQUFLLENBQUMsQ0FBQyxDQUFDLENBQUMsR0FBRyxLQUFLLENBQUMsQ0FBQyxDQUFDLEtBQUssTUFBTSxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFDO2lCQUMvQzs7OztxQkFHSyxLQUFLLENBQUMsVUFBVSxFQUFoQixjQUFnQjtnQkFDQyxXQUFNLHVCQUFhLENBQUMsSUFBSSxDQUFDLEVBQUUsVUFBVSxFQUFFLEtBQUssQ0FBQyxVQUFVLEVBQUUsQ0FBQzt5QkFDMUUsSUFBSSxDQUFDLElBQUksQ0FBQzt5QkFDVixJQUFJLENBQUUsR0FBVyxDQUFDLEtBQUssQ0FBQyxJQUFJLENBQUM7eUJBQzdCLEtB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

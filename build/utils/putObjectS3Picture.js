@@ -55,7 +55,7 @@ var putImagPicture = function (data, tenSanPham) { return __awaiter(void 0, void
                     throw new Error('Chỉ nhận ảnh');
                 }
                 dst = "picture/".concat(tenSanPham, "/").concat(Date.now(), "_").concat(originalname);
-                return [4 /*yield*/, (0, sharp_1.default)(buffer).resize({ width: 500, height: 750 }).png().toBuffer()];
+                return [4, (0, sharp_1.default)(buffer).resize({ width: 500, height: 750 }).png().toBuffer()];
             case 1:
                 bufferSharp = _a.sent();
                 params = {
@@ -67,16 +67,17 @@ var putImagPicture = function (data, tenSanPham) { return __awaiter(void 0, void
                 _a.label = 2;
             case 2:
                 _a.trys.push([2, 4, , 5]);
-                return [4 /*yield*/, s3.putObject(params).promise()];
+                return [4, s3.putObject(params).promise()];
             case 3:
                 _a.sent();
                 url = "".concat(s3_domain_name, "/").concat(dst);
-                return [2 /*return*/, url];
+                return [2, url];
             case 4:
                 error_1 = _a.sent();
                 throw error_1;
-            case 5: return [2 /*return*/];
+            case 5: return [2];
         }
     });
 }); };
 exports.putImagPicture = putImagPicture;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicHV0T2JqZWN0UzNQaWN0dXJlLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vc3JjL3V0aWxzL3B1dE9iamVjdFMzUGljdHVyZS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7QUFBTSxJQUFBLEtBQXlDLE9BQU8sQ0FBQyxrQkFBa0IsQ0FBQyxFQUFsRSxjQUFjLG9CQUFBLEVBQUUsRUFBRSxRQUFBLEVBQUUsY0FBYyxvQkFBZ0MsQ0FBQztBQUUzRSxnREFBMEI7QUFFbkIsSUFBTSxjQUFjLEdBQUcsVUFBTyxJQUFTLEVBQUUsVUFBa0I7Ozs7O2dCQUN4RCxNQUFNLEdBQW1DLElBQUksT0FBdkMsRUFBRSxZQUFZLEdBQXFCLElBQUksYUFBekIsRUFBRSxRQUFRLEdBQVcsSUFBSSxTQUFmLEVBQUUsSUFBSSxHQUFLLElBQUksS0FBVCxDQUFVO2dCQUV0RCxJQUFJLElBQUksSUFBSSxPQUFPLEVBQUU7b0JBQ25CLE1BQU0sSUFBSSxLQUFLLENBQUMsc0JBQXNCLENBQUMsQ0FBQztpQkFDekM7Z0JBRUQsSUFBSSxDQUFDLFlBQVksQ0FBQyxLQUFLLENBQUMsbUJBQW1CLENBQUMsRUFBRTtvQkFDNUMsTUFBTSxJQUFJLEtBQUssQ0FBQyxjQUFjLENBQUMsQ0FBQztpQkFDakM7Z0JBRUssR0FBRyxHQUFHLGtCQUFXLFVBQVUsY0FBSSxJQUFJLENBQUMsR0FBRyxFQUFFLGNBQUksWUFBWSxDQUFFLENBQUM7Z0JBRTlDLFdBQU0sSUFBQSxlQUFLLEVBQUMsTUFBTSxDQUFDLENBQUMsTUFBTSxDQUFDLEVBQUUsS0FBSyxFQUFFLEdBQUcsRUFBRSxNQUFNLEVBQUUsR0FBRyxFQUFFLENBQUMsQ0FBQyxHQUFHLEVBQUUsQ0FBQyxRQUFRLEVBQUUsRUFBQTs7Z0JBQXRGLFdBQVcsR0FBRyxTQUF3RTtnQkFFdEYsTUFBTSxHQUFHO29CQUNiLE1BQU0sRUFBRSxjQUFjO29CQUN0QixHQUFHLEVBQUUsR0FBRztvQkFDUixJQUFJLEVBQUUsV0FBVztvQkFDakIsV0FBVyxFQUFFLFFBQVE7aUJBQ3RCLENBQUM7Ozs7Z0JBR0EsV0FBTSxFQUFFLENBQUMsU0FBUyxDQUFDLE1BQU0sQ0FBQyxDQUFDLE9BQU8sRUFBRSxFQUFBOztnQkFBcEMsU0FBb0MsQ0FBQztnQkFDL0IsR0FBRyxHQUFXLFVBQUcsY0FBYyxjQUFJLEdBQUcsQ0FBRSxDQUFDO2dCQUMvQyxXQUFPLEdBQUcsRUFBQzs7O2dCQUVYLE1BQU0sT0FBSyxDQUFDOzs7O0tBRWYsQ0FBQztBQTdCVyxRQUFBLGNBQWMsa0JBNkJ6QiJ9

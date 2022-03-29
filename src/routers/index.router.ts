@@ -17,6 +17,4 @@ rootRouter.use('/QuanLySanPham', quanLySanPham);
 
 rootRouter.use('/QuanLyLichSuMuaHang', quanLyLichSuMuaHang);
 
-
-
 export default rootRouter;

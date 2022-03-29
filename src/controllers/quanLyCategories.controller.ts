@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { ReE, ReS } from '../utils/reponse';
 
-const CategoriesModel = require('../models/categories.model');
+import CategoriesModel from '../models/categories.model';
 
 interface ICategori {
   ids: number;
@@ -23,6 +23,7 @@ interface ICategoryResponse {
 
 export const LayToanBoThuocTinhController = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    console.log(123);
     const categories: ICategoryResponse[] = [];
 
     const category: ICategori[] = await CategoriesModel.find();

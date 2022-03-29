@@ -32,7 +32,7 @@ app.use((error: any, req: Request, res: Response, next: NextFunction) => {
   if (typeof error === 'string') {
     res.status(400).json(ReE(400, error));
   }
-  res.status(400).json(ReE(500, 'ERROR'));
+  res.status(500).json(ReE(500, 'ERROR'));
 });
 
 app.listen(port, function () {

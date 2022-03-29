@@ -7,13 +7,14 @@ import jwt from 'jsonwebtoken';
 import lichSuMuaHangModel from '../models/lichSuMuaHang.model';
 import { putImagAvatar } from '../utils/putObjectS3Avatar';
 import { secret_key } from '../configs/index';
+import { sendWellcomeEmail } from '../email/account';
 
 export const DangKyController = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userCheck = await NguoiDungModel.findBeforeCreate((req as any).body);
     const userCreate = new NguoiDungModel(userCheck);
     await userCreate.save();
-
+    await sendWellcomeEmail(userCreate.email, userCreate.hoTen);
     res.status(201).json(ReS(201, userCreate));
   } catch (error: any) {
     next(error);

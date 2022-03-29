@@ -2,7 +2,6 @@ import { Model, Schema, model } from 'mongoose';
 
 import { DEFATUL_SANPHAM } from './../configs/index';
 
-
 interface IIdNguoiDung {
   idNguoiDung: string;
   tenNguoiDung: string;
@@ -19,14 +18,11 @@ interface ILuotThich {
   idNguoiDungs: IIdNguoiDung[];
 }
 
-
-
-
 export interface ISanPham {
   _id: object;
   tenSanPham: string;
   giaTien: number;
- 
+
   sale: boolean;
   phanTramSale: number;
   thanhTien: number;
@@ -54,7 +50,7 @@ const sanPhamSchema = new Schema<ISanPham, ISanPhamModel>(
       type: Number,
       required: [true, 'giá tiền bị trống'],
     },
-   
+
     sale: {
       type: Boolean,
       default: false,
@@ -74,8 +70,7 @@ const sanPhamSchema = new Schema<ISanPham, ISanPhamModel>(
     },
     hinhAnh: {
       type: String,
-      default:
-        'https://img-cdn.2game.vn/2021/02/28/Hutao-va-nhung-dieu-can-biet-khi-co-nang-ra-mat-game-thu-Genshin-Impact-1.jpg',
+      default: 'https://img-cdn.2game.vn/2021/02/28/Hutao-va-nhung-dieu-can-biet-khi-co-nang-ra-mat-game-thu-Genshin-Impact-1.jpg',
     },
     categories: {
       type: String,
@@ -216,10 +211,8 @@ sanPhamSchema.static('findBeforeSetUnLike', async function ({ idNguoiDung, tenNg
 
 const SanPhamsModel = model<ISanPham, ISanPhamModel>('sanPhamSchema', sanPhamSchema);
 
-//export const SanPhamsModel = model<ISanPham>('sanPhamSchema', sanPhamSchema) as ISanPhamModel;
-
-DEFATUL_SANPHAM.forEach(async (n) => {
-  await SanPhamsModel.findOneAndUpdate(n, n, { new: true, upsert: true });
-});
+// DEFATUL_SANPHAM.forEach(async (n) => {
+//   await SanPhamsModel.findOneAndUpdate(n, n, { new: true, upsert: true });
+// });
 
 export default SanPhamsModel;

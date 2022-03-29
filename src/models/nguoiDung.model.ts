@@ -425,8 +425,6 @@ nguoiDungSchema.methods.toJSON = function () {
 
 const NguoiDungModel = model<INguoiDung, INguoiDungModel>('nguoiDungSchema', nguoiDungSchema);
 
-//export const NguoiDungModel = model<INguoiDung>('nguoiDungSchema', nguoiDungSchema) as INguoiDungModel;
-
-NguoiDungModel.findOneAndUpdate(DEFATUL_ADMIN, DEFATUL_ADMIN, { new: true, upsert: true }, function () {});
+// NguoiDungModel.findOneAndUpdate(DEFATUL_ADMIN, DEFATUL_ADMIN, { new: true, upsert: true }, function () {});
 
 export default NguoiDungModel;

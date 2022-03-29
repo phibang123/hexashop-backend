@@ -42,8 +42,6 @@ export type IGioiHang = {
 
   giaTien: number;
   thanhTien: number;
-  // mauSac: string;
-  // size: number;
   hinhAnh: string;
   ngayThem?: string;
 };

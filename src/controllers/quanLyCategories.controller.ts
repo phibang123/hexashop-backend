@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { ReE, ReS } from '../utils/reponse';
 
-import CategoriesModel from '../models/categories.model';
+import categoriesModel from '../models/categories.model';
 
 interface ICategori {
   ids: number;
@@ -26,7 +26,7 @@ export const LayToanBoThuocTinhController = async (req: Request, res: Response, 
     console.log(123);
     const categories: ICategoryResponse[] = [];
 
-    const category: ICategori[] = await CategoriesModel.find();
+    const category: ICategori[] = await categoriesModel.find();
 
     category?.map((cate) => {
       if (cate.level === 1 && !cate.parentId) {

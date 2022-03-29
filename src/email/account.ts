@@ -1,5 +1,5 @@
+import categoriesModel from '../models/categories.model';
 import { send_gird_key } from '../configs/index';
-
 const sgMail = require('@sendgrid/mail');
 
 sgMail.setApiKey(send_gird_key);

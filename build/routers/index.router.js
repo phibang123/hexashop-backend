@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var express_1 = require("express");
+var quanLyNguoiDung = require('./QuanLyNguoiDung/quanLyNguoiDung.router').quanLyNguoiDung;
+var quanLyCategories = require('./QuanLyCategories/quanLyCategories.router').quanLyCategories;
+var quanLySanPham = require('./QuanLySanPham/quanLySanPham.router').quanLySanPham;
+var quanLyLichSuMuaHang = require('./QuanLyLichSuMuaHang/quanLyLichSuMuaHang.router').quanLyLichSuMuaHang;
+var rootRouter = (0, express_1.Router)();
+rootRouter.use('/QuanLyNguoiDung', quanLyNguoiDung);
+rootRouter.use('/QuanLyCategoreis', quanLyCategories);
+rootRouter.use('/QuanLySanPham', quanLySanPham);
+rootRouter.use('/QuanLyLichSuMuaHang', quanLyLichSuMuaHang);
+exports.default = rootRouter;

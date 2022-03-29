@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { ReE, ReS } from '../utils/reponse';
 
 import categoriesModel from '../models/categories.model';
+import lichSuMuaHangModel from '../models/lichSuMuaHang.model';
 
 interface ICategori {
   ids: number;

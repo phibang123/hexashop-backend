@@ -54,10 +54,10 @@ categoriSchema.virtual('sanphamschmas', {
   foreignField: 'categories',
 });
 
-const categoriesModel = model<ICategori, CategoriModel>('categoriSchema', categoriSchema);
-
 // DEFATUL_CATEROGIES.forEach(async (n) => {
 //   await CategoriesModel.findOneAndUpdate(n, n, { new: true, upsert: true });
 // });
+
+const categoriesModel = model<ICategori, CategoriModel>('categoriSchema', categoriSchema);
 
 export default categoriesModel;

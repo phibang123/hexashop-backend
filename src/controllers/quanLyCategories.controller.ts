@@ -1,8 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { ReE, ReS } from '../utils/reponse';
 
-import categoriesModel from '../models/categories.model';
-import lichSuMuaHangModel from '../models/lichSuMuaHang.model';
+import categoriesModel = require('../models/categories.model');
 
 interface ICategori {
   ids: number;
@@ -24,7 +23,6 @@ interface ICategoryResponse {
 
 export const LayToanBoThuocTinhController = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    console.log(123);
     const categories: ICategoryResponse[] = [];
 
     const category: ICategori[] = await categoriesModel.find();

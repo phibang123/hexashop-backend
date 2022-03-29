@@ -58,6 +58,6 @@ categoriSchema.virtual('sanphamschmas', {
 //   await CategoriesModel.findOneAndUpdate(n, n, { new: true, upsert: true });
 // });
 
-const categoriesModel = model<ICategori, CategoriModel>('categoriSchema', categoriSchema);
+const categoryModel = model<ICategori, CategoriModel>('categoriSchema', categoriSchema);
 
-export default categoriesModel;
+export default categoryModel;

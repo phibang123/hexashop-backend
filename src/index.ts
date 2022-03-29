@@ -3,7 +3,7 @@ import express, { Application, NextFunction, Request, RequestHandler, Response }
 import { ReE } from './utils/reponse';
 import rootRouter from './routers/index.router';
 
-require('./db/mongooseConnect.ts');
+require('./db/mongooseConnect');
 require('./models/categories.model');
 require('./models/nguoiDung.model');
 require('./models/sanPham.model');

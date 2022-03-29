@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { ReE, ReS } from '../utils/reponse';
 
-import NguoiDung from '../models/nguoiDung.model';
+import NguoiDung from '../models/nguoiDung';
 import jwt from 'jsonwebtoken';
 import { secret_key } from './../configs/index';
 

@@ -1,6 +1,6 @@
 import { Model, Schema, model } from 'mongoose';
 
-import { DEFATUL_CATEROGIES } from './../configs/index';
+import { DEFATUL_CATEROGIES } from '../configs/index';
 
 interface ICategori {
   ids: number;

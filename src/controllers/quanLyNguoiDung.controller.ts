@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
 import { ReE, ReS } from '../utils/reponse';
 
-import NguoiDungModel from '../models/nguoiDung.model';
-import SanPhamsModel from '../models/sanPham.model';
+import NguoiDungModel from '../models/nguoiDung';
+import SanPhamsModel from '../models/sanPham';
 import jwt from 'jsonwebtoken';
-import lichSuMuaHangModel from '../models/lichSuMuaHang.model';
+import lichSuMuaHangModel from '../models/lichSuMuaHang';
 import { putImagAvatar } from '../utils/putObjectS3Avatar';
 import { secret_key } from '../configs/index';
 import { sendWellcomeEmail } from '../email/account';

@@ -1,5 +1,5 @@
 import { Model, Schema, model } from 'mongoose';
-import SanPhamsModel, { ISanPham, ISanPhamModel } from './sanPham.model';
+import SanPhamsModel, { ISanPham, ISanPhamModel } from './sanPham';
 
 import { DEFATUL_ADMIN } from '../configs/index';
 import { NextFunction } from 'express';

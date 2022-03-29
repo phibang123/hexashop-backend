@@ -1,6 +1,6 @@
 import { Model, Schema, model } from 'mongoose';
 
-import { DEFATUL_SANPHAM } from './../configs/index';
+import { DEFATUL_SANPHAM } from '../configs/index';
 
 interface IIdNguoiDung {
   idNguoiDung: string;

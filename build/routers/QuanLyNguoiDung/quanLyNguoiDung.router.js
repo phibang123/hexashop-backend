@@ -14,7 +14,7 @@ exports.quanLyNguoiDung = (0, express_1.Router)();
 exports.quanLyNguoiDung.post('/DangKy', quanLyNguoiDungController.DangKyController);
 exports.quanLyNguoiDung.post('/DangNhap', quanLyNguoiDungController.DangNhapController);
 exports.quanLyNguoiDung.get('/ThongTin', auth_1.auth, quanLyNguoiDungController.LayThongTinProfileController);
-exports.quanLyNguoiDung.patch('/avatar', auth_1.auth, exports.upload.single('avatar'), quanLyNguoiDungController.UpLoadAvatarController);
+exports.quanLyNguoiDung.patch('/Avatar', auth_1.auth, exports.upload.single('avatar'), quanLyNguoiDungController.UpLoadAvatarController);
 exports.quanLyNguoiDung.patch('/ChinhSua', auth_1.auth, quanLyNguoiDungController.ChinhSuaNguoiDungController);
 exports.quanLyNguoiDung.post('/Like/:id', auth_1.auth, quanLyNguoiDungController.ThichSanPhamController);
 exports.quanLyNguoiDung.post('/Comment/:id', auth_1.auth, quanLyNguoiDungController.CommemtSanPhamController);

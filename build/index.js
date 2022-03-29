@@ -43,7 +43,7 @@ app.use(function (error, req, res, next) {
     if (typeof error === 'string') {
         res.status(400).json((0, reponse_1.ReE)(400, error));
     }
-    res.status(400).json((0, reponse_1.ReE)(500, 'ERROR'));
+    res.status(500).json((0, reponse_1.ReE)(500, 'ERROR'));
 });
 app.listen(port, function () {
     console.log('Express server listening on port', port);

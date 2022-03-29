@@ -12,11 +12,8 @@ export type IGioiHang = {
   soLuong: number;
   sale: boolean;
   phanTramSale: number;
-
   giaTien: number;
   thanhTien: number;
-  // mauSac: string;
-  // size: number;
   hinhAnh: string;
   ngayThem?: string;
 };
@@ -47,7 +44,7 @@ interface INguoiDungInput {
   sex: 'Nam' | 'Nữ';
 }
 
-interface INguoiDung extends INguoiDungInput {
+export interface INguoiDung extends INguoiDungInput {
   _id: object;
   adminInWeb: boolean;
   gioHang: IGioiHang[];
@@ -222,6 +219,7 @@ nguoiDungSchema.virtual('lichSuMuaHangs', {
   localField: '_id',
   foreignField: 'ownerLichSuMua',
 });
+
 nguoiDungSchema.virtual('hoTroNguoiDungs', {
   ref: 'HoTroNguoiDung',
   localField: '_id',
@@ -256,14 +254,11 @@ nguoiDungSchema.static('findBeforeCreate', async function (body: INguoiDungInput
     return body;
   } else {
     throw new Error(
-      body.taiKhoan === user.taiKhoan
-        ? 'Tài khoản đã tồn tại'
-        : body.email === user.email
-        ? 'email đã tồn tại'
-        : 'số điện thoại đã tồn tại'
+      body.taiKhoan === user.taiKhoan ? 'Tài khoản đã tồn tại' : body.email === user.email ? 'email đã tồn tại' : 'số điện thoại đã tồn tại'
     );
   }
 });
+
 nguoiDungSchema.static('findBeforeLike', async function (_id, sanPham: any) {
   const idSanPham = await sanPham._id.toString();
   const user = await NguoiDungModel.findOne({ _id });
@@ -280,22 +275,12 @@ nguoiDungSchema.static('findBeforeLike', async function (_id, sanPham: any) {
         hinhAnh: sanPham.hinhAnh,
         tenSanPham: sanPham.tenSanPham,
       });
-      await SanPhamsModel.findBeforeSetLike(
-        { idNguoiDung: user._id, tenNguoiDung: user.hoTen },
-        sanPham._id.toString()
-      );
+      await SanPhamsModel.findBeforeSetLike({ idNguoiDung: user._id, tenNguoiDung: user.hoTen }, sanPham._id.toString());
       await user.save();
       return user;
     } else {
-      await NguoiDungModel.updateOne(
-        { _id },
-        { $pull: { thich: { _idSanPham: idSanPham } } },
-        { safe: true, multi: true }
-      );
-      await SanPhamsModel.findBeforeSetUnLike(
-        { idNguoiDung: user._id, tenNguoiDung: user.hoTen },
-        sanPham._id.toString()
-      );
+      await NguoiDungModel.updateOne({ _id }, { $pull: { thich: { _idSanPham: idSanPham } } }, { safe: true, multi: true });
+      await SanPhamsModel.findBeforeSetUnLike({ idNguoiDung: user._id, tenNguoiDung: user.hoTen }, sanPham._id.toString());
       const userMul = await NguoiDungModel.findOne({ _id });
       return userMul;
     }
@@ -415,11 +400,7 @@ nguoiDungSchema.static('findByUserDeleteProductDelivery', async function (_id: s
   if (sanPham && sanPhamTrongGioHang) {
     if (userTest?.gioHang[0]) {
       const soLuong = userTest?.gioHang[0].soLuong;
-      await NguoiDungModel.findByIdAndUpdate(
-        _id,
-        { $pull: { gioHang: { _idSanPham: idSanPham } } },
-        { safe: true, upsert: true }
-      );
+      await NguoiDungModel.findByIdAndUpdate(_id, { $pull: { gioHang: { _idSanPham: idSanPham } } }, { safe: true, upsert: true });
       sanPham.soLuong = sanPham.soLuong + soLuong;
       console.log(sanPham.soLuong);
       await sanPham.save();

@@ -36,11 +36,18 @@ export const LayTatCaSanPhamController = async (req: Request, res: Response, nex
   }
 
   try {
-    const allSanPham = await SanPhamsModel.find({ categories: match.categories })
+    if (match.categories) {
+      const allSanPham = await SanPhamsModel.find({ categories: match.categories })
+        .sort(sort)
+        .skip((req as any).query.skip)
+        .limit((req as any).query.limit);
+      return res.status(200).json(ReS(200, allSanPham));
+    }
+    const allSanPham = await SanPhamsModel.find()
       .sort(sort)
       .skip((req as any).query.skip)
       .limit((req as any).query.limit);
-    res.status(200).json(ReS(200, allSanPham));
+    return res.status(200).json(ReS(200, allSanPham));
   } catch (error: any) {
     next(error);
   }

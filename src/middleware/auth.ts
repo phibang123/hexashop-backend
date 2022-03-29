@@ -8,10 +8,9 @@ import { secret_key } from './../configs/index';
 export const auth = async (req: Request, res: Response, next: NextFunction) => {
   if (!req.headers.authorization) {
     return res.status(401).send(ReE(401, { error: 'Please authenticate!' }));
-    //throw new Error('Please authenticate!');
   }
+  console.log(12);
   const token: string = req.headers.authorization.replace('Bearer ', '');
-  //const token = req.headers.Authorization.replace("Bearer ", "");
   const decoded: any = await jwt.verify(token, secret_key);
 
   const user = await NguoiDung.findOne({
@@ -20,12 +19,11 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
   });
 
   if (!user) {
-    console.log(123);
-    //throw new Error('Please authenticate!');
     return res.status(401).send(ReE(401, { error: 'Please authenticate!' }));
   }
 
   (req as any).user = user;
   (req as any).token = token;
-  next();
+
+  return next();
 };

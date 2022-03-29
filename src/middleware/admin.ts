@@ -4,7 +4,7 @@ import { ReE, ReS } from '../utils/reponse';
 export const admin = async (req: Request, res: Response, next: NextFunction) => {
   try {
     if ((req as any).user.adminInWeb) {
-      next();
+      return next();
     }
     return res.status(401).send(ReE(401, { error: 'Forbidden' }));
   } catch (error) {

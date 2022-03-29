@@ -16,12 +16,7 @@ quanLyNguoiDung.post('/DangNhap', quanLyNguoiDungController.DangNhapController);
 
 quanLyNguoiDung.get('/ThongTin', auth, quanLyNguoiDungController.LayThongTinProfileController);
 
-quanLyNguoiDung.patch(
-  '/NguoiDung/avatar',
-  auth,
-  upload.single('avatar'),
-  quanLyNguoiDungController.UpLoadAvatarController
-);
+quanLyNguoiDung.patch('/avatar', auth, upload.single('avatar'), quanLyNguoiDungController.UpLoadAvatarController);
 
 quanLyNguoiDung.patch('/ChinhSua', auth, quanLyNguoiDungController.ChinhSuaNguoiDungController);
 
@@ -33,11 +28,7 @@ quanLyNguoiDung.post('/Comment/:id', auth, quanLyNguoiDungController.CommemtSanP
 quanLyNguoiDung.post('/ThemVaoGioTangSoLuong/:id', auth, quanLyNguoiDungController.ThemSanPhamVaoGioHangController);
 
 //Giảm số lượng
-quanLyNguoiDung.post(
-  '/XoaKhoiGioGiamSoLuong/:id',
-  auth,
-  quanLyNguoiDungController.GiamSoLuongSanPhamTrongGioHangController
-);
+quanLyNguoiDung.post('/XoaKhoiGioGiamSoLuong/:id', auth, quanLyNguoiDungController.GiamSoLuongSanPhamTrongGioHangController);
 
 //xoa sản phẩm ra khỏi giỏ
 quanLyNguoiDung.post('/XoaKhoiGioHang/:id', auth, quanLyNguoiDungController.XoaSanPhamTrongGioHangController);

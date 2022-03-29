@@ -298,6 +298,8 @@ export const s3_domain_name = process.env.S3_DOMAIN_NAME;
 export const s3_access_key = process.env.S3_ACCESSS_KEY;
 export const s3_secret_key = process.env.S3_SECRET_KEY;
 
+export const gird_key = process.env.SENDGRID_API_KEY;
+
 export const s3 = new aws.S3({
   accessKeyId: s3_access_key,
   secretAccessKey: s3_secret_key,

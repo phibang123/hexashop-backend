@@ -1,0 +1,719 @@
+{
+	"info": {
+		"_postman_id": "f3b8be23-3c6a-4434-b4a5-771b73b2be55",
+		"name": "Hexashop",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Nguời dùng",
+			"item": [
+				{
+					"name": "Sign In",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if(pm.response.code === 200){",
+									"  pm.environment.set(\"authToken\", pm.response.json().content.token)",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"taiKhoan\": \"bangphi\", \n  \"matKhau\": \"1234597s1Ba\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}{{QuanLyNguoiDung}}/DangNhap",
+							"host": [
+								"{{url}}{{QuanLyNguoiDung}}"
+							],
+							"path": [
+								"DangNhap"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sign up",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if(pm.response.code === 200){",
+									"  pm.environment.set(\"authToken\", pm.response.json().content.token)",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"taiKhoan\": \"tanlon\",\n  \"matKhau\": \"1234567\",\n  \"email\": \"loi@gmail.com\",\n  \"soDt\": \"512522222\",\n  \"hoTen\": \"string\",\n  \"diaChi\": \"alalalalal\",\n  \"sex\": \"Nam\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}{{QuanLyNguoiDung}}/DangKy",
+							"host": [
+								"{{url}}{{QuanLyNguoiDung}}"
+							],
+							"path": [
+								"DangKy"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Profile",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}{{QuanLyNguoiDung}}/ThongTin",
+							"host": [
+								"{{url}}{{QuanLyNguoiDung}}"
+							],
+							"path": [
+								"ThongTin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Avatar",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "avatar",
+									"type": "file",
+									"src": "/Users/lacia/Documents/Images/Genshin/93180887_p2.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}{{QuanLyNguoiDung}}/Avatar?avatar=",
+							"host": [
+								"{{url}}{{QuanLyNguoiDung}}"
+							],
+							"path": [
+								"Avatar"
+							],
+							"query": [
+								{
+									"key": "avatar",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Chỉnh sửa profile",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"bang@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/QuanLyNguoiDung/ChinhSua",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"QuanLyNguoiDung",
+								"ChinhSua"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Like sản phẩm",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{url}}QuanLyNguoiDung/Like/6242c9f370f915dec9796300",
+							"host": [
+								"{{url}}QuanLyNguoiDung"
+							],
+							"path": [
+								"Like",
+								"6242c9f370f915dec9796300"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Comment sản phẩm",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"comment\": \"áo cho Lợi mặc\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}{{QuanLyNguoiDung}}/Comment/6242c9f370f915dec9796300",
+							"host": [
+								"{{url}}{{QuanLyNguoiDung}}"
+							],
+							"path": [
+								"Comment",
+								"6242c9f370f915dec9796300"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Thêm Vào Giỏ Hàng hoặc Tăng Số Lượng",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/QuanLyNguoiDung/ThemVaoGioTangSoLuong/6242c9f670f915dec979630b",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"QuanLyNguoiDung",
+								"ThemVaoGioTangSoLuong",
+								"6242c9f670f915dec979630b"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Giảm Số Lượng xóa khỏi giỏ hàng",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{url}}{{QuanLyNguoiDung}}/XoaKhoiGioGiamSoLuong/6242c9f670f915dec979630b",
+							"host": [
+								"{{url}}{{QuanLyNguoiDung}}"
+							],
+							"path": [
+								"XoaKhoiGioGiamSoLuong",
+								"6242c9f670f915dec979630b"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Xóa sản phẩm ra khỏi giỏ hàng",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{url}}{{QuanLyNguoiDung}}/XoaKhoiGioHang/6242c9f670f915dec979630b",
+							"host": [
+								"{{url}}{{QuanLyNguoiDung}}"
+							],
+							"path": [
+								"XoaKhoiGioHang",
+								"6242c9f670f915dec979630b"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Sản Phẩm",
+			"item": [
+				{
+					"name": "Lấy tất cả sản phẩm",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{url}}{{QuanLySanPham}}/LayTatCaSanPham",
+							"host": [
+								"{{url}}{{QuanLySanPham}}"
+							],
+							"path": [
+								"LayTatCaSanPham"
+							],
+							"query": [
+								{
+									"key": "categories",
+									"value": "/nu_gioi/ao/ao_thun",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Tìm tất cả sản phẩm theo tên",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}{{QuanLySanPham}}/TimSanPhamTheoTen?tenSanPham=Áo",
+							"host": [
+								"{{url}}{{QuanLySanPham}}"
+							],
+							"path": [
+								"TimSanPhamTheoTen"
+							],
+							"query": [
+								{
+									"key": "tenSanPham",
+									"value": "Áo"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "chi tiết sản phẩm",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}{{QuanLySanPham}}/TimChiTietSanPham/6242c9f370f915dec9796300",
+							"host": [
+								"{{url}}{{QuanLySanPham}}"
+							],
+							"path": [
+								"TimChiTietSanPham",
+								"6242c9f370f915dec9796300"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Thêm sản phẩm",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjNjNWNjNGEwNTJjNmJhZGQwM2UwYzAiLCJpYXQiOjE2NDgxMzIyMTB9.CNKuQzPMNASYmUMGGZi4XYUi9r8LWpV6WHpN7LgKAt4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "picture",
+									"type": "file",
+									"src": "/Users/lacia/Documents/Images/Genshin/1133597.jpeg"
+								},
+								{
+									"key": "tenSanPham",
+									"value": "Áo Dio",
+									"type": "text"
+								},
+								{
+									"key": "giaTien",
+									"value": "2000000",
+									"type": "text"
+								},
+								{
+									"key": "categories",
+									"value": "/nu_gioi/ao/ao_thun",
+									"type": "text"
+								},
+								{
+									"key": "soLuong",
+									"value": "12",
+									"type": "text"
+								},
+								{
+									"key": "phanTranTramSale",
+									"value": "20",
+									"type": "text"
+								},
+								{
+									"key": "sale",
+									"value": "true",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/QuanLySanPham/ThemSanPham",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"QuanLySanPham",
+								"ThemSanPham"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Thêm số lượng sản phẩm",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"soLuong\": 12\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}{{QuanLySanPham}}/ThemSoLuong/6242c9f370f915dec9796300",
+							"host": [
+								"{{url}}{{QuanLySanPham}}"
+							],
+							"path": [
+								"ThemSoLuong",
+								"6242c9f370f915dec9796300"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Giảm số lượng sản phẩm",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"soLuong\": 12\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}{{QuanLySanPham}}/GiamSoLuong/6242c9f370f915dec9796300",
+							"host": [
+								"{{url}}{{QuanLySanPham}}"
+							],
+							"path": [
+								"GiamSoLuong",
+								"6242c9f370f915dec9796300"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Chỉnh sửa sản phẩm",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{url}}{{QuanLySanPham}}/ChinhSuaSanPham/6242c9f370f915dec9796300",
+							"host": [
+								"{{url}}{{QuanLySanPham}}"
+							],
+							"path": [
+								"ChinhSuaSanPham",
+								"6242c9f370f915dec9796300"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Chỉnh sửa hình ảnh",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "picture",
+									"value": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}{{QuanLySanPham}}/ChinhSuaHinhAnh/6242c9f370f915dec9796300",
+							"host": [
+								"{{url}}{{QuanLySanPham}}"
+							],
+							"path": [
+								"ChinhSuaHinhAnh",
+								"6242c9f370f915dec9796300"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Comment SAnPham",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjNkYzY3MTM5MTk0MjdjZmE4NWQyMjUiLCJpYXQiOjE2NDgyMTU3MDZ9.GBfbVP4HLBe-jB1L54h-wU5EA1Q46l87VpwTigAKLC8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"comment\": \"text\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}{{QuanLySanPham}}/XoaSanPham/6242c9f370f915dec9796300",
+							"host": [
+								"{{url}}{{QuanLySanPham}}"
+							],
+							"path": [
+								"XoaSanPham",
+								"6242c9f370f915dec9796300"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Lịch sử mua hàng",
+			"item": [
+				{
+					"name": "Đặt hàng",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{url}}QuanLyLichSuMuaHang/DatHang",
+							"host": [
+								"{{url}}QuanLyLichSuMuaHang"
+							],
+							"path": [
+								"DatHang"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Xem Lịch Sử mua hàng user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}{{QuanLyLichSuMuaHang}}LichSuMuaHang",
+							"host": [
+								"{{url}}{{QuanLyLichSuMuaHang}}LichSuMuaHang"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Xem Lịch sử mua hàng Admin",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}{{QuanLyLichSuMuaHang}}LayToanBo/6242c9f670f915dec979630b",
+							"host": [
+								"{{url}}{{QuanLyLichSuMuaHang}}LayToanBo"
+							],
+							"path": [
+								"6242c9f670f915dec979630b"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Lấy tất cả trạng thái",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}{{QuanLyLichSuMuaHang}}/LayToanBoTrangThai",
+							"host": [
+								"{{url}}{{QuanLyLichSuMuaHang}}"
+							],
+							"path": [
+								"LayToanBoTrangThai"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Chỉnh sửa trạng thái admin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"trangThai\" : \"đã xác nhận\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}{{QuanLyLichSuMuaHang}}ThayDoiTrangThai/6242dc94d765135153ab00fd",
+							"host": [
+								"{{url}}{{QuanLyLichSuMuaHang}}ThayDoiTrangThai"
+							],
+							"path": [
+								"6242dc94d765135153ab00fd"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Categories",
+			"item": [
+				{
+					"name": "Lấy toàn bộ Categories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}{{QuanLyCategoreis}}/LayToanBo",
+							"host": [
+								"{{url}}{{QuanLyCategoreis}}"
+							],
+							"path": [
+								"LayToanBo"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{authToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

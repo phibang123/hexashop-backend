@@ -56,8 +56,8 @@ categoriSchema.virtual('sanphamschmas', {
 
 const CategoriesModel = model<ICategori, CategoriModel>('categoriSchema', categoriSchema);
 
-DEFATUL_CATEROGIES.forEach(async (n) => {
-  await CategoriesModel.findOneAndUpdate(n, n, { new: true, upsert: true });
-});
+// DEFATUL_CATEROGIES.forEach(async (n) => {
+//   await CategoriesModel.findOneAndUpdate(n, n, { new: true, upsert: true });
+// });
 
 export default CategoriesModel;

@@ -1,31 +1,18 @@
+import { ICategori, ICategoryResponse } from './../models/categories';
 import { NextFunction, Request, Response } from 'express';
 import { ReE, ReS } from '../utils/reponse';
 
 import categoriesModel from '../models/categories';
 
-interface ICategori {
-  ids: number;
-  name: string;
-  parent: string;
-  category: string;
-  level: number;
-  parentId: number;
-  slug: string;
-}
-
-interface ICategoryResponse {
-  id: number;
-  name: string;
-  category: string;
-  slug: string;
-  chilrens: ICategoryResponse[];
-}
-
 export const LayToanBoThuocTinhController = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const categories: ICategoryResponse[] = [];
+    const { categoriesName = '' } = (req as any).query;
+    let customCategories = categoriesName.includes('/') ? categoriesName.split('/')[1] : categoriesName;
+    const category: ICategori[] = await categoriesModel.find({
+      category: { $regex: '.*' + customCategories + '.*' },
+    });
 
-    const category: ICategori[] = await categoriesModel.find();
+    const categories: ICategoryResponse[] = [];
 
     category?.map((cate) => {
       if (cate.level === 1 && !cate.parentId) {

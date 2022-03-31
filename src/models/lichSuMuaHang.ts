@@ -7,15 +7,7 @@ export interface IThich {
   giaTien: number;
 }
 
-export interface IComment {
-  _idSanPham: string;
-  tenSanPham: string;
-  hinhAnh: string;
-  giaTien: number;
-  noiDungComment: string;
-}
-
-interface INguoiDungInput {
+export interface INguoiDungInput {
   taiKhoan: string;
   matKhau: string;
   email: string;
@@ -33,7 +25,7 @@ export interface INguoiDung extends INguoiDungInput {
   thich: IThich[];
 }
 
-export type IGioiHang = {
+export interface IGioiHang {
   _idSanPham: string;
   tenSanPham: string;
   soLuong: number;
@@ -44,9 +36,9 @@ export type IGioiHang = {
   thanhTien: number;
   hinhAnh: string;
   ngayThem?: string;
-};
+}
 
-interface ILicSuMuaHang {
+export interface ILicSuMuaHang {
   idNguoiDung: string;
   taiKhoan: string;
   //matKhau: string;
@@ -64,7 +56,7 @@ interface ILicSuMuaHang {
   tongSanPham: IGioiHang[];
 }
 
-interface LichSuMuaHangModel extends Model<ILicSuMuaHang> {
+export interface LichSuMuaHangModel extends Model<ILicSuMuaHang> {
   findBeforeByProduct(user: INguoiDung): ILicSuMuaHang;
 }
 

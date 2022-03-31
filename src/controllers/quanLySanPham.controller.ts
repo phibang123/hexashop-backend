@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { ReE, ReS } from '../utils/reponse';
 
+import { ISanPhamInput } from './../models/sanPham';
 import SanPhamsModel from '../models/sanPham';
 import { putImagAvatar } from './../utils/putObjectS3Avatar';
 import { putImagPicture } from './../utils/putObjectS3Picture';

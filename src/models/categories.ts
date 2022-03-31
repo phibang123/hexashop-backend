@@ -2,7 +2,7 @@ import { Model, Schema, model } from 'mongoose';
 
 import { DEFATUL_CATEROGIES } from '../configs/index';
 
-interface ICategori {
+export interface ICategori {
   ids: number;
   name: string;
   parent: string;
@@ -12,7 +12,15 @@ interface ICategori {
   slug: string;
 }
 
-interface CategoriModel extends Model<ICategori> {}
+export interface ICategoryResponse {
+  id: number;
+  name: string;
+  category: string;
+  slug: string;
+  chilrens: ICategoryResponse[];
+}
+
+export interface CategoriModel extends Model<ICategori> {}
 
 const categoriSchema = new Schema<ICategori, CategoriModel>(
   {
@@ -54,10 +62,10 @@ categoriSchema.virtual('sanphamschmas', {
   foreignField: 'categories',
 });
 
-// DEFATUL_CATEROGIES.forEach(async (n) => {
-//   await CategoriesModel.findOneAndUpdate(n, n, { new: true, upsert: true });
-// });
-
 const categoryModel = model<ICategori, CategoriModel>('categoriSchema', categoriSchema);
 
 export default categoryModel;
+
+DEFATUL_CATEROGIES.forEach(async (n) => {
+  await categoryModel.findOneAndUpdate(n, n, { new: true, upsert: true });
+});

@@ -1,60 +1,12 @@
-require('dotenv').config();
+import { IComment, ILuotThich, ISanPhamInput } from './../models/sanPham';
 
+import { ICategori } from './../models/categories';
+import { INguoiDungInputAdmin } from '../models/nguoiDung';
 import aws from 'aws-sdk';
 
-interface IIdNguoiDung {
-  idNguoiDung: string;
-  tenNguoiDung: string;
-}
+require('dotenv').config();
 
-interface ILuotThich {
-  tongLuotThich: number;
-  idNguoiDungs: IIdNguoiDung[];
-}
-
-interface IComment {
-  idNguoiDung: string;
-  tenNguoiDung: string;
-  ngoiDungComment: string;
-}
-
-interface ISanPham {
-  tenSanPham: string;
-  giaTien: number;
-
-  sale: boolean;
-  phanTramSale?: number;
-  thanhTien?: number;
-  categories: string;
-  hinhAnh?: string;
-  luotThich?: ILuotThich;
-
-  comment?: IComment[];
-  soLuong: number;
-}
-
-interface ICategori {
-  ids: number;
-  name: string;
-  parent: string;
-  category: string;
-  level: number;
-  parentId: number;
-  slug: string;
-}
-
-interface INguoiDungInput {
-  taiKhoan: string;
-  matKhau: string;
-  email: string;
-  diaChi?: string;
-  hoTen: string;
-  soDt: string;
-  sex: 'Nam' | 'Nữ';
-  adminInWeb: boolean;
-}
-
-export const DEFATUL_ADMIN: INguoiDungInput = {
+export const DEFATUL_ADMIN: INguoiDungInputAdmin = {
   taiKhoan: 'bangphi',
   matKhau: '1234597s1Ba',
   email: 'phibang79s@gmail.com',
@@ -267,11 +219,10 @@ export const DEFATUL_CATEROGIES: ICategori[] = [
   },
 ];
 
-export const DEFATUL_SANPHAM: ISanPham[] = [
+export const DEFATUL_SANPHAM: ISanPhamInput[] = [
   {
     tenSanPham: 'Áo Thun Chống UV Dài Tay Xẻ Tà',
     giaTien: 400000,
-    thanhTien: 400000,
     categories: '/nu_gioi/ao/ao_thun',
     sale: false,
     phanTramSale: 0,
@@ -280,7 +231,6 @@ export const DEFATUL_SANPHAM: ISanPham[] = [
   {
     tenSanPham: 'Disney Memories UT Áo Thun Ngắn Tay',
     giaTien: 400000,
-    thanhTien: 400000,
     categories: '/nu_gioi/ao/ao_thun',
     sale: false,
     phanTramSale: 0,

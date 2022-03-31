@@ -2,31 +2,41 @@ import { Model, Schema, model } from 'mongoose';
 
 import { DEFATUL_SANPHAM } from '../configs/index';
 
-interface IIdNguoiDung {
+export interface IIdNguoiDung {
   idNguoiDung: string;
   tenNguoiDung: string;
 }
-interface IComment {
+export interface IComment {
   idNguoiDung: string;
   tenNguoiDung: string;
   avatar: string;
   ngoiDungComment: string;
 }
 
-interface ILuotThich {
+export interface ILuotThich {
   tongLuotThich: number;
   idNguoiDungs: IIdNguoiDung[];
 }
 
-export interface ISanPham {
-  _id: object;
+export interface ISanPhamInput {
   tenSanPham: string;
   giaTien: number;
+  sale: boolean;
+  phanTramSale: number;
+  categories: string;
+  hinhAnh?: string;
+  soLuong: number;
+}
 
+export interface ISanPham extends ISanPhamInput {
+  _id?: object;
+  tenSanPham: string;
+  giaTien: number;
   sale: boolean;
   phanTramSale: number;
   thanhTien: number;
   categories: string;
+
   hinhAnh: string;
   luotThich: ILuotThich;
 
@@ -211,8 +221,8 @@ sanPhamSchema.static('findBeforeSetUnLike', async function ({ idNguoiDung, tenNg
 
 const SanPhamsModel = model<ISanPham, ISanPhamModel>('sanPhamSchema', sanPhamSchema);
 
-// DEFATUL_SANPHAM.forEach(async (n) => {
-//   await SanPhamsModel.findOneAndUpdate(n, n, { new: true, upsert: true });
-// });
+DEFATUL_SANPHAM.forEach(async (n) => {
+  await SanPhamsModel.findOneAndUpdate(n, n, { new: true, upsert: true });
+});
 
 export default SanPhamsModel;

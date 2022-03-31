@@ -25,25 +25,20 @@ export interface IThich {
   giaTien: number;
 }
 
-export interface IComment {
-  _idSanPham: string;
-  tenSanPham: string;
-  hinhAnh: string;
-  giaTien: number;
-  noiDungComment: string;
-}
-
-interface INguoiDungInput {
+export interface INguoiDungInput {
   taiKhoan: string;
   matKhau: string;
   email: string;
   diaChi?: string;
   hoTen: string;
-  avatar: string;
+  avatar?: string;
   soDt: string;
   sex: 'Nam' | 'Nữ';
 }
 
+export interface INguoiDungInputAdmin extends INguoiDungInput {
+  adminInWeb: boolean;
+}
 export interface INguoiDung extends INguoiDungInput {
   _id: object;
   adminInWeb: boolean;
@@ -52,7 +47,6 @@ export interface INguoiDung extends INguoiDungInput {
 }
 
 export interface INguoiDungModel extends Model<INguoiDung> {
-  myStaticMethod(): number;
   findByCredentials(taiKhoan: string, matKhau: string): INguoiDung;
   findBeforeCreate(body: INguoiDungInput): INguoiDung;
   findBeforeLike(_id: string, sanPham: any): INguoiDung;
@@ -209,9 +203,6 @@ const nguoiDungSchema = new Schema<INguoiDung, INguoiDungModel>(
     timestamps: true,
   }
 );
-nguoiDungSchema.static('myStaticMethod', function myStaticMethod() {
-  return 42;
-});
 
 //collection
 nguoiDungSchema.virtual('lichSuMuaHangs', {
@@ -425,6 +416,6 @@ nguoiDungSchema.methods.toJSON = function () {
 
 const NguoiDungModel = model<INguoiDung, INguoiDungModel>('nguoiDungSchema', nguoiDungSchema);
 
-// NguoiDungModel.findOneAndUpdate(DEFATUL_ADMIN, DEFATUL_ADMIN, { new: true, upsert: true }, function () {});
+NguoiDungModel.findOneAndUpdate(DEFATUL_ADMIN, DEFATUL_ADMIN, { new: true, upsert: true }, function () {});
 
 export default NguoiDungModel;

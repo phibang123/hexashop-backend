@@ -228,7 +228,6 @@ nguoiDungSchema.static('findByCredentials', async function (taiKhoan: string, ma
   if (!isMatch) {
     throw new Error('tài khoản và mật khẩu không chính sác');
   }
-
   return user;
 });
 

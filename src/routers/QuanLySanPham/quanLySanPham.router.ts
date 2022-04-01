@@ -16,7 +16,7 @@ quanLySanPham.get('/TimSanPhamTheoTen', quanLySanPhamController.TimSanPhamTheoTe
 
 quanLySanPham.get('/TimChiTietSanPham/:id', quanLySanPhamController.TimSanPhamTheoIdController);
 
-quanLySanPham.post('/ThemSanPham', upload.single('picture'), quanLySanPhamController.ThemSanPhamController);
+quanLySanPham.post('/ThemSanPham', auth, admin, upload.single('picture'), quanLySanPhamController.ThemSanPhamController);
 
 quanLySanPham.post('/ThemSoLuong/:id', auth, admin, quanLySanPhamController.ThemSoLuongSanPhamController);
 

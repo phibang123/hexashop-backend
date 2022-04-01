@@ -218,22 +218,18 @@ nguoiDungSchema.virtual('hoTroNguoiDungs', {
 });
 
 nguoiDungSchema.static('findByCredentials', async function (taiKhoan: string, matKhau: string) {
-  try {
-    const user: INguoiDung | null = await NguoiDungModel.findOne({
-      taiKhoan,
-    });
-    if (!user) {
-      throw new Error('tài khoản và mật khẩu không chính sác');
-    }
-    const isMatch = await bcrypt.compare(matKhau, user.matKhau);
-    if (!isMatch) {
-      throw new Error('tài khoản và mật khẩu không chính sác');
-    }
-
-    return user;
-  } catch (error) {
+  const user: INguoiDung | null = await NguoiDungModel.findOne({
+    taiKhoan,
+  });
+  if (!user) {
     throw new Error('tài khoản và mật khẩu không chính sác');
   }
+  const isMatch = await bcrypt.compare(matKhau, user.matKhau);
+  if (!isMatch) {
+    throw new Error('tài khoản và mật khẩu không chính sác');
+  }
+
+  return user;
 });
 
 nguoiDungSchema.static('findBeforeCreate', async function (body: INguoiDungInput) {

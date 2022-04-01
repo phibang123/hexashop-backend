@@ -15,7 +15,7 @@ const app: Application = express();
 app.use(express.json());
 app.use('/api', rootRouter);
 app.use('*', (req, res, next: NextFunction) => {
-  next('404');
+  res.status(404).json(ReE(404, '404'));
 });
 
 app.use((error: any, req: Request, res: Response, next: NextFunction) => {

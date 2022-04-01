@@ -26,6 +26,7 @@ export interface ISanPhamInput {
   categories: string;
   hinhAnh?: string;
   soLuong: number;
+  moTa?: string;
 }
 
 export interface ISanPham extends ISanPhamInput {
@@ -60,7 +61,10 @@ const sanPhamSchema = new Schema<ISanPham, ISanPhamModel>(
       type: Number,
       required: [true, 'giá tiền bị trống'],
     },
-
+    moTa: {
+      type: String,
+      default: 'New Sản phẩm',
+    },
     sale: {
       type: Boolean,
       default: false,

@@ -3,9 +3,10 @@ const moment = require('moment');
 
 interface IResp {
   success: boolean;
-  content: any;
+  data: any;
   message: string;
-  statusCode: number;
+  status: number;
+  statusText: string;
   dateTime: string;
   messageConstants: null;
 }
@@ -13,9 +14,10 @@ interface IResp {
 export const ReS = (code: number, data: any, message?: string): object => {
   const resp: IResp = {
     success: true,
-    content: data,
+    data: data,
     message: message ? message : 'Xử lý thành công!',
-    statusCode: code,
+    status: code,
+    statusText: code.toString(),
     dateTime: moment().format(),
     messageConstants: null,
   };
@@ -30,9 +32,10 @@ export const ReE = (code: number, err: any, message?: string): object => {
     success: false,
     dateTime: moment().format(),
     messageConstants: null,
-    statusCode: code,
+    status: code,
+    statusText: code.toString(),
     message: message ? message : 'Có gì đó đang lỗi!',
-    content: Array.isArray(err) ? err.map((e) => e.message) : typeof err === 'object' ? err : err,
+    data: Array.isArray(err) ? err.map((e) => e.message) : typeof err === 'object' ? err : err,
   };
 
   return { ...resp };

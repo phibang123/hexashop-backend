@@ -225,8 +225,9 @@ sanPhamSchema.static('findBeforeSetUnLike', async function ({ idNguoiDung, tenNg
 
 const SanPhamsModel = model<ISanPham, ISanPhamModel>('sanPhamSchema', sanPhamSchema);
 
+export default SanPhamsModel;
+
+//Không được xóa
 DEFATUL_SANPHAM.forEach(async (n) => {
   await SanPhamsModel.findOneAndUpdate(n, n, { new: true, upsert: true });
 });
-
-export default SanPhamsModel;

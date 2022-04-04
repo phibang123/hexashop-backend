@@ -55,7 +55,7 @@ export const LayToanBoThuocTinhController = async (req: Request, res: Response, 
       });
     });
 
-    res.status(201).json(ReS(201, categories));
+    res.status(200).json(ReS(200, categories));
   } catch (error) {
     next({ error: 'NULL' });
   }

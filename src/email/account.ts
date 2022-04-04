@@ -7,8 +7,7 @@ sgMail.setApiKey(send_gird_key);
 //   to: "phibang7899@gmail.com",
 //   from: "bang33q@outlook.com.vn",
 //   subject: "Fuck boi quan 10",
-//   text: "Fuck boi quận 10 chơi tinder cua gái"
-
+//   text: "Fuck boi quận 10 lướt tinder cua gái"
 // })
 
 export const sendWellcomeEmail = (email: string, name: string) => {

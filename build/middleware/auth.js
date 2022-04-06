@@ -41,14 +41,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.auth = void 0;
 var reponse_1 = require("../utils/reponse");
-var nguoiDung_model_1 = __importDefault(require("../models/nguoiDung.model"));
+var nguoiDung_1 = __importDefault(require("../models/nguoiDung"));
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 var index_1 = require("./../configs/index");
 var auth = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var token, decoded, user;
+    var token, decoded, user, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
+                _a.trys.push([0, 3, , 4]);
                 if (!req.headers.authorization) {
                     return [2, res.status(401).send((0, reponse_1.ReE)(401, { error: 'Please authenticate!' }))];
                 }
@@ -57,9 +58,8 @@ var auth = function (req, res, next) { return __awaiter(void 0, void 0, void 0, 
                 return [4, jsonwebtoken_1.default.verify(token, index_1.secret_key)];
             case 1:
                 decoded = _a.sent();
-                return [4, nguoiDung_model_1.default.findOne({
+                return [4, nguoiDung_1.default.findOne({
                         _id: decoded._id,
-                        'tokens.token': token,
                     })];
             case 2:
                 user = _a.sent();
@@ -69,8 +69,12 @@ var auth = function (req, res, next) { return __awaiter(void 0, void 0, void 0, 
                 req.user = user;
                 req.token = token;
                 return [2, next()];
+            case 3:
+                error_1 = _a.sent();
+                return [2, res.status(401).send((0, reponse_1.ReE)(401, { error: 'Please authenticate!' }))];
+            case 4: return [2];
         }
     });
 }); };
 exports.auth = auth;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiYXV0aC5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uL3NyYy9taWRkbGV3YXJlL2F1dGgudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O0FBQ0EsNENBQTRDO0FBRTVDLDhFQUFrRDtBQUNsRCw4REFBK0I7QUFDL0IsNENBQWdEO0FBRXpDLElBQU0sSUFBSSxHQUFHLFVBQU8sR0FBWSxFQUFFLEdBQWEsRUFBRSxJQUFrQjs7Ozs7Z0JBQ3hFLElBQUksQ0FBQyxHQUFHLENBQUMsT0FBTyxDQUFDLGFBQWEsRUFBRTtvQkFDOUIsV0FBTyxHQUFHLENBQUMsTUFBTSxDQUFDLEdBQUcsQ0FBQyxDQUFDLElBQUksQ0FBQyxJQUFBLGFBQUcsRUFBQyxHQUFHLEVBQUUsRUFBRSxLQUFLLEVBQUUsc0JBQXNCLEVBQUUsQ0FBQyxDQUFDLEVBQUM7aUJBQzFFO2dCQUNELE9BQU8sQ0FBQyxHQUFHLENBQUMsRUFBRSxDQUFDLENBQUM7Z0JBQ1YsS0FBSyxHQUFXLEdBQUcsQ0FBQyxPQUFPLENBQUMsYUFBYSxDQUFDLE9BQU8sQ0FBQyxTQUFTLEVBQUUsRUFBRSxDQUFDLENBQUM7Z0JBQ2xELFdBQU0sc0JBQUcsQ0FBQyxNQUFNLENBQUMsS0FBSyxFQUFFLGtCQUFVLENBQUMsRUFBQTs7Z0JBQWxELE9BQU8sR0FBUSxTQUFtQztnQkFFM0MsV0FBTSx5QkFBUyxDQUFDLE9BQU8sQ0FBQzt3QkFDbkMsR0FBRyxFQUFFLE9BQU8sQ0FBQyxHQUFHO3dCQUNoQixjQUFjLEVBQUUsS0FBSztxQkFDdEIsQ0FBQyxFQUFBOztnQkFISSxJQUFJLEdBQUcsU0FHWDtnQkFFRixJQUFJLENBQUMsSUFBSSxFQUFFO29CQUNULFdBQU8sR0FBRyxDQUFDLE1BQU0sQ0FBQyxHQUFHLENBQUMsQ0FBQyxJQUFJLENBQUMsSUFBQSxhQUFHLEVBQUMsR0FBRyxFQUFFLEVBQUUsS0FBSyxFQUFFLHNCQUFzQixFQUFFLENBQUMsQ0FBQyxFQUFDO2lCQUMxRTtnQkFFQSxHQUFXLENBQUMsSUFBSSxHQUFHLElBQUksQ0FBQztnQkFDeEIsR0FBVyxDQUFDLEtBQUssR0FBRyxLQUFLLENBQUM7Z0JBRTNCLFdBQU8sSUFBSSxFQUFFLEVBQUM7OztLQUNmLENBQUM7QUFyQlcsUUFBQSxJQUFJLFFBcUJmIn0=
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiYXV0aC5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uL3NyYy9taWRkbGV3YXJlL2F1dGgudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O0FBQ0EsNENBQTRDO0FBRTVDLGtFQUE0QztBQUM1Qyw4REFBK0I7QUFDL0IsNENBQWdEO0FBRXpDLElBQU0sSUFBSSxHQUFHLFVBQU8sR0FBWSxFQUFFLEdBQWEsRUFBRSxJQUFrQjs7Ozs7O2dCQUV0RSxJQUFJLENBQUMsR0FBRyxDQUFDLE9BQU8sQ0FBQyxhQUFhLEVBQUU7b0JBQzlCLFdBQU8sR0FBRyxDQUFDLE1BQU0sQ0FBQyxHQUFHLENBQUMsQ0FBQyxJQUFJLENBQUMsSUFBQSxhQUFHLEVBQUMsR0FBRyxFQUFFLEVBQUUsS0FBSyxFQUFFLHNCQUFzQixFQUFFLENBQUMsQ0FBQyxFQUFDO2lCQUMxRTtnQkFDRCxPQUFPLENBQUMsR0FBRyxDQUFDLEVBQUUsQ0FBQyxDQUFDO2dCQUNWLEtBQUssR0FBVyxHQUFHLENBQUMsT0FBTyxDQUFDLGFBQWEsQ0FBQyxPQUFPLENBQUMsU0FBUyxFQUFFLEVBQUUsQ0FBQyxDQUFDO2dCQUNsRCxXQUFNLHNCQUFHLENBQUMsTUFBTSxDQUFDLEtBQUssRUFBRSxrQkFBVSxDQUFDLEVBQUE7O2dCQUFsRCxPQUFPLEdBQVEsU0FBbUM7Z0JBRTNDLFdBQU0sbUJBQVMsQ0FBQyxPQUFPLENBQUM7d0JBQ25DLEdBQUcsRUFBRSxPQUFPLENBQUMsR0FBRztxQkFDakIsQ0FBQyxFQUFBOztnQkFGSSxJQUFJLEdBQUcsU0FFWDtnQkFFRixJQUFJLENBQUMsSUFBSSxFQUFFO29CQUNULFdBQU8sR0FBRyxDQUFDLE1BQU0sQ0FBQyxHQUFHLENBQUMsQ0FBQyxJQUFJLENBQUMsSUFBQSxhQUFHLEVBQUMsR0FBRyxFQUFFLEVBQUUsS0FBSyxFQUFFLHNCQUFzQixFQUFFLENBQUMsQ0FBQyxFQUFDO2lCQUMxRTtnQkFFQSxHQUFXLENBQUMsSUFBSSxHQUFHLElBQUksQ0FBQztnQkFDeEIsR0FBVyxDQUFDLEtBQUssR0FBRyxLQUFLLENBQUM7Z0JBRTNCLFdBQU8sSUFBSSxFQUFFLEVBQUM7OztnQkFFZCxXQUFPLEdBQUcsQ0FBQyxNQUFNLENBQUMsR0FBRyxDQUFDLENBQUMsSUFBSSxDQUFDLElBQUEsYUFBRyxFQUFDLEdBQUcsRUFBRSxFQUFFLEtBQUssRUFBRSxzQkFBc0IsRUFBRSxDQUFDLENBQUMsRUFBQzs7OztLQUU1RSxDQUFDO0FBeEJXLFFBQUEsSUFBSSxRQXdCZiJ9

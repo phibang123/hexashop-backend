@@ -1,7 +1,8 @@
 import app from './app';
+const cors = require('cors');
 
-const port = process.env.PORT || 3001;
+app.use(cors());
 
-app.listen(port, function () {
-  console.log('Express server listening on port', port);
+app.listen(process.env.PORT || 3001, function () {
+  console.log('Express server listening on port %d in %s mode', process.env.PORT || 3001, app.settings.env);
 });

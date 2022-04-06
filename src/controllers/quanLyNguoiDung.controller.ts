@@ -23,9 +23,10 @@ export const DangKyController = async (req: Request, res: Response, next: NextFu
 
 export const DangNhapController = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    console.log(req.body);
     const user = await NguoiDungModel.findByCredentials((req as any).body.taiKhoan, (req as any).body.matKhau);
     const token = await jwt.sign({ _id: user._id.toString() }, secret_key);
-    return res.status(200).json(ReS(200, { token, user }));
+    return res.status(200).json(ReS(200, { token, user }, 'Đăng nhập thành công'));
   } catch (error: any) {
     next(error);
   }

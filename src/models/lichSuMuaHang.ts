@@ -1,28 +1,12 @@
 import { Model, Schema, model } from 'mongoose';
 
+import { INguoiDung } from './nguoiDung';
+
 export interface IThich {
   _idSanPham: string;
   tenSanPham: string;
   hinhAnh: string;
   giaTien: number;
-}
-
-export interface INguoiDungInput {
-  taiKhoan: string;
-  matKhau: string;
-  email: string;
-  diaChi?: string;
-  hoTen: string;
-  avatar: string;
-  soDt: string;
-  sex: 'Nam' | 'Nữ';
-}
-
-export interface INguoiDung extends INguoiDungInput {
-  _id: object;
-  adminInWeb: boolean;
-  gioHang: IGioiHang[];
-  thich: IThich[];
 }
 
 export interface IGioiHang {

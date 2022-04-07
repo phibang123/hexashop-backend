@@ -1,7 +1,7 @@
 import { ICategori, ICategoryResponse } from './../models/categories';
 import { NextFunction, Request, Response } from 'express';
-import { ReE, ReS } from '../utils/reponse';
 
+import { ReS } from '../utils/reponse';
 import categoriesModel from '../models/categories';
 
 export const LayToanBoThuocTinhController = async (req: Request, res: Response, next: NextFunction) => {

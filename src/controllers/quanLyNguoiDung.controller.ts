@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
-import { ReE, ReS } from '../utils/reponse';
 
 import NguoiDungModel from '../models/nguoiDung';
+import { ReS } from '../utils/reponse';
 import SanPhamsModel from '../models/sanPham';
 import jwt from 'jsonwebtoken';
 import lichSuMuaHangModel from '../models/lichSuMuaHang';
@@ -23,7 +23,6 @@ export const DangKyController = async (req: Request, res: Response, next: NextFu
 
 export const DangNhapController = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    console.log(req.body);
     const user = await NguoiDungModel.findByCredentials((req as any).body.taiKhoan, (req as any).body.matKhau);
     const token = await jwt.sign({ _id: user._id.toString() }, secret_key);
     return res.status(200).json(ReS(200, { token, user }, 'Đăng nhập thành công'));
@@ -57,7 +56,7 @@ export const ChinhSuaNguoiDungController = async (req: Request, res: Response, n
     return allowedUpdates.includes(update);
   });
   if (!isValiOperetion) {
-    return res.status(400).json(ReE(400, 'hãy sửa những dử liệu yêu cầu'));
+    return next('hãy sửa những dử liệu yêu cầu');
   }
   try {
     updates.forEach((update) => ((req as any).user[update] = req.body[update]));
@@ -75,7 +74,7 @@ export const ThichSanPhamController = async (req: Request, res: Response, next: 
     const oneSanPham = await SanPhamsModel.findById(_id);
 
     if (oneSanPham === null) {
-      return res.status(400).json(ReE(400, { error: 'Không tìm thấy sản phẩm' }));
+      return next({ error: 'Không tìm thấy sản phẩm' });
     }
 
     const user = await NguoiDungModel.findBeforeLike((req as any).user._id, oneSanPham);
@@ -91,14 +90,14 @@ export const CommemtSanPhamController = async (req: Request, res: Response, next
     let _id = req.params.id;
 
     if (req.body.comment === null) {
-      return res.status(400).json(ReE(400, 'Comment rỗng'));
+      return next('Comment rỗng');
     }
     const userComment: string = req.body.comment;
 
     const sanPham = await SanPhamsModel.findOne({ _id });
 
     if (sanPham === null) {
-      return res.status(400).json(ReE(400, 'Không tìm thấy sản phẩm'));
+      return next('Không tìm thấy sản phẩm');
     }
     sanPham.comment.push({
       idNguoiDung: (req as any).user._id.toString(),

@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
-import { ReE, ReS } from '../utils/reponse';
 
 import { ISanPhamInput } from './../models/sanPham';
+import { ReS } from '../utils/reponse';
 import SanPhamsModel from '../models/sanPham';
 import { putImagAvatar } from './../utils/putObjectS3Avatar';
 import { putImagPicture } from './../utils/putObjectS3Picture';
@@ -92,12 +92,12 @@ export const ThemSanPhamController = async (req: Request, res: Response, next: N
 export const ThemSoLuongSanPhamController = async (req: Request, res: Response, next: NextFunction) => {
   const _id = req.params.id;
   if (!req.body.soLuong) {
-    return res.status(400).json(ReE(400, 'Bạn chưa thêm số lượng'));
+    return next('Bạn chưa thêm số lượng');
   }
   try {
     const sanPham = await SanPhamsModel.findById(_id);
     if (sanPham === null) {
-      return res.status(400).json(ReE(400, 'Không tìm thấy sản phẩm'));
+      return next('Không tìm thấy sản phẩm');
     }
     sanPham.soLuong = sanPham.soLuong + req.body.soLuong;
     await sanPham.save();
@@ -110,12 +110,12 @@ export const ThemSoLuongSanPhamController = async (req: Request, res: Response, 
 export const GiamSoLuongSanPhamController = async (req: Request, res: Response, next: NextFunction) => {
   const _id = req.params.id;
   if (!req.body.soLuong) {
-    return res.status(400).json(ReE(400, 'Bạn chưa thêm số lượng'));
+    return next('Bạn chưa thêm số lượng');
   }
   try {
     const sanPham = await SanPhamsModel.findById(_id);
     if (sanPham === null) {
-      return res.status(400).json(ReE(400, 'Không tìm thấy sản phẩm'));
+      return next('Không tìm thấy sản phẩm');
     }
     sanPham.soLuong = sanPham.soLuong - req.body.soLuong;
     if (sanPham.soLuong < 0) {
@@ -137,12 +137,12 @@ export const ChinhSuaSanPhamController = async (req: Request, res: Response, nex
     return allowedUpdates.includes(update);
   });
   if (!isValiOperetion) {
-    return res.status(400).json(ReE(400, 'hãy sửa những dử liệu yêu cầu'));
+    return next('hãy sửa những dử liệu yêu cầu');
   }
   try {
     const sanPham: any = await SanPhamsModel.findById({ _id });
     if (sanPham === null) {
-      return res.status(400).json(ReE(400, 'không tìm thấy sản phẩm'));
+      return next('không tìm thấy sản phẩm');
     }
     updates.forEach((update) => (sanPham[update] = req.body[update]));
     if ((req as any).file) {
@@ -164,10 +164,10 @@ export const ChinhSuaHinhAnhSanPhamController = async (req: Request, res: Respon
   try {
     const sanPham: any = await SanPhamsModel.findById({ _id });
     if (sanPham === null) {
-      return res.status(400).json(ReE(400, 'không tìm thấy sản phẩm'));
+      return next('không tìm thấy sản phẩm');
     }
     if (!(req as any).file) {
-      return res.status(400).json(ReE(400, 'không tìm Picture'));
+      return next('không tìm Picture');
     }
     const urlSanPham = await putImagPicture((req as any).file, req.body.tenSanPham);
     sanPham.hinhAnh = urlSanPham;

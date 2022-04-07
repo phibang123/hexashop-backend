@@ -1,15 +1,15 @@
 import { NextFunction, Request, Response } from 'express';
-import { ReE, ReS } from './../utils/reponse';
 
+import { ReS } from './../utils/reponse';
 import lichSuMuaHangModel from '../models/lichSuMuaHang';
 
 export const DatHangController = async (req: Request, res: Response, next: NextFunction) => {
   try {
     if ((req as any).user.gioHang.length < 1) {
-      return res.status(400).json(ReE(400, 'Không tìm thấy giỏ hàng'));
+      return next('Không tìm thấy giỏ hàng');
     }
     if (!(req as any).user.soDt && !(req as any).user.diaChi) {
-      return res.status(400).json(ReE(400, 'Bạn chưa nhập đầy dủ thông tin'));
+      return next('Bạn chưa nhập đầy dủ thông tin');
     }
     const lichSuMuaHang = await lichSuMuaHangModel.findBeforeByProduct((req as any).user);
     (req as any).user.gioHang = [];
@@ -78,11 +78,11 @@ export const ThayDoiTrangThaiMuaHangContrller = async (req: Request, res: Respon
   let _id = (req as any).params.id;
   try {
     if (!req.body.trangThai) {
-      return res.status(400).json(ReE(400, 'không tìm thấy trạng thái'));
+      return next('không tìm thấy trạng thái');
     }
     const lichSuMuaHang = await lichSuMuaHangModel.findById({ _id });
     if (lichSuMuaHang === null) {
-      return res.status(400).json(ReE(400, 'không tìm thấy sản phẩm'));
+      return next('không tìm thấy sản phẩm');
     }
     lichSuMuaHang.trangThai = req.body.trangThai;
     await lichSuMuaHang.save();

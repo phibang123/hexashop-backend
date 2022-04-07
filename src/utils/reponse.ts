@@ -4,7 +4,7 @@ const moment = require('moment');
 interface IResp {
   success: boolean;
   data: any;
-  message: string;
+  message: any;
   status: number;
   statusText: string;
   dateTime: string;
@@ -26,7 +26,7 @@ export const ReS = (code: number, data: any, message?: string): object => {
 };
 
 // hàm format kết quả trả về của API khi thất bại cho client
-export const ReE = (code: number, err: any, message?: string): object => {
+export const ReE = (code: number, err?: string, message?: any): object => {
   console.log(err);
   const resp: IResp = {
     success: false,
@@ -34,8 +34,8 @@ export const ReE = (code: number, err: any, message?: string): object => {
     messageConstants: null,
     status: code,
     statusText: code.toString(),
-    message: message ? message : 'Có gì đó đang lỗi!',
-    data: Array.isArray(err) ? err.map((e) => e.message) : typeof err === 'object' ? err : err,
+    message: Array.isArray(err) ? err.map((e) => e.message) : typeof err === 'object' ? err : err ? err : 'OPP!',
+    data: message ? message : 'Có gì đó đang lỗi!',
   };
 
   return { ...resp };

@@ -8,7 +8,7 @@ import { secret_key } from './../configs/index';
 export const auth = async (req: Request, res: Response, next: NextFunction) => {
   try {
     if (!req.headers.authorization) {
-      return res.status(401).send(ReE(401, { error: 'Please authenticate!' }));
+      return res.status(401).send(ReE(401, '', { error: 'Please authenticate!' }));
     }
     console.log(12);
     const token: string = req.headers.authorization.replace('Bearer ', '');
@@ -19,7 +19,7 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
     });
 
     if (!user) {
-      return res.status(401).send(ReE(401, { error: 'Please authenticate!' }));
+      return res.status(401).send(ReE(401, '', { error: 'Please authenticate!' }));
     }
 
     (req as any).user = user;
@@ -27,6 +27,6 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
 
     return next();
   } catch (error) {
-    return res.status(401).send(ReE(401, { error: 'Please authenticate!' }));
+    return res.status(401).send(ReE(401, '', { error: 'Please authenticate!' }));
   }
 };

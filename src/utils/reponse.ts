@@ -26,7 +26,7 @@ export const ReS = (code: number, data: any, message?: string): object => {
 };
 
 // hàm format kết quả trả về của API khi thất bại cho client
-export const ReE = (code: number, err?: string, message?: any): object => {
+export const ReE = (code: number, err?: string, messages?: any): object => {
   console.log(err);
   const resp: IResp = {
     success: false,
@@ -34,8 +34,8 @@ export const ReE = (code: number, err?: string, message?: any): object => {
     messageConstants: null,
     status: code,
     statusText: code.toString(),
-    message: Array.isArray(err) ? err.map((e) => e.message) : typeof err === 'object' ? err : err,
-    data: message ? message : 'Có gì đó đang lỗi!',
+    message: Array.isArray(messages) ? messages.map((e) => e.message) : typeof messages === 'object' ? messages : messages,
+    data: err ? err : 'Có gì đó đang lỗi!',
   };
 
   return { ...resp };

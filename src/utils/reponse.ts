@@ -34,7 +34,7 @@ export const ReE = (code: number, err?: string, message?: any): object => {
     messageConstants: null,
     status: code,
     statusText: code.toString(),
-    message: Array.isArray(err) ? err.map((e) => e.message) : typeof err === 'object' ? err : err ? err : 'OPP!',
+    message: Array.isArray(err) ? err.map((e) => e.message) : typeof err === 'object' ? err : err,
     data: message ? message : 'Có gì đó đang lỗi!',
   };
 

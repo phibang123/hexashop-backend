@@ -33,7 +33,7 @@ export interface INguoiDungInput {
   hoTen: string;
   avatar?: string;
   soDt: string;
-  sex: 'Nam' | 'Nữ';
+  sex: 'Nam' | 'Nữ' | '';
 }
 
 export interface INguoiDungInputAdmin extends INguoiDungInput {
@@ -71,7 +71,7 @@ const nguoiDungSchema = new Schema<INguoiDung, INguoiDungModel>(
     sex: {
       type: String,
       trim: true,
-      required: [true, 'không tìm thấy giới tính'],
+      default: 'Nam',
     },
     matKhau: {
       type: String,

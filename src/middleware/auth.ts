@@ -7,7 +7,6 @@ import { secret_key } from './../configs/index';
 
 export const auth = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    req.headers;
     if (!req.headers.authorization) {
       console.log(123);
       return res.status(401).send(ReE(401, '', { error: 'Please authenticate!' }));
@@ -21,7 +20,6 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
     });
 
     if (!user) {
-      console.log(456);
       return res.status(401).send(ReE(401, '', { error: 'Please authenticate!' }));
     }
     (req as any).user = user;
@@ -29,7 +27,7 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
 
     return next();
   } catch (error) {
-    console.log(789);
+    console.log(error);
     return res.status(401).send(ReE(401, '', { error: 'Please authenticate!' }));
   }
 };

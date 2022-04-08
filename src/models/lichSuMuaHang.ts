@@ -2,13 +2,6 @@ import { Model, Schema, model } from 'mongoose';
 
 import { INguoiDung } from './nguoiDung';
 
-export interface IThich {
-  _idSanPham: string;
-  tenSanPham: string;
-  hinhAnh: string;
-  giaTien: number;
-}
-
 export interface IGioiHang {
   _idSanPham: string;
   tenSanPham: string;

@@ -33,7 +33,7 @@ export const DangNhapController = async (req: Request, res: Response, next: Next
 
 export const DangNhapAdminController = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const user = await NguoiDungModel.findByCredentials((req as any).body.taiKhoan, (req as any).body.matKhau);
+    const user = await NguoiDungModel.findByCredentialsAdmin((req as any).body.taiKhoan, (req as any).body.matKhau);
     const token = await jwt.sign({ _id: user._id.toString() }, secret_key);
     return res.status(200).json(ReS(200, { token, user }, 'Đăng nhập thành công'));
   } catch (error: any) {
@@ -130,7 +130,6 @@ export const ThemSanPhamVaoGioHangController = async (req: Request, res: Respons
     const user = await NguoiDungModel.findByUserAddDelivery((req as any).user._id.toString(), _id);
     return res.status(200).json(ReS(200, user));
   } catch (error: any) {
-    console.log(error, 'error');
     next(error);
   }
 };
@@ -142,7 +141,6 @@ export const GiamSoLuongSanPhamTrongGioHangController = async (req: Request, res
     //const user = await NguoiDungModel.findOne({ _id: (req as any).user._id.toString() });
     return res.status(200).json(ReS(200, user));
   } catch (error: any) {
-    console.log(error);
     next(error);
   }
 };
@@ -154,7 +152,6 @@ export const XoaSanPhamTrongGioHangController = async (req: Request, res: Respon
     //const user = await NguoiDungModel.findOne({ _id: (req as any).user._id.toString() });
     return res.status(200).json(ReS(200, user));
   } catch (error: any) {
-    console.log(error);
     next(error);
   }
 };

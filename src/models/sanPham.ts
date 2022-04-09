@@ -154,20 +154,17 @@ const sanPhamSchema = new Schema<ISanPham, ISanPhamModel>(
 );
 
 sanPhamSchema.pre('save', async function (this, next) {
-  if (this.isModified('phanTramSale') && this.isModified('giaTien')) {
+  if (this.isModified('phanTramSale') && this.isModified('phanTramSale') !== 0) {
     this.thanhTien = this.giaTien - (this.giaTien / 100) * this.phanTramSale;
     this.sale = true;
     return next();
-  } else if (!this.isModified('phanTramSale') && this.isModified('sale') && this.isModified('giaTien')) {
+  } else if (this.isModified('phanTramSale') && this.isModified('phanTramSale') === 0) {
     this.thanhTien = this.giaTien;
     this.sale = false;
     return next();
-  } else if (this.isModified('phanTramSale') && !this.isModified('sale') && this.isModified('giaTien')) {
-    this.thanhTien = this.giaTien - (this.giaTien / 100) * this.phanTramSale;
-    this.sale = true;
-    return next();
-  } else if (this.isModified('giaTien')) {
+  } else if (!this.isModified('phanTramSale')) {
     this.thanhTien = this.giaTien;
+    this.sale = false;
     return next();
   } else {
     return next();

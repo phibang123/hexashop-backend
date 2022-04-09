@@ -27,7 +27,6 @@ export const putImagAvatar = async (data: any, id: string) => {
   try {
     await s3.putObject(params).promise();
     const url: string = `${s3_domain_name}/${dst}`;
-
     return url.includes(' ') ? `http://${url.split(' ').join('%20')}` : `http://${url}`;
   } catch (error) {
     throw error;

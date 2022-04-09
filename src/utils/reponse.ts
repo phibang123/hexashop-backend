@@ -27,7 +27,6 @@ export const ReS = (code: number, data: any, message?: string): object => {
 
 // hàm format kết quả trả về của API khi thất bại cho client
 export const ReE = (code: number, err?: string, messages?: any): object => {
-  console.log(err);
   const resp: IResp = {
     success: false,
     dateTime: moment().format(),

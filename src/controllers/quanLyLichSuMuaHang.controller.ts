@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 
+import NguoiDungModel from '../models/nguoiDung';
 import { ReS } from './../utils/reponse';
 import lichSuMuaHangModel from '../models/lichSuMuaHang';
 
@@ -11,10 +12,11 @@ export const DatHangController = async (req: Request, res: Response, next: NextF
     if (!(req as any).user.soDt && !(req as any).user.diaChi) {
       return next('Bạn chưa nhập đầy dủ thông tin');
     }
-    const lichSuMuaHang = await lichSuMuaHangModel.findBeforeByProduct((req as any).user);
+    lichSuMuaHangModel.findBeforeByProduct((req as any).user);
     (req as any).user.gioHang = [];
     await (req as any).user.save();
-    return res.status(200).json(ReS(200, lichSuMuaHang));
+    const lichSuMuahangUser = NguoiDungModel.find({ idNguoiDung: (req as any).user._id.toString() });
+    return res.status(200).json(ReS(200, lichSuMuahangUser));
   } catch (error) {
     next(error);
   }
@@ -40,7 +42,6 @@ export const XemLichSuMuaHangUserController = async (req: Request, res: Response
 export const XemLichSuMuaHangAllUserController = async (req: Request, res: Response, next: NextFunction) => {
   let _id = (req as any).params.id;
   let trangThai = req.query.trangThai;
-  console.log(trangThai);
   try {
     if (_id) {
       const lichSuMuaHang = await lichSuMuaHangModel.findById({ _id });

@@ -420,7 +420,6 @@ nguoiDungSchema.static('findByUserDeleteProductDelivery', async function (_id: s
       const soLuong = userTest?.gioHang[0].soLuong;
       await NguoiDungModel.findByIdAndUpdate(_id, { $pull: { gioHang: { _idSanPham: idSanPham } } }, { safe: true, upsert: true });
       sanPham.soLuong = sanPham.soLuong + soLuong;
-      console.log(sanPham.soLuong);
       await sanPham.save();
       const user = await NguoiDungModel.findOne({ _id });
       return user;

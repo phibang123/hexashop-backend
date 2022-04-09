@@ -16,6 +16,7 @@ export type IGioiHang = {
   thanhTien: number;
   hinhAnh: string;
   ngayThem?: string;
+  moTa?: string;
 };
 
 export interface IThich {
@@ -23,6 +24,7 @@ export interface IThich {
   tenSanPham: string;
   hinhAnh: string;
   giaTien: number;
+  moTa?: string;
 }
 
 export interface INguoiDungInput {
@@ -145,6 +147,11 @@ const nguoiDungSchema = new Schema<INguoiDung, INguoiDungModel>(
           require: true,
           trim: true,
         },
+        moTa: {
+          type: String,
+          trim: true,
+          default: 'Loremmmmmmmmmmmmm mmmm mm mm mm m',
+        },
         sale: {
           type: Boolean,
           require: true,
@@ -181,6 +188,11 @@ const nguoiDungSchema = new Schema<INguoiDung, INguoiDungModel>(
           type: String,
           require: true,
           trim: true,
+        },
+        moTa: {
+          type: String,
+          trim: true,
+          default: 'Loremmmmmmmmmmmmm mmmm mm mm mm m',
         },
         tenSanPham: {
           type: String,
@@ -278,6 +290,7 @@ nguoiDungSchema.static('findBeforeLike', async function (_id, sanPham: any) {
         giaTien: sanPham.giaTien,
         hinhAnh: sanPham.hinhAnh,
         tenSanPham: sanPham.tenSanPham,
+        moTa: sanPham.moTa,
       });
       await SanPhamsModel.findBeforeSetLike({ idNguoiDung: user._id, tenNguoiDung: user.hoTen }, sanPham._id.toString());
       await user.save();
@@ -314,6 +327,7 @@ nguoiDungSchema.static('findByUserAddDelivery', async function (_id: string, idS
           sale: sanPham.sale,
           soLuong: 1,
           tenSanPham: sanPham.tenSanPham,
+          moTa: sanPham.moTa,
         });
         sanPham.soLuong--;
         await sanPham.save();

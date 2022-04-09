@@ -27,7 +27,7 @@ export const putImagPicture = async (data: any, tenSanPham: string) => {
   try {
     await s3.putObject(params).promise();
     const url: string = `${s3_domain_name}/${dst}`;
-    return `http://${url.split(' ').join('%20')}`;
+    return url.includes(' ') ? `http://${url.split(' ').join('%20')}` : `http://${url}`;
   } catch (error) {
     throw error;
   }

@@ -14,7 +14,7 @@ quanLyNguoiDung.post('/DangKy', quanLyNguoiDungController.DangKyController);
 
 quanLyNguoiDung.post('/DangNhap', quanLyNguoiDungController.DangNhapController);
 
-quanLyNguoiDung.post('/DangNhapAdmin', quanLyNguoiDungController.DangNhapController);
+quanLyNguoiDung.post('/DangNhapAdmin', quanLyNguoiDungController.DangNhapAdminController);
 
 quanLyNguoiDung.get('/ThongTin', auth, quanLyNguoiDungController.LayThongTinProfileController);
 

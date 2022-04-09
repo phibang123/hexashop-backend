@@ -14,6 +14,8 @@ quanLyNguoiDung.post('/DangKy', quanLyNguoiDungController.DangKyController);
 
 quanLyNguoiDung.post('/DangNhap', quanLyNguoiDungController.DangNhapController);
 
+quanLyNguoiDung.post('/DangNhapAdmin', quanLyNguoiDungController.DangNhapController);
+
 quanLyNguoiDung.get('/ThongTin', auth, quanLyNguoiDungController.LayThongTinProfileController);
 
 quanLyNguoiDung.patch('/Avatar', auth, upload.single('avatar'), quanLyNguoiDungController.UpLoadAvatarController);

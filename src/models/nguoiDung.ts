@@ -48,6 +48,7 @@ export interface INguoiDung extends INguoiDungInput {
 
 export interface INguoiDungModel extends Model<INguoiDung> {
   findByCredentials(taiKhoan: string, matKhau: string): INguoiDung;
+  findByCredentialsAdmin(taiKhoan: string, matKhau: string): INguoiDung;
   findBeforeCreate(body: INguoiDungInput): INguoiDung;
   findBeforeLike(_id: string, sanPham: any): INguoiDung;
   findByUserAddDelivery(_id: string, idSanPham: string): INguoiDung;
@@ -227,6 +228,23 @@ nguoiDungSchema.static('findByCredentials', async function (taiKhoan: string, ma
   const isMatch = await bcrypt.compare(matKhau, user.matKhau);
   if (!isMatch) {
     throw new Error('tài khoản và mật khẩu không chính sác');
+  }
+  return user;
+});
+
+nguoiDungSchema.static('findByCredentialsAdmin', async function (taiKhoan: string, matKhau: string) {
+  const user: INguoiDung | null = await NguoiDungModel.findOne({
+    taiKhoan,
+  });
+  if (!user) {
+    throw new Error('tài khoản và mật khẩu không chính sác');
+  }
+  const isMatch = await bcrypt.compare(matKhau, user.matKhau);
+  if (!isMatch) {
+    throw new Error('tài khoản và mật khẩu không chính sác');
+  }
+  if (!user.adminInWeb) {
+    throw new Error('Forbidden');
   }
   return user;
 });

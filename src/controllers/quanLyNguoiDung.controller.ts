@@ -31,6 +31,16 @@ export const DangNhapController = async (req: Request, res: Response, next: Next
   }
 };
 
+export const DangNhapAdminController = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const user = await NguoiDungModel.findByCredentials((req as any).body.taiKhoan, (req as any).body.matKhau);
+    const token = await jwt.sign({ _id: user._id.toString() }, secret_key);
+    return res.status(200).json(ReS(200, { token, user }, 'Đăng nhập thành công'));
+  } catch (error: any) {
+    next(error);
+  }
+};
+
 export const LayThongTinProfileController = async (req: Request, res: Response, next: NextFunction) => {
   try {
     return res.status(200).json(ReS(200, (req as any).user));

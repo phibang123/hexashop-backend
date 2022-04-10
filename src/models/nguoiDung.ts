@@ -266,7 +266,7 @@ nguoiDungSchema.static('findBeforeCreate', async function (body: INguoiDungInput
     $or: [{ taiKhoan: body.taiKhoan }, { email: body.email }, { soDt: body.soDt }],
   });
   if (!user) {
-    body.avatar = `https://i.pravatar.cc/150?img=${Math.floor(Math.random() * 50)}`;
+    body.avatar = `https://joeschmoe.io/api/v1/random`;
     return body;
   } else {
     throw new Error(

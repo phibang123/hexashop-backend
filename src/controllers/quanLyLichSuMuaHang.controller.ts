@@ -15,8 +15,8 @@ export const DatHangController = async (req: Request, res: Response, next: NextF
     lichSuMuaHangModel.findBeforeByProduct((req as any).user);
     (req as any).user.gioHang = [];
     await (req as any).user.save();
-    const lichSuMuahangUser = NguoiDungModel.find({ idNguoiDung: (req as any).user._id.toString() });
-    return res.status(200).json(ReS(200, lichSuMuahangUser));
+    const lichSuMuaHangUser = await lichSuMuaHangModel.find({ idNguoiDung: (req as any).user._id.toString() });
+    return res.status(200).json(ReS(200, lichSuMuaHangUser));
   } catch (error) {
     next(error);
   }

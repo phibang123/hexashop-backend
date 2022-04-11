@@ -44,7 +44,14 @@ export const LayTatCaSanPhamController = async (req: Request, res: Response, nex
         .limit((req as any).query.limit);
       return res.status(200).json(ReS(200, allSanPham));
     }
-    const allSanPham = await SanPhamsModel.find({ categories: { $regex: '.*' + req.query.categori ? req.query.categori : '' + '.*' } })
+    if (req.query.categori) {
+      const allSanPham = await SanPhamsModel.find({ categories: { $regex: '.*' + req.query.categori + '.*' } })
+        .sort(sort)
+        .skip((req as any).query.skip)
+        .limit((req as any).query.limit);
+      return res.status(200).json(ReS(200, allSanPham));
+    }
+    const allSanPham = await SanPhamsModel.find()
       .sort(sort)
       .skip((req as any).query.skip)
       .limit((req as any).query.limit);

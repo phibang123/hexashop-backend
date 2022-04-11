@@ -67,6 +67,6 @@ const categoryModel = model<ICategori, CategoriModel>('categoriSchema', categori
 export default categoryModel;
 
 //Không được xóa
-// DEFATUL_CATEROGIES.forEach(async (n) => {
-//   await categoryModel.findOneAndUpdate(n, n, { new: true, upsert: true });
-// });
+DEFATUL_CATEROGIES.forEach(async (n) => {
+  await categoryModel.findOneAndUpdate(n, n, { new: true, upsert: true });
+});

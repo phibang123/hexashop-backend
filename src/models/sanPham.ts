@@ -84,7 +84,7 @@ const sanPhamSchema = new Schema<ISanPham, ISanPhamModel>(
     },
     hinhAnh: {
       type: String,
-      default: 'https://img-cdn.2game.vn/2021/02/28/Hutao-va-nhung-dieu-can-biet-khi-co-nang-ra-mat-game-thu-Genshin-Impact-1.jpg',
+      default: 'http://d38pfw3nc1vjg3.cloudfront.net/picture/undefined/1649667845682_1134204.png',
     },
     categories: {
       type: String,
@@ -154,15 +154,20 @@ const sanPhamSchema = new Schema<ISanPham, ISanPhamModel>(
 );
 
 sanPhamSchema.pre('save', async function (this, next) {
-  if (this.isModified('phanTramSale') && this.isModified('phanTramSale') !== 0) {
+  if (this.isModified('giaTien') && this.isModified('phanTramSale') && this.isModified('phanTramSale') !== 0) {
     this.thanhTien = this.giaTien - (this.giaTien / 100) * this.phanTramSale;
     this.sale = true;
     return next();
-  } else if (this.isModified('phanTramSale') && this.isModified('phanTramSale') === 0) {
+  } else if (
+    this.isModified('giaTien') &&
+    this.isModified('phanTramSale') &&
+    this.isModified('phanTramSale') &&
+    this.isModified('phanTramSale') === 0
+  ) {
     this.thanhTien = this.giaTien;
     this.sale = false;
     return next();
-  } else if (!this.isModified('phanTramSale')) {
+  } else if (this.isModified('giaTien') && !this.isModified('phanTramSale')) {
     this.thanhTien = this.giaTien;
     this.sale = false;
     return next();

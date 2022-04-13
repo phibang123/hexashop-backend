@@ -6,8 +6,8 @@ export const admin = async (req: Request, res: Response, next: NextFunction) => 
     if ((req as any).user.adminInWeb) {
       return next();
     }
-    return res.status(401).send(ReE(401, '', { error: 'Forbidden' }));
+    return res.status(401).send(ReE(401, '', 'Forbidden'));
   } catch (error) {
-    return res.status(401).send(ReE(401, '', { error: 'Please authenticate!' }));
+    return res.status(401).send(ReE(401, '', 'Please authenticate!'));
   }
 };

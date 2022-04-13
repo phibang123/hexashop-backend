@@ -43,7 +43,7 @@ export const LayTatCaSanPhamController = async (req: Request, res: Response, nex
         .skip((req as any).query.skip)
         .limit((req as any).query.limit);
       return res.status(200).json(ReS(200, allSanPham));
-    }
+    } 
     if (req.query.categori) {
       const allSanPham = await SanPhamsModel.find({ categories: { $regex: '.*' + req.query.categori + '.*' } })
         .sort(sort)

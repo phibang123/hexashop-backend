@@ -13,6 +13,7 @@ quanLyLichSuMuaHang.post('/DatHang', auth, quanLyLichSuMuaHangControleler.DatHan
 //Xem lich su mua hang //user
 quanLyLichSuMuaHang.get('/LichSuMuaHang/:id', auth, quanLyLichSuMuaHangControleler.XemLichSuMuaHangUserController);
 
+
 quanLyLichSuMuaHang.get('/LichSuMuaHang', auth, quanLyLichSuMuaHangControleler.XemLichSuMuaHangUserController);
 
 //Xem lich su mua hang //admin

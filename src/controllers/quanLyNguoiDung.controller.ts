@@ -30,7 +30,7 @@ export const DangNhapController = async (req: Request, res: Response, next: Next
     next(error);
   }
 };
-
+  
 export const DangNhapAdminController = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const user = await NguoiDungModel.findByCredentialsAdmin((req as any).body.taiKhoan, (req as any).body.matKhau);

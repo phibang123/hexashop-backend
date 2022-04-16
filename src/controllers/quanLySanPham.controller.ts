@@ -24,38 +24,50 @@ interface ISorf {
 //Get /tasks?limit=1&skip=1 lấy task giới hạn 1 task ở trang 1, phân trang
 //Get /tasks?sortBy=createdAt:desc lấy task sort tăng dần theo ngày hoàn thành
 export const LayTatCaSanPhamController = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const allSanPham = await SanPhamsModel.find();
+    return res.status(200).json(ReS(200, allSanPham));
+  } catch (error: any) {
+    next(error);
+  }
+};
+
+export const LayTatCaSanPhamPhanTrangController = async (req: Request, res: Response, next: NextFunction) => {
   const match: IMath = {};
   const sort: ISorf = {};
 
   if (req.query.categories) {
     match.categories = (req as any).query.categories;
   }
-
   if (req.query.sortBy) {
     const parts: [IColumn, ISortBy] = (req as any).query.sortBy.split(':');
     sort[parts[0]] = parts[1] === 'desc' ? -1 : 1;
   }
-
   try {
     if (match.categories) {
       const allSanPham = await SanPhamsModel.find({ categories: match.categories })
         .sort(sort)
-        .skip((req as any).query.skip)
-        .limit((req as any).query.limit);
-      return res.status(200).json(ReS(200, allSanPham));
-    } 
+        .skip((req as any).query.skip || 1)
+        .limit((req as any).query.limit || 9);
+
+      const total = await SanPhamsModel.count({ categories: match.categories });
+
+      return res.status(200).json(ReS(200, { total, data: allSanPham }));
+    }
     if (req.query.categori) {
       const allSanPham = await SanPhamsModel.find({ categories: { $regex: '.*' + req.query.categori + '.*' } })
         .sort(sort)
-        .skip((req as any).query.skip)
-        .limit((req as any).query.limit);
-      return res.status(200).json(ReS(200, allSanPham));
+        .skip((req as any).query.skip || 1)
+        .limit((req as any).query.limit || 9);
+      const total = await SanPhamsModel.count({ categories: { $regex: '.*' + req.query.categori + '.*' } });
+      return res.status(200).json(ReS(200, { total, data: allSanPham }));
     }
     const allSanPham = await SanPhamsModel.find()
       .sort(sort)
-      .skip((req as any).query.skip)
-      .limit((req as any).query.limit);
-    return res.status(200).json(ReS(200, allSanPham));
+      .skip((req as any).query.skip || 1)
+      .limit((req as any).query.limit || 9);
+    const total = await SanPhamsModel.count();
+    return res.status(200).json(ReS(200, { total, data: allSanPham }));
   } catch (error: any) {
     next(error);
   }
@@ -66,6 +78,19 @@ export const TimSanPhamTheoTenController = async (req: Request, res: Response, n
     let tenSanPham = (req as any).query.tenSanPham;
     const allSanPham = await SanPhamsModel.find({ tenSanPham: { $regex: '.*' + tenSanPham + '.*' } });
     res.status(200).json(ReS(200, allSanPham));
+  } catch (error: any) {
+    next(error);
+  }
+};
+
+export const TimSanPhamTheoTenPhanTrangController = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    let tenSanPham = (req as any).query.tenSanPham;
+    const allSanPham = await SanPhamsModel.find({ tenSanPham: { $regex: '.*' + tenSanPham + '.*' } })
+      .skip((req as any).query.skip || 1)
+      .limit((req as any).query.limit || 9);
+    const total = await SanPhamsModel.count({ tenSanPham: { $regex: '.*' + tenSanPham + '.*' } });
+    res.status(200).json(ReS(200, { total, allSanPham }));
   } catch (error: any) {
     next(error);
   }

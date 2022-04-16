@@ -12,7 +12,11 @@ import quanLySanPhamController = require('../../controllers/quanLySanPham.contro
 
 quanLySanPham.get('/LayTatCaSanPham', quanLySanPhamController.LayTatCaSanPhamController);
 
+quanLySanPham.get('/LayTatCaSanPhamPhanTrang', quanLySanPhamController.LayTatCaSanPhamPhanTrangController);
+
 quanLySanPham.get('/TimSanPhamTheoTen', quanLySanPhamController.TimSanPhamTheoTenController);
+
+quanLySanPham.get('/TimSanPhamTheoTenPhanTrang', quanLySanPhamController.TimSanPhamTheoTenPhanTrangController);
 
 quanLySanPham.get('/TimChiTietSanPham/:id', quanLySanPhamController.TimSanPhamTheoIdController);
 

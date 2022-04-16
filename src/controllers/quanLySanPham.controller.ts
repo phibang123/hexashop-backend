@@ -47,7 +47,7 @@ export const LayTatCaSanPhamPhanTrangController = async (req: Request, res: Resp
     if (match.categories) {
       const allSanPham = await SanPhamsModel.find({ categories: match.categories })
         .sort(sort)
-        .skip((req as any).query.skip || 1)
+        .skip(((req as any).query.page - 1) * (req as any).query.limit || 9 || 0)
         .limit((req as any).query.limit || 9);
 
       const total = await SanPhamsModel.count({ categories: match.categories });
@@ -57,14 +57,14 @@ export const LayTatCaSanPhamPhanTrangController = async (req: Request, res: Resp
     if (req.query.categori) {
       const allSanPham = await SanPhamsModel.find({ categories: { $regex: '.*' + req.query.categori + '.*' } })
         .sort(sort)
-        .skip((req as any).query.skip || 1)
+        .skip(((req as any).query.page - 1) * (req as any).query.limit || 9 || 0)
         .limit((req as any).query.limit || 9);
       const total = await SanPhamsModel.count({ categories: { $regex: '.*' + req.query.categori + '.*' } });
       return res.status(200).json(ReS(200, { total, data: allSanPham }));
     }
     const allSanPham = await SanPhamsModel.find()
       .sort(sort)
-      .skip((req as any).query.skip || 1)
+      .skip(((req as any).query.page - 1) * (req as any).query.limit || 9 || 0)
       .limit((req as any).query.limit || 9);
     const total = await SanPhamsModel.count();
     return res.status(200).json(ReS(200, { total, data: allSanPham }));
@@ -87,7 +87,7 @@ export const TimSanPhamTheoTenPhanTrangController = async (req: Request, res: Re
   try {
     let tenSanPham = (req as any).query.tenSanPham;
     const allSanPham = await SanPhamsModel.find({ tenSanPham: { $regex: '.*' + tenSanPham + '.*' } })
-      .skip((req as any).query.skip || 1)
+      .skip(((req as any).query.page - 1) * (req as any).query.limit || 9 || 0)
       .limit((req as any).query.limit || 9);
     const total = await SanPhamsModel.count({ tenSanPham: { $regex: '.*' + tenSanPham + '.*' } });
     res.status(200).json(ReS(200, { total, allSanPham }));

@@ -10,12 +10,16 @@ interface IMath {
   categories?: string;
 }
 
-type IColumn = 'giaTien' | 'createdAt';
+type IColumn = 'thanhTien' | 'createdAt';
 type ISortBy = 'desc' | 'asc';
 
+// interface ITongLuotThic {
+//   tongLuotThich: number;
+// }
 interface ISorf {
-  giaTien?: number;
+  thanhTien?: number;
   createdAt?: number;
+  luotThich?: number;
 }
 
 //Get /tasks lấy tất cả task của user
@@ -46,7 +50,7 @@ export const LayTatCaSanPhamPhanTrangController = async (req: Request, res: Resp
   try {
     if (match.categories) {
       const allSanPham = await SanPhamsModel.find({ categories: match.categories })
-        .sort(sort)
+        .sort(sort.luotThich ? { 'luotThich.tongLuotThich': sort.luotThich } : sort)
         .skip((((req as any).query.page || 1) - 1) * ((req as any).query.limit || 9) || 0)
         .limit((req as any).query.limit || 9);
 
@@ -56,7 +60,7 @@ export const LayTatCaSanPhamPhanTrangController = async (req: Request, res: Resp
     }
     if (req.query.categori) {
       const allSanPham = await SanPhamsModel.find({ categories: { $regex: '.*' + req.query.categori + '.*' } })
-        .sort(sort)
+        .sort(sort.luotThich ? { 'luotThich.tongLuotThich': sort.luotThich } : sort)
         .skip((((req as any).query.page || 1) - 1) * ((req as any).query.limit || 9) || 0)
         .limit((req as any).query.limit || 9);
       const total = await SanPhamsModel.count({ categories: { $regex: '.*' + req.query.categori + '.*' } });
@@ -64,7 +68,7 @@ export const LayTatCaSanPhamPhanTrangController = async (req: Request, res: Resp
     }
 
     const allSanPham = await SanPhamsModel.find()
-      .sort(sort)
+      .sort(sort.luotThich ? { 'luotThich.tongLuotThich': sort.luotThich } : sort)
       .skip((((req as any).query.page || 1) - 1) * ((req as any).query.limit || 9) || 0)
       .limit((req as any).query.limit || 9);
     const total = await SanPhamsModel.count();

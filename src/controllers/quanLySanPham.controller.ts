@@ -10,7 +10,7 @@ interface IMath {
   categories?: string;
 }
 
-type IColumn = 'thanhTien' | 'createdAt';
+type IColumn = 'thanhTien' | 'createdAt' | 'luotThich';
 type ISortBy = 'desc' | 'asc';
 
 // interface ITongLuotThic {
